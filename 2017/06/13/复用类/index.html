@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="在C/C++中,许多错误都源于未初始化变量和未释放无用的内存，而在Java语言在试图解决这些不安全的问题。Java使用了构造器和垃圾回收器来显示变量的初始化和内存资源的自动释放。 构造器每个类都有一个或若干个构造器，调用构造器是编译器的责任，因此程序员的任务就是让编译器知道该调用哪个构造器。构造器要注意一下几点：  构造器的名称和类名完全相同  没有返回值  如果不写构造器，不代表没有，系统会添加">
+<meta name="description" content="Java中复用代码是引人注目的功能之一，通常有两种方法：  在新的类产生现有类的对象，由于新的类是有现有类的对象，因此该方法称为组合，它复用了先有代码的功能，而非形式。  按照现有类的形式创建新类，该方法称为继承。   组合语法非常简单，只需将对象的引用至于新类中，例如：123456class A &amp;#123;  private B b;  A()&amp;#123;    b = new B();  &amp;">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="初始化与清理">
-<meta property="og:url" content="http://yoursite.com/2017/06/07/初始化与清理/index.html">
+<meta property="og:title" content="复用类">
+<meta property="og:url" content="http://yoursite.com/2017/06/13/复用类/index.html">
 <meta property="og:site_name" content="Hello, World">
-<meta property="og:description" content="在C/C++中,许多错误都源于未初始化变量和未释放无用的内存，而在Java语言在试图解决这些不安全的问题。Java使用了构造器和垃圾回收器来显示变量的初始化和内存资源的自动释放。 构造器每个类都有一个或若干个构造器，调用构造器是编译器的责任，因此程序员的任务就是让编译器知道该调用哪个构造器。构造器要注意一下几点：  构造器的名称和类名完全相同  没有返回值  如果不写构造器，不代表没有，系统会添加">
-<meta property="og:updated_time" content="2017-06-08T07:09:29.032Z">
+<meta property="og:description" content="Java中复用代码是引人注目的功能之一，通常有两种方法：  在新的类产生现有类的对象，由于新的类是有现有类的对象，因此该方法称为组合，它复用了先有代码的功能，而非形式。  按照现有类的形式创建新类，该方法称为继承。   组合语法非常简单，只需将对象的引用至于新类中，例如：123456class A &amp;#123;  private B b;  A()&amp;#123;    b = new B();  &amp;">
+<meta property="og:updated_time" content="2017-06-13T05:24:57.984Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="初始化与清理">
-<meta name="twitter:description" content="在C/C++中,许多错误都源于未初始化变量和未释放无用的内存，而在Java语言在试图解决这些不安全的问题。Java使用了构造器和垃圾回收器来显示变量的初始化和内存资源的自动释放。 构造器每个类都有一个或若干个构造器，调用构造器是编译器的责任，因此程序员的任务就是让编译器知道该调用哪个构造器。构造器要注意一下几点：  构造器的名称和类名完全相同  没有返回值  如果不写构造器，不代表没有，系统会添加">
+<meta name="twitter:title" content="复用类">
+<meta name="twitter:description" content="Java中复用代码是引人注目的功能之一，通常有两种方法：  在新的类产生现有类的对象，由于新的类是有现有类的对象，因此该方法称为组合，它复用了先有代码的功能，而非形式。  按照现有类的形式创建新类，该方法称为继承。   组合语法非常简单，只需将对象的引用至于新类中，例如：123456class A &amp;#123;  private B b;  A()&amp;#123;    b = new B();  &amp;">
 
 
 
@@ -131,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/07/初始化与清理/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/06/13/复用类/"/>
 
 
 
 
 
-  <title>初始化与清理 | Hello, World</title>
+  <title>复用类 | Hello, World</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/07/初始化与清理/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/13/复用类/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qinzhaokun">
@@ -304,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">初始化与清理</h1>
+          <h1 class="post-title" itemprop="name headline">复用类</h1>
         
 
         <div class="post-meta">
@@ -316,8 +316,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-07T15:40:25+08:00">
-                2017-06-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-13T15:15:25+08:00">
+                2017-06-13
               </time>
             
 
@@ -358,8 +358,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/06/07/初始化与清理/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/06/07/初始化与清理/" itemprop="commentsCount"></span>
+                <a href="/2017/06/13/复用类/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/06/13/复用类/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -367,7 +367,7 @@
 
           
           
-             <span id="/2017/06/07/初始化与清理/" class="leancloud_visitors" data-flag-title="初始化与清理">
+             <span id="/2017/06/13/复用类/" class="leancloud_visitors" data-flag-title="复用类">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -395,60 +395,31 @@
       
 
       
-        <p>在C/C++中,许多错误都源于未初始化变量和未释放无用的内存，而在Java语言在试图解决这些不安全的问题。Java使用了<strong>构造器</strong>和<strong>垃圾回收器</strong>来显示变量的初始化<br>和内存资源的自动释放。</p>
-<h2 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h2><p>每个类都有一个或若干个构造器，调用构造器是编译器的责任，因此程序员的任务就是让编译器知道该调用哪个构造器。构造器要注意一下几点：</p>
+        <p>Java中复用代码是引人注目的功能之一，通常有两种方法：</p>
 <ul>
-<li><p>构造器的名称和类名完全相同</p>
+<li><p>在新的类产生现有类的对象，由于新的类是有现有类的对象，因此该方法称为<strong>组合</strong>，它复用了先有代码的功能，而非形式。</p>
 </li>
-<li><p>没有返回值</p>
-</li>
-<li><p>如果不写构造器，不代表没有，系统会添加无参的构造器</p>
-</li>
-<li><p>如果定义了有参数的构造器，则一定要定义无参的构造器</p>
+<li><p>按照现有类的形式创建新类，该方法称为<strong>继承</strong>。</p>
 </li>
 </ul>
-<h2 id="方法重载"><a href="#方法重载" class="headerlink" title="方法重载"></a>方法重载</h2><p>几个函数拥有相同的函数名，即函数重载了。区分重载的规则很简单，每个重载的方法都必须有一个<strong>独一无二的参数类型列表</strong>。注意，参数的顺序能够区分两个方法，<br>但是一般不建议这么做。另外，不能以返回值区分函数。</p>
-<p>在Java中，基本类型能从“较小”的类型自动提升到“较大”的类型，因此有时即使参数类型不一致，也会被调用，例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">void f(double i)&#123;</div><div class="line">  System.out.println(i);</div><div class="line">&#125;</div><div class="line"></div><div class="line">int i = 4;</div><div class="line">f(i)</div></pre></td></tr></table></figure>
-<h2 id="this指针"><a href="#this指针" class="headerlink" title="this指针"></a>this指针</h2><p>如果你想在某个方法内获得调用当前方法的对象，就能使用this指针，它表示调用方法那个对象的引用。</p>
-<p>它还有一个作用，就是能够实现在构造器中调用构造器，从而减少代码的冗余。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Class A&#123;</div><div class="line">  A(int i)&#123;</div><div class="line">    </div><div class="line">  &#125;</div><div class="line">  A(int i, int j)&#123;</div><div class="line">    this(i);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="static的含义"><a href="#static的含义" class="headerlink" title="static的含义"></a>static的含义</h3><p>用static关键字修饰的方法，表示它是静态方法，它没有this指针，在使用在时须注意一下几点：</p>
+<h2 id="组合语法"><a href="#组合语法" class="headerlink" title="组合语法"></a>组合语法</h2><p>非常简单，只需将对象的引用至于新类中，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">class A &#123;</div><div class="line">  private B b;</div><div class="line">  A()&#123;</div><div class="line">    b = new B();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>所有非基本类型的的类都有一个toString()方法（该方法是Object类中的）。toString默认返回：类名@对象名，有需要可以自行重载返回的值。</p>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>继承是面向对象不可获取的部分，任何类都是隐式继承Object类。使用extends关键字。当初始化子类时，先调用积累的构造函数，在调用子类的。</p>
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><p>除了组合继承之外，类之间还有一种神奇的关系，就是<strong>代理</strong>。它是组合和继承的和，我们定义一个新类，新类中有一个其他类的对象，但同时我们在新类中暴露了该其他类对象<br>的所有方法，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">class A&#123;</div><div class="line">  void f1();</div><div class="line">  void f2();</div><div class="line">  void f3();</div><div class="line">&#125;</div><div class="line"></div><div class="line">class B&#123;</div><div class="line">  A a;</div><div class="line">  void f1()&#123;</div><div class="line">    a.f1();</div><div class="line">  &#125;</div><div class="line">  void f2()&#123;</div><div class="line">    a.f2();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>那么这么做什么好处呢？好处之一就是我们可以选择提供部分成员对象（a）的方法，而非全部。（不提供f3方法）,<em>Java不直接支持代理</em></p>
+<h2 id="protect关键字"><a href="#protect关键字" class="headerlink" title="protect关键字"></a>protect关键字</h2><p>声明为protected的方法和成员变量能被同一个包里的所有类所访问，也可以被其他包继承了该类的类的方法或对象使用。</p>
+<h2 id="向上转型"><a href="#向上转型" class="headerlink" title="向上转型"></a>向上转型</h2><p>一定程度上，继承为多态提供了基础，它提供了一种新的关系，即子类时基类的一种类型，它可以保证基类的所有方法在子类中都有效，因此，子类就可以看成是基类，所有<br>向基类发送的消息同样能够想子类发送（多态）。</p>
+<h2 id="final关键字"><a href="#final关键字" class="headerlink" title="final关键字"></a>final关键字</h2><h3 id="final数据"><a href="#final数据" class="headerlink" title="final数据"></a>final数据</h3><p>Java中的关键字final表示<strong>这是无法改变的</strong>，它可作用于数据，方法和类。如果作用于数据，它表示这块数据是恒定不变的，一般有两种情况：</p>
 <ul>
-<li><p>static方法中不能调用非static方法和使用非static变量</p>
+<li><p>一个永远不改变的编译时常量</p>
 </li>
-<li><p>非static方法可以调用static方法</p>
-</li>
-<li><p>在没有任何对象的前提下，可以使用类名调用static方法</p>
+<li><p>在运行时初始化，之后不希望改变它。</p>
 </li>
 </ul>
-<h2 id="清理：终结处理和垃圾回收"><a href="#清理：终结处理和垃圾回收" class="headerlink" title="清理：终结处理和垃圾回收"></a>清理：终结处理和垃圾回收</h2><p>Java允许在类中定义一个名为finalize()的方法，<strong>一旦垃圾回收器准备释放对象所占用的内存空间，首先调用其finalize()方法，并在下一次垃圾回收动作发生时<br>真正的回收对象所占用的内存</strong>。它不同于C++的析构函数，因为析构函数在释放内存时一定会被调用，而finalize()不会被调用，因此，把释放工作放在finalize()里是不可靠的，因为它不确保一定会被调用。那么，它的有什么作用呢？总结下来<br>有两个：</p>
-<ol>
-<li><p>释放其他代码所申请的内存。比如C++代码申请的内存，垃圾回收器不能够释放。</p>
-</li>
-<li><p>释放内存前做一些验证操作，发现程序的缺陷。</p>
-</li>
-</ol>
-<p>finalize方法什么时候会被调用呢？</p>
-<ol>
-<li>垃圾回收前</li>
-<li>程序退出前，会调用所有对象的该方法</li>
-<li>显式调用</li>
-</ol>
-<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><h3 id="成员初始化"><a href="#成员初始化" class="headerlink" title="成员初始化"></a>成员初始化</h3><p>对于方法的局部变量，Java会以编译时错误的形式来保证其初始化。而对于类的基本类型数据成员，如果没有初始化，那么编译器会自动帮其初始化（非基本类型的数据成员为null）。而关于初始化的顺序，则和成员定义的顺序相关。当然也可以指定初始化，即在类定义时直接赋值（<strong>C++不能这么做</strong>）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public class A&#123;</div><div class="line">  int a = 1;</div><div class="line">  double b = 2;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="构造器初始化"><a href="#构造器初始化" class="headerlink" title="构造器初始化"></a>构造器初始化</h3><p>在构造器中初始化成员变量，注意：它无法阻止自动初始化的进行，它将在构造被调用前自动初始化。例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public class A&#123;</div><div class="line">  int i;</div><div class="line">  A()&#123;</div><div class="line">    i = 1;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>i先会赋值给0，在变成1。</p>
-<p>静态对象会优先非静态对象进行初始化。并且静态对象只会初始化一次。</p>
-<h2 id="枚举类型"><a href="#枚举类型" class="headerlink" title="枚举类型"></a>枚举类型</h2><p>在java SE5后引入了枚举类型，它表示一组常量组成的集合，使用关键字<strong>enum</strong>定义。枚举类型是一个特殊的类（class），实际上它是继承了java.lang.Enum类。枚举类是final修饰的，所以它是不可继承的，它的枚举值都是静态常量，这也是我们为什么能够直接用类似Color.RED来直接访问。既然它的本质是class，那么它具有class的特性，例如：实现一个或多个接口；定义新的方法/变量。另外，相比于其他类，它还有些特点;</p>
-<ul>
-<li><p>构造函数时私有的，不能被外部调用，保证外部代码无法构建枚举类的实例。</p>
-</li>
-<li><p>继承了枚举类的方法。例如:original() //返回int表示枚举值的顺序； values() //静态方法：返回所有枚举值构成的数组。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Class A&#123;</div><div class="line"> public enum Color&#123;</div><div class="line">   RED,BULE,GREEN</div><div class="line">   public void otherMethod()&#123;</div><div class="line">           System.out.println(&quot;other&quot;);</div><div class="line">   &#125;</div><div class="line"> &#125;</div><div class="line"> </div><div class="line"> public static void main()&#123;</div><div class="line">   Color c = Color.RED;</div><div class="line">   c.otherMethod();</div><div class="line">   c.ordinal();</div><div class="line">   Color [] colors = Color.values();</div><div class="line"> &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
+<p>对于情况1中的编译时常量，在程序编译时将其带入了任何可能用到它的公式中，在编译时执行计算，从而减小运行时的压力。<strong>编译时常量必须是基本数据类型，并且在定义时必须赋值</strong><br>而如果final修饰的是对象，即变量是个引用，那么表示它永远只能指向某个对象，不能指向其他对象，而对象本身是可变的。</p>
+<p>一个既是static,又是final的变量，表示它只占据一个不可改变的存储空间。</p>
+<h3 id="final方法"><a href="#final方法" class="headerlink" title="final方法"></a>final方法</h3><p>作用于方法之上的final，可以把方法锁定，防止继承类修改它的含义；同时也保证该方法不会被覆盖，含义不会变。<br>private有隐式指定final的意思，因此private final并不会带来额外的效果。（ps：如果某个基类的方法是private，继承它的子类可以有同名的方法，但是不是覆盖的形式，也不能实现多态）</p>
+<h3 id="final类"><a href="#final类" class="headerlink" title="final类"></a>final类</h3><p>表示该类不能被继承</p>
 
       
     </div>
@@ -491,8 +462,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/02/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2017/06/10/使用leancloud给博客添加阅读次数/" rel="next" title="使用leancloud给博客添加阅读次数">
+                <i class="fa fa-chevron-left"></i> 使用leancloud给博客添加阅读次数
               </a>
             
           </div>
@@ -501,8 +472,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/08/雁荡山计划/" rel="prev" title="雁荡山旅游计划">
-                雁荡山旅游计划 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/06/13/Java修饰符/" rel="prev" title="Java修饰符">
+                Java修饰符 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -645,7 +616,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#构造器"><span class="nav-number">1.</span> <span class="nav-text">构造器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法重载"><span class="nav-number">2.</span> <span class="nav-text">方法重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#this指针"><span class="nav-number">3.</span> <span class="nav-text">this指针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#static的含义"><span class="nav-number">3.1.</span> <span class="nav-text">static的含义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#清理：终结处理和垃圾回收"><span class="nav-number">4.</span> <span class="nav-text">清理：终结处理和垃圾回收</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化"><span class="nav-number">5.</span> <span class="nav-text">初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#成员初始化"><span class="nav-number">5.1.</span> <span class="nav-text">成员初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造器初始化"><span class="nav-number">5.2.</span> <span class="nav-text">构造器初始化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举类型"><span class="nav-number">6.</span> <span class="nav-text">枚举类型</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#组合语法"><span class="nav-number">1.</span> <span class="nav-text">组合语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#继承"><span class="nav-number">2.</span> <span class="nav-text">继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理"><span class="nav-number">3.</span> <span class="nav-text">代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#protect关键字"><span class="nav-number">4.</span> <span class="nav-text">protect关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#向上转型"><span class="nav-number">5.</span> <span class="nav-text">向上转型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#final关键字"><span class="nav-number">6.</span> <span class="nav-text">final关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#final数据"><span class="nav-number">6.1.</span> <span class="nav-text">final数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#final方法"><span class="nav-number">6.2.</span> <span class="nav-text">final方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#final类"><span class="nav-number">6.3.</span> <span class="nav-text">final类</span></a></li></ol></li></ol></div>
             
 
           </div>

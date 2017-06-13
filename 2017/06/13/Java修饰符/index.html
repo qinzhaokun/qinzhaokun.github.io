@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="在C/C++中,许多错误都源于未初始化变量和未释放无用的内存，而在Java语言在试图解决这些不安全的问题。Java使用了构造器和垃圾回收器来显示变量的初始化和内存资源的自动释放。 构造器每个类都有一个或若干个构造器，调用构造器是编译器的责任，因此程序员的任务就是让编译器知道该调用哪个构造器。构造器要注意一下几点：  构造器的名称和类名完全相同  没有返回值  如果不写构造器，不代表没有，系统会添加">
+<meta name="description" content="Java有很多修饰符，可以作用于类，方法，变量，很容易混淆，今天来给修饰符做一个简单的总结。 类的修饰符publicJava语言中类的可访问控制符只有一个：public即公共的。每个Java程序的主类都必须是public类，作为公共工具供其它类和程序使用的应定义为public类。 abstract抽象类修饰符abstract：凡是用abstract修饰符修饰的类，被称为抽象类。所谓抽象类是指这种类">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="初始化与清理">
-<meta property="og:url" content="http://yoursite.com/2017/06/07/初始化与清理/index.html">
+<meta property="og:title" content="Java修饰符">
+<meta property="og:url" content="http://yoursite.com/2017/06/13/Java修饰符/index.html">
 <meta property="og:site_name" content="Hello, World">
-<meta property="og:description" content="在C/C++中,许多错误都源于未初始化变量和未释放无用的内存，而在Java语言在试图解决这些不安全的问题。Java使用了构造器和垃圾回收器来显示变量的初始化和内存资源的自动释放。 构造器每个类都有一个或若干个构造器，调用构造器是编译器的责任，因此程序员的任务就是让编译器知道该调用哪个构造器。构造器要注意一下几点：  构造器的名称和类名完全相同  没有返回值  如果不写构造器，不代表没有，系统会添加">
-<meta property="og:updated_time" content="2017-06-08T07:09:29.032Z">
+<meta property="og:description" content="Java有很多修饰符，可以作用于类，方法，变量，很容易混淆，今天来给修饰符做一个简单的总结。 类的修饰符publicJava语言中类的可访问控制符只有一个：public即公共的。每个Java程序的主类都必须是public类，作为公共工具供其它类和程序使用的应定义为public类。 abstract抽象类修饰符abstract：凡是用abstract修饰符修饰的类，被称为抽象类。所谓抽象类是指这种类">
+<meta property="og:updated_time" content="2017-06-13T05:24:57.390Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="初始化与清理">
-<meta name="twitter:description" content="在C/C++中,许多错误都源于未初始化变量和未释放无用的内存，而在Java语言在试图解决这些不安全的问题。Java使用了构造器和垃圾回收器来显示变量的初始化和内存资源的自动释放。 构造器每个类都有一个或若干个构造器，调用构造器是编译器的责任，因此程序员的任务就是让编译器知道该调用哪个构造器。构造器要注意一下几点：  构造器的名称和类名完全相同  没有返回值  如果不写构造器，不代表没有，系统会添加">
+<meta name="twitter:title" content="Java修饰符">
+<meta name="twitter:description" content="Java有很多修饰符，可以作用于类，方法，变量，很容易混淆，今天来给修饰符做一个简单的总结。 类的修饰符publicJava语言中类的可访问控制符只有一个：public即公共的。每个Java程序的主类都必须是public类，作为公共工具供其它类和程序使用的应定义为public类。 abstract抽象类修饰符abstract：凡是用abstract修饰符修饰的类，被称为抽象类。所谓抽象类是指这种类">
 
 
 
@@ -131,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/07/初始化与清理/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/06/13/Java修饰符/"/>
 
 
 
 
 
-  <title>初始化与清理 | Hello, World</title>
+  <title>Java修饰符 | Hello, World</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/07/初始化与清理/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/13/Java修饰符/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qinzhaokun">
@@ -304,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">初始化与清理</h1>
+          <h1 class="post-title" itemprop="name headline">Java修饰符</h1>
         
 
         <div class="post-meta">
@@ -316,8 +316,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-07T15:40:25+08:00">
-                2017-06-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-13T18:18:25+08:00">
+                2017-06-13
               </time>
             
 
@@ -358,8 +358,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/06/07/初始化与清理/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/06/07/初始化与清理/" itemprop="commentsCount"></span>
+                <a href="/2017/06/13/Java修饰符/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/06/13/Java修饰符/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -367,7 +367,7 @@
 
           
           
-             <span id="/2017/06/07/初始化与清理/" class="leancloud_visitors" data-flag-title="初始化与清理">
+             <span id="/2017/06/13/Java修饰符/" class="leancloud_visitors" data-flag-title="Java修饰符">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -395,58 +395,53 @@
       
 
       
-        <p>在C/C++中,许多错误都源于未初始化变量和未释放无用的内存，而在Java语言在试图解决这些不安全的问题。Java使用了<strong>构造器</strong>和<strong>垃圾回收器</strong>来显示变量的初始化<br>和内存资源的自动释放。</p>
-<h2 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h2><p>每个类都有一个或若干个构造器，调用构造器是编译器的责任，因此程序员的任务就是让编译器知道该调用哪个构造器。构造器要注意一下几点：</p>
-<ul>
-<li><p>构造器的名称和类名完全相同</p>
+        <p>Java有很多修饰符，可以作用于类，方法，变量，很容易混淆，今天来给修饰符做一个简单的总结。</p>
+<h2 id="类的修饰符"><a href="#类的修饰符" class="headerlink" title="类的修饰符"></a>类的修饰符</h2><h3 id="public"><a href="#public" class="headerlink" title="public"></a>public</h3><p>Java语言中类的可访问控制符只有一个：public即公共的。每个Java程序的主类都必须是public类，作为公共工具供其它类和程序使用的应定义为public类。</p>
+<h3 id="abstract"><a href="#abstract" class="headerlink" title="abstract"></a>abstract</h3><p>抽象类修饰符abstract：凡是用abstract修饰符修饰的类，被称为抽象类。所谓抽象类是指这种类没有具体对象的一种概念类。这样的类就是Java语言的abstract类。</p>
+<h3 id="final"><a href="#final" class="headerlink" title="final"></a>final</h3><p>最终类修饰符final：当一个类不可能有子类时可用修饰符final把它说明为最终类。被定义为final的类通常是一些有固定作用、用来完成某种标准功能的类。</p>
+<h3 id="defalut"><a href="#defalut" class="headerlink" title="defalut"></a>defalut</h3><p>类缺省访问控制符：如果一个类没有访问控制符，说明它具有缺省的访问控制符特性。此时，这个类只能被同一个包中的类访问或引用。这一访问特性又称为包访问性。</p>
+<p>protected正常来说不能够修饰类，内部类例外。</p>
+<h2 id="域的修饰符"><a href="#域的修饰符" class="headerlink" title="域的修饰符"></a>域的修饰符</h2><p>大致可分为两类，一种是访问控制的，另一种是非访问控制的。 </p>
+<h3 id="访问控制"><a href="#访问控制" class="headerlink" title="访问控制"></a>访问控制</h3><ul>
+<li><p>公共访问控制符：public；用public修饰的域称为公共域。如果公共域属于一个公共类，则可以被所有其它类所引用。由于public修饰符会降低运行的安全性和数据的封装性，所以一般应减少public域的使用。</p>
 </li>
-<li><p>没有返回值</p>
+<li><p>私有访问控制符：private；用private修饰的成员变量 ( 域 ) 只能被该类自身所访问，而不能被任何其它类（包括子类）所引用。</p>
 </li>
-<li><p>如果不写构造器，不代表没有，系统会添加无参的构造器</p>
+<li><p>保护访问控制符：protected；用protected修饰的成员变量可以被三种类所引用：①该类自身；②与它在同一个包中的其它类；③在其它包中的该类的子类。使用修饰符protected的主要作用是允许其它包中它的子类来访问父类的特定属性。</p>
 </li>
-<li><p>如果定义了有参数的构造器，则一定要定义无参的构造器</p>
-</li>
-</ul>
-<h2 id="方法重载"><a href="#方法重载" class="headerlink" title="方法重载"></a>方法重载</h2><p>几个函数拥有相同的函数名，即函数重载了。区分重载的规则很简单，每个重载的方法都必须有一个<strong>独一无二的参数类型列表</strong>。注意，参数的顺序能够区分两个方法，<br>但是一般不建议这么做。另外，不能以返回值区分函数。</p>
-<p>在Java中，基本类型能从“较小”的类型自动提升到“较大”的类型，因此有时即使参数类型不一致，也会被调用，例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">void f(double i)&#123;</div><div class="line">  System.out.println(i);</div><div class="line">&#125;</div><div class="line"></div><div class="line">int i = 4;</div><div class="line">f(i)</div></pre></td></tr></table></figure>
-<h2 id="this指针"><a href="#this指针" class="headerlink" title="this指针"></a>this指针</h2><p>如果你想在某个方法内获得调用当前方法的对象，就能使用this指针，它表示调用方法那个对象的引用。</p>
-<p>它还有一个作用，就是能够实现在构造器中调用构造器，从而减少代码的冗余。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Class A&#123;</div><div class="line">  A(int i)&#123;</div><div class="line">    </div><div class="line">  &#125;</div><div class="line">  A(int i, int j)&#123;</div><div class="line">    this(i);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="static的含义"><a href="#static的含义" class="headerlink" title="static的含义"></a>static的含义</h3><p>用static关键字修饰的方法，表示它是静态方法，它没有this指针，在使用在时须注意一下几点：</p>
-<ul>
-<li><p>static方法中不能调用非static方法和使用非static变量</p>
-</li>
-<li><p>非static方法可以调用static方法</p>
-</li>
-<li><p>在没有任何对象的前提下，可以使用类名调用static方法</p>
+<li><p>私有保护访问控制符：private、protected；用修饰符private、protected修饰的成员变量可以被该类本身或该类的子类两种类访问和引用。</p>
 </li>
 </ul>
-<h2 id="清理：终结处理和垃圾回收"><a href="#清理：终结处理和垃圾回收" class="headerlink" title="清理：终结处理和垃圾回收"></a>清理：终结处理和垃圾回收</h2><p>Java允许在类中定义一个名为finalize()的方法，<strong>一旦垃圾回收器准备释放对象所占用的内存空间，首先调用其finalize()方法，并在下一次垃圾回收动作发生时<br>真正的回收对象所占用的内存</strong>。它不同于C++的析构函数，因为析构函数在释放内存时一定会被调用，而finalize()不会被调用，因此，把释放工作放在finalize()里是不可靠的，因为它不确保一定会被调用。那么，它的有什么作用呢？总结下来<br>有两个：</p>
-<ol>
-<li><p>释放其他代码所申请的内存。比如C++代码申请的内存，垃圾回收器不能够释放。</p>
+<h3 id="非访问控制"><a href="#非访问控制" class="headerlink" title="非访问控制"></a>非访问控制</h3><ul>
+<li><p>静态域修饰符：static；用static修饰的成员变量仅属于类的变量，而不属于任何一个具体的对象，静态成员变量的值是保存在类的内存区域的公共存储单元（静态存储区），而不是保存在某一个对象的内存区间。任何一个类的对象访问它时取到的都是相同的数据；任何一个类的对象修改它时，也都是对同一个内存单元进行操作。</p>
 </li>
-<li><p>释放内存前做一些验证操作，发现程序的缺陷。</p>
+<li><p>最终域修饰符：final；最终域修饰符final是用来定义符号常量的。一个类的域 ( 成员变量 )如果被修饰符final说明，则它的取值在程序的整个执行过程中都是不变的。</p>
 </li>
-</ol>
-<p>finalize方法什么时候会被调用呢？</p>
-<ol>
-<li>垃圾回收前</li>
-<li>程序退出前，会调用所有对象的该方法</li>
-<li>显式调用</li>
-</ol>
-<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><h3 id="成员初始化"><a href="#成员初始化" class="headerlink" title="成员初始化"></a>成员初始化</h3><p>对于方法的局部变量，Java会以编译时错误的形式来保证其初始化。而对于类的基本类型数据成员，如果没有初始化，那么编译器会自动帮其初始化（非基本类型的数据成员为null）。而关于初始化的顺序，则和成员定义的顺序相关。当然也可以指定初始化，即在类定义时直接赋值（<strong>C++不能这么做</strong>）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public class A&#123;</div><div class="line">  int a = 1;</div><div class="line">  double b = 2;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="构造器初始化"><a href="#构造器初始化" class="headerlink" title="构造器初始化"></a>构造器初始化</h3><p>在构造器中初始化成员变量，注意：它无法阻止自动初始化的进行，它将在构造被调用前自动初始化。例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public class A&#123;</div><div class="line">  int i;</div><div class="line">  A()&#123;</div><div class="line">    i = 1;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>i先会赋值给0，在变成1。</p>
-<p>静态对象会优先非静态对象进行初始化。并且静态对象只会初始化一次。</p>
-<h2 id="枚举类型"><a href="#枚举类型" class="headerlink" title="枚举类型"></a>枚举类型</h2><p>在java SE5后引入了枚举类型，它表示一组常量组成的集合，使用关键字<strong>enum</strong>定义。枚举类型是一个特殊的类（class），实际上它是继承了java.lang.Enum类。枚举类是final修饰的，所以它是不可继承的，它的枚举值都是静态常量，这也是我们为什么能够直接用类似Color.RED来直接访问。既然它的本质是class，那么它具有class的特性，例如：实现一个或多个接口；定义新的方法/变量。另外，相比于其他类，它还有些特点;</p>
-<ul>
-<li><p>构造函数时私有的，不能被外部调用，保证外部代码无法构建枚举类的实例。</p>
+</ul>
+<p>易失( 共享/同步)域修饰符：volatile；volatile是用来说明这个成员变量可能被几个线程所控制和修改。也就是说在程序运行过程中，这个成员变量有可能被其它的程序影响或改变它的取值。因此，在使用中要注意这种成员变量取值的变化。通常volatile用来修饰接受外部输入的域。</p>
+<p>暂时性域修饰符：transient；用来定义一个暂时性变量。其特点是：用修饰符transient限定的暂时性变量，将指定Java虚拟机认定该暂时性变量不属于永久状态，以实现不同对象的存档功能。否则，类中所有变量都是对象的永久状态的一部分，存储对象时必须同时保存这些变量。</p>
+<h2 id="方法的控制修饰符"><a href="#方法的控制修饰符" class="headerlink" title="方法的控制修饰符"></a>方法的控制修饰符</h2><p>总体来说也可分为：可访问控制符和非访问控制符两类。 </p>
+<h3 id="访问控制-1"><a href="#访问控制-1" class="headerlink" title="访问控制"></a>访问控制</h3><ul>
+<li><p>公共访问控制符：public；</p>
 </li>
-<li><p>继承了枚举类的方法。例如:original() //返回int表示枚举值的顺序； values() //静态方法：返回所有枚举值构成的数组。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Class A&#123;</div><div class="line"> public enum Color&#123;</div><div class="line">   RED,BULE,GREEN</div><div class="line">   public void otherMethod()&#123;</div><div class="line">           System.out.println(&quot;other&quot;);</div><div class="line">   &#125;</div><div class="line"> &#125;</div><div class="line"> </div><div class="line"> public static void main()&#123;</div><div class="line">   Color c = Color.RED;</div><div class="line">   c.otherMethod();</div><div class="line">   c.ordinal();</div><div class="line">   Color [] colors = Color.values();</div><div class="line"> &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<li><p>私有访问控制符：private；</p>
+</li>
+<li><p>保护访问控制符：protected；</p>
+</li>
+<li><p>私有保护访问控制符：private、protected。</p>
+</li>
+</ul>
+<p>含义同上。</p>
+<h3 id="非访问控制-1"><a href="#非访问控制-1" class="headerlink" title="非访问控制"></a>非访问控制</h3><ul>
+<li><p>抽象方法控制符：abstract；用修饰符abstract修饰的方法称为抽象方法。抽象方法是一种仅有方法头，没有方法体和操作实现的一种方法。</p>
+</li>
+<li><p>静态方法控制符：static；用修饰符static修饰的方法称为静态方法。静态方法是属于整个类的类方法；而不使用static修饰、限定的方法是属于某个具体类对象的方法。由于static方法是属于整个类的，所以它不能操纵和处理属于某个对象的成员变量，而只能处理属于整个类的成员变量，即static方法只能处理static的域。</p>
+</li>
+<li><p>最终方法控制符：final；用修饰符final修饰的方法称为最终方法。最终方法是功能和内部语句不能更改的方法，即最终方法不能重载。这样，就固定了这个方法所具有的功能和操作，防止当前类的子类对父类关键方法的错误定义，保证了程序的安全性和正确性。所有被private修饰符限定为私有的方法，以及所有包含在final类 ( 最终类 ) 中的方法，都被认为是最终方法。</p>
+</li>
+<li><p>本地方法控制符：native；用修饰符native修饰的方法称为本地方法。为了提高程序的运行速度，需要用其它的高级语言书写程序的方法体，那么该方法可定义为本地方法用修饰符native来修饰。</p>
+</li>
+<li><p>同步方法控制符：synchronized；该修饰符主要用于多线程共存的程序中的协调和同步。</p>
 </li>
 </ul>
 
@@ -491,8 +486,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/02/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2017/06/13/复用类/" rel="next" title="复用类">
+                <i class="fa fa-chevron-left"></i> 复用类
               </a>
             
           </div>
@@ -500,10 +495,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/08/雁荡山计划/" rel="prev" title="雁荡山旅游计划">
-                雁荡山旅游计划 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -645,7 +636,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#构造器"><span class="nav-number">1.</span> <span class="nav-text">构造器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法重载"><span class="nav-number">2.</span> <span class="nav-text">方法重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#this指针"><span class="nav-number">3.</span> <span class="nav-text">this指针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#static的含义"><span class="nav-number">3.1.</span> <span class="nav-text">static的含义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#清理：终结处理和垃圾回收"><span class="nav-number">4.</span> <span class="nav-text">清理：终结处理和垃圾回收</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化"><span class="nav-number">5.</span> <span class="nav-text">初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#成员初始化"><span class="nav-number">5.1.</span> <span class="nav-text">成员初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造器初始化"><span class="nav-number">5.2.</span> <span class="nav-text">构造器初始化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举类型"><span class="nav-number">6.</span> <span class="nav-text">枚举类型</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#类的修饰符"><span class="nav-number">1.</span> <span class="nav-text">类的修饰符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#public"><span class="nav-number">1.1.</span> <span class="nav-text">public</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#abstract"><span class="nav-number">1.2.</span> <span class="nav-text">abstract</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#final"><span class="nav-number">1.3.</span> <span class="nav-text">final</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#defalut"><span class="nav-number">1.4.</span> <span class="nav-text">defalut</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#域的修饰符"><span class="nav-number">2.</span> <span class="nav-text">域的修饰符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#访问控制"><span class="nav-number">2.1.</span> <span class="nav-text">访问控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非访问控制"><span class="nav-number">2.2.</span> <span class="nav-text">非访问控制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法的控制修饰符"><span class="nav-number">3.</span> <span class="nav-text">方法的控制修饰符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#访问控制-1"><span class="nav-number">3.1.</span> <span class="nav-text">访问控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非访问控制-1"><span class="nav-number">3.2.</span> <span class="nav-text">非访问控制</span></a></li></ol></li></ol></div>
             
 
           </div>
