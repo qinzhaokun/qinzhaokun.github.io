@@ -138,13 +138,11 @@ $(function() {
 </script>
 ```
 
-**这一步不是必须的，在博主下载的版本当中，已经在layout\_third-party\analytics包含了此文件。因此，如果你的next
-里有这个文件，只需要确保_layout.swig文件中有**：
+**这一步不是必须的，在博主下载的版本当中，已经在layout\_third-party\analytics包含了此文件。因此，如果你的next里有这个文件，只需要确保_layout.swig文件中有**：
 ```
 {% include '_third-party/analytics/lean-analytics.swig' %}
 ```
-即可，事实证明是有的，因此，以上这步其实是多余的。这也是为什么刚刚说到Class的名字为什么要是Counter，因为模板
-里就是创建了Counter的对象，如果是自己写，那么类的名字只要统一就好，没有要求。
+即可，事实证明是有的，因此，以上这步其实是多余的。这也是为什么刚刚说到Class的名字为什么要是Counter，因为模板里就是创建了Counter的对象，如果是自己写，那么类的名字只要统一就好，没有要求。
 
 ### 修改post.swig文件
 
