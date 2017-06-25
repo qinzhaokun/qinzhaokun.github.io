@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="接口和内部类为我们提供了一种将接口和实现分离的更加结构化的方法，而在Java中，可以使用接口(Interface)和抽象类(abstract class)来实现。 抽象类Java提供了一种抽象方法机制，这种方法是不完整的，仅有声明而没有方法体：1abstract void f(); 包含抽象方法的类就是抽象类，一个类只要有抽象方法，就必须被限定为抽象类，否则编译器报错。抽象类不能够创建对象，继承一">
+<meta name="description" content="说起垃圾回收，需要提起三件事：  哪些需要回收  什么时候回收  怎么回收   对象“已死”？在进行垃圾回收之前，第一步需要判断的就是哪些对象还存活着，哪些对象已经死去 引用计数法给每个实例对象添加一个引用计数器，每当有一个地方引用它，计数器值就加1，当引用失效时，计数器就减1。它的特点有实现简单，效率高，在大多数情况下是不错的选择。但有一个严重的缺陷，就是无法解决相互引用。 根搜索法（GC Ro">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="接口">
-<meta property="og:url" content="http://yoursite.com/2017/06/15/抽象类与接口/index.html">
+<meta property="og:title" content="垃圾回收策略与内存分配机制">
+<meta property="og:url" content="http://yoursite.com/2017/06/22/垃圾回收策略与内存分配机制/index.html">
 <meta property="og:site_name" content="Hello, World">
-<meta property="og:description" content="接口和内部类为我们提供了一种将接口和实现分离的更加结构化的方法，而在Java中，可以使用接口(Interface)和抽象类(abstract class)来实现。 抽象类Java提供了一种抽象方法机制，这种方法是不完整的，仅有声明而没有方法体：1abstract void f(); 包含抽象方法的类就是抽象类，一个类只要有抽象方法，就必须被限定为抽象类，否则编译器报错。抽象类不能够创建对象，继承一">
-<meta property="og:updated_time" content="2017-06-19T06:08:59.593Z">
+<meta property="og:description" content="说起垃圾回收，需要提起三件事：  哪些需要回收  什么时候回收  怎么回收   对象“已死”？在进行垃圾回收之前，第一步需要判断的就是哪些对象还存活着，哪些对象已经死去 引用计数法给每个实例对象添加一个引用计数器，每当有一个地方引用它，计数器值就加1，当引用失效时，计数器就减1。它的特点有实现简单，效率高，在大多数情况下是不错的选择。但有一个严重的缺陷，就是无法解决相互引用。 根搜索法（GC Ro">
+<meta property="og:updated_time" content="2017-06-25T08:00:54.519Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="接口">
-<meta name="twitter:description" content="接口和内部类为我们提供了一种将接口和实现分离的更加结构化的方法，而在Java中，可以使用接口(Interface)和抽象类(abstract class)来实现。 抽象类Java提供了一种抽象方法机制，这种方法是不完整的，仅有声明而没有方法体：1abstract void f(); 包含抽象方法的类就是抽象类，一个类只要有抽象方法，就必须被限定为抽象类，否则编译器报错。抽象类不能够创建对象，继承一">
+<meta name="twitter:title" content="垃圾回收策略与内存分配机制">
+<meta name="twitter:description" content="说起垃圾回收，需要提起三件事：  哪些需要回收  什么时候回收  怎么回收   对象“已死”？在进行垃圾回收之前，第一步需要判断的就是哪些对象还存活着，哪些对象已经死去 引用计数法给每个实例对象添加一个引用计数器，每当有一个地方引用它，计数器值就加1，当引用失效时，计数器就减1。它的特点有实现简单，效率高，在大多数情况下是不错的选择。但有一个严重的缺陷，就是无法解决相互引用。 根搜索法（GC Ro">
 
 
 
@@ -131,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/15/抽象类与接口/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/06/22/垃圾回收策略与内存分配机制/"/>
 
 
 
 
 
-  <title>接口 | Hello, World</title>
+  <title>垃圾回收策略与内存分配机制 | Hello, World</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/15/抽象类与接口/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/22/垃圾回收策略与内存分配机制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qinzhaokun">
@@ -304,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">接口</h1>
+          <h1 class="post-title" itemprop="name headline">垃圾回收策略与内存分配机制</h1>
         
 
         <div class="post-meta">
@@ -316,8 +316,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-15T20:41:25+08:00">
-                2017-06-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-22T20:18:25+08:00">
+                2017-06-22
               </time>
             
 
@@ -358,8 +358,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/06/15/抽象类与接口/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/06/15/抽象类与接口/" itemprop="commentsCount"></span>
+                <a href="/2017/06/22/垃圾回收策略与内存分配机制/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/06/22/垃圾回收策略与内存分配机制/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -367,7 +367,7 @@
 
           
           
-             <span id="/2017/06/15/抽象类与接口/" class="leancloud_visitors" data-flag-title="接口">
+             <span id="/2017/06/22/垃圾回收策略与内存分配机制/" class="leancloud_visitors" data-flag-title="垃圾回收策略与内存分配机制">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -395,59 +395,63 @@
       
 
       
-        <p>接口和内部类为我们提供了一种将接口和实现分离的更加结构化的方法，而在Java中，可以使用接口(Interface)和抽象类(abstract class)来实现。</p>
-<h2 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h2><p>Java提供了一种<strong>抽象方法</strong>机制，这种方法是不完整的，仅有声明而没有方法体：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">abstract void f();</div></pre></td></tr></table></figure></p>
-<p>包含抽象方法的类就是<strong>抽象类</strong>，一个类只要有抽象方法，就必须被限定为抽象类，否则编译器报错。抽象类不能够创建对象，继承一个抽象类，出发实现全部抽象方法，<br>否则，该类仍然是抽象类。抽象类的发明就是为了继承，因此一切违反它继承特性的行为都是不成立的，例如类和方法用final修饰等。</p>
+        <p>说起垃圾回收，需要提起三件事：</p>
+<ul>
+<li><p>哪些需要回收</p>
+</li>
+<li><p>什么时候回收</p>
+</li>
+<li><p>怎么回收</p>
+</li>
+</ul>
+<h2 id="对象“已死”？"><a href="#对象“已死”？" class="headerlink" title="对象“已死”？"></a>对象“已死”？</h2><p>在进行垃圾回收之前，第一步需要判断的就是哪些对象还存活着，哪些对象已经死去</p>
+<h3 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h3><p>给每个实例对象添加一个引用计数器，每当有一个地方引用它，计数器值就加1，当引用失效时，计数器就减1。它的特点有<strong>实现简单</strong>，<strong>效率高</strong>，在大多数情况下是不错的选择。但有一个严重的缺陷，就是无法解决<strong>相互引用</strong>。</p>
+<h3 id="根搜索法（GC-Roots-Tracing）"><a href="#根搜索法（GC-Roots-Tracing）" class="headerlink" title="根搜索法（GC Roots Tracing）"></a>根搜索法（GC Roots Tracing）</h3><p>这是一种非常常用的，用于判断对象是否存活的方式，在主要的商用的Java虚拟机都是使用该方式。该方法的基本思路是通过一系列的“GC Roots”的对象作为起点，从这些节点开始向下搜索，搜索所走过的路径称为引用链，如果某个对象没有任何引用链到达GC roots时，证明该对象不可用，因此可以判定其是可回收的对象。</p>
+<p>可作为GC Roots对象的包含下面几种：</p>
+<ul>
+<li><p>虚拟机栈（栈帧中的本地变量）对象的引用</p>
+</li>
+<li><p>方法区类类的静态属性引用的对象（即被标识为static的变量）</p>
+</li>
+<li><p>方法区中的常量引用对象</p>
+</li>
+<li><p>本地方法栈的引用对象</p>
+</li>
+</ul>
+<h3 id="在谈引用"><a href="#在谈引用" class="headerlink" title="在谈引用"></a>在谈引用</h3><p>在JDK1.2之前，引用的定义很传统，如果reference类型的数据中存储的数值代表的是另一块内存的起始地址，就称这块内存代表着一个引用，这样定义的对象只有两种状态，要么被引用，要么没有。我们更希望能够描述这样一种对象，当内存空间还足够时，则能保留在内存中，而如果内存在进行垃圾回收后还十分紧张，则可以抛弃这些对象，即缓存这样的场景。</p>
+<p>因此在JDK1.2后，引用得以扩充，分为强引用（Strong Reference），软引用（Soft Reference），弱引用（Weak Reference）和虚引用（Phantom Reference），强度依次减弱。</p>
+<ul>
+<li><p>强引用就是指在代码中普遍存在的，Obj obj = new Object()的引用，只要有强引用，对象永远不会被回收</p>
+</li>
+<li><p>软引用用来描述你一些还有用，但是非必须的对象，对于关联软引用的对象，在系统将要发生内存溢出异常之前，将会把这些对象进行二次回收，如果仍没有足够的内存，才会抛出内存溢出异常。使用SoftReference类来实现</p>
+</li>
+<li><p>弱引用也是描述非必须的对象，被它关联的对象，只能生存到下一次垃圾回收发生之前，当垃圾回收时，无论内存是否足够，都会被回收，系统提供WeakReference类来实现弱引用。</p>
+</li>
+<li><p>虚引用也被称为幽灵引用，是四种当中最弱的，一个对象是否有虚引用存在，完全不会对其生存时间构成影响，也无法通过虚引用来取得一个对象的实例，它存在的目的是希望这个对象被回收时得到一个系统通知，系统PhantomRefernece来实现虚引用。</p>
+</li>
+</ul>
+<h3 id="生存还是死亡？"><a href="#生存还是死亡？" class="headerlink" title="生存还是死亡？"></a>生存还是死亡？</h3><p>有时候对象不可达，也不一定是“非死不可”，这时候它暂时处于“缓刑”阶段，真正判断对象已经死亡了，要经历两个过程。 通过根搜索法发现对象没有到达GC Roots的引用链，它会被<strong>第一次标记</strong>，然后再<strong>筛选</strong>，条件是有没有必要执行finalize()方法，如果对象没有覆盖该方法，或该方法已经被执行过，则马上需要回收，否则，将该对象放在一个F-Queue队列中。虚拟机的一个线程去调用该方法。队列中，虚拟机线程对其进行二次标记，如果还是标记上了，则需要回收了，如果能够在finalize方法中关联上一个到达GC Roots的引用，则能够“死里逃生”。</p>
+<p>关于finalize方法，之前觉得它的作用是可以释放一些非java虚拟机管理的内存，但是这个方法被认定是Java向C++析构的妥协，对于释放资源，使用try-catch更好，因此建议忘掉该方法。</p>
+<h3 id="方法区的回收"><a href="#方法区的回收" class="headerlink" title="方法区的回收"></a>方法区的回收</h3><p>方法区一般不进行垃圾回收的，因为回收的效率很低，有些虚拟机堆方法区是不进行回收的，但是不代表方法区不能进行回收。如果回收方法区的内存，主要回收<strong>废弃常量</strong>和<strong>无用的类</strong>。</p>
+<p><strong>废弃常量</strong>的回收和普通对象的回收一样。</p>
+<p><strong>无用的类</strong>的回收条件比较严格，要满足以下三个条件才可以进行回收</p>
+<ul>
+<li><p>该类的所有实例均已被回收，即堆中不存在该类的对象</p>
+</li>
+<li><p>加载该类的classLoader被回收</p>
+</li>
+<li><p>该类对应的java.lang.Class对象没有在任何地方被引用，无法在任何地方通过反射访问该类的方法。</p>
+</li>
+</ul>
+<h2 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h2><h3 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记-清除算法"></a>标记-清除算法</h3><p>顾名思义，<strong>标记-清除算法</strong>分为两个阶段：标记和清除。使用根搜索法来标记“已死对象”，之后在统一回收。这是最基本的垃圾回收算法，它的缺陷有如下两个：</p>
 <ol>
-<li><p>抽象类不能被实例化，实例化的工作应该交由它的子类来完成，它只需要有一个引用即可。</p>
+<li><p>效率问题，标记和清除的效率都不高。</p>
 </li>
-<li><p>抽象方法必须由子类来进行重写。</p>
-</li>
-<li><p>只要包含一个抽象方法的抽象类，该方法必须要定义成抽象类，不管是否还包含有其他方法。</p>
-</li>
-<li><p>抽象类中可以包含具体的方法，当然也可以不包含抽象方法。</p>
-</li>
-<li><p>子类中的抽象方法不能与父类的抽象方法同名。</p>
-</li>
-<li><p>abstract不能与final并列修饰同一个类。</p>
-</li>
-<li><p>abstract 不能与private、static、final或native并列修饰同一个方法。</p>
+<li><p>空间问题，用这种垃圾回收算法会产生大量的不连续的内存，导致需要分配叫大对象时，需要再次进行垃圾回收。</p>
 </li>
 </ol>
-<p>8 抽象类可以有构造函数，这是因为子类继承该抽象类时，调用构造函数时，需要先调用父类的构造函数。</p>
-<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><p>接口在Java当中是通过关键字interface来实现，接口不是类，所以也不能被实例化，接口是用来建立类与类之间的协议，它的提供的只是一种形式，而没有具体的实现。实现类实现(implements)接口，必须实现接口的全部方法<br>接口是抽象类的延伸，Java不允许多重继承（即不能有多个父类，只能有一个），但可以实现多个接口。在使用接口的过程中，就注意以下几个问题：</p>
-<ol>
-<li><p>接口中不能有构造方法。</p>
-</li>
-<li><p>接口的所有方法自动被声明为public，而且只能为public，如果使用protected、private，会导致编译错误。</p>
-</li>
-<li><p>接口可以定义”成员变量”，而且会自动转为public final static，即常量，而且必须被显式初始化。</p>
-</li>
-<li><p>接口中的所有方法都是抽象方法，不能包含实现的方法，也不能包含静态方法</p>
-</li>
-<li><p>实现接口的非抽象类必须实现接口的所有方法，而抽象类不需要</p>
-</li>
-<li><p>不能使用new来实现化接口，但可以声明一个接口变量，它必须引用一个实现该接口的类的对象，可以使用instanceOf来判断一个类是否实现了某个接口，如if (object instanceOf ClassName){doSth()};<br>在实现多接口的时候一定要注意方法名的重复</p>
-</li>
-<li><p>接口可以多重继承。</p>
-</li>
-</ol>
-<h2 id="接口和抽象类的区别"><a href="#接口和抽象类的区别" class="headerlink" title="接口和抽象类的区别"></a>接口和抽象类的区别</h2><h3 id="语法层次"><a href="#语法层次" class="headerlink" title="语法层次"></a>语法层次</h3><ol>
-<li><p>抽象类使用abstract定义，而接口使用interface定义。</p>
-</li>
-<li><p>抽象类可以有具体的数据成员，而接口只能是public final static的常量。</p>
-</li>
-<li><p>从方法上来说，抽象类中可以有非抽象方法（普通方法），而接口中必须全是抽象方法。</p>
-</li>
-<li><p>子类继承抽象类，单一继承；子类实现接口，可以多重实现</p>
-</li>
-</ol>
-<h3 id="设计层次"><a href="#设计层次" class="headerlink" title="设计层次"></a>设计层次</h3><ol>
-<li><p>抽象类是对类的抽象，它包含数据和方法；而接口是对行为的抽象，仅仅只针对行为</p>
-</li>
-<li><p>跨域不同，抽象类和子类时继承关系，存在is a的关系；而接口不要求子类和基类有相似的关系，是like a的关系，接口仅仅定义一套规则给子类，让子类去实现</p>
-</li>
-</ol>
+<h3 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h3><p>为了解决回收的效率问题，复制算法出现了，它将内存容量划分成两块相等的，每次只使用一块。每当一块用完后，将存活的对象复制到另一块中，在一次性清空之前那一块内存。该方法虽然提升了效率，但是每次都浪费了一半的内存。</p>
+<p>现在商用的Java虚拟机，都采用复制算法来回收新生代内存。系统将内存划分为一个较大的<strong>Eden</strong>（新生代）和两个相等的叫小的<strong>Survivor</strong>(老年代)，每次只使用Eden和一个Survivor。每当回收时，将Eden和正在使用Survivor的对象拷贝到另一个没有使用的Survivor中，在一次性清空它们。</p>
 
       
     </div>
@@ -490,8 +494,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/13/Java修饰符/" rel="next" title="Java修饰符">
-                <i class="fa fa-chevron-left"></i> Java修饰符
+              <a href="/2017/06/16/自动内存管理机制/" rel="next" title="自动内存管理机制">
+                <i class="fa fa-chevron-left"></i> 自动内存管理机制
               </a>
             
           </div>
@@ -499,10 +503,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/16/自动内存管理机制/" rel="prev" title="自动内存管理机制">
-                自动内存管理机制 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -644,7 +644,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象类"><span class="nav-number">1.</span> <span class="nav-text">抽象类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口"><span class="nav-number">2.</span> <span class="nav-text">接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口和抽象类的区别"><span class="nav-number">3.</span> <span class="nav-text">接口和抽象类的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法层次"><span class="nav-number">3.1.</span> <span class="nav-text">语法层次</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设计层次"><span class="nav-number">3.2.</span> <span class="nav-text">设计层次</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#对象“已死”？"><span class="nav-number">1.</span> <span class="nav-text">对象“已死”？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引用计数法"><span class="nav-number">1.1.</span> <span class="nav-text">引用计数法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#根搜索法（GC-Roots-Tracing）"><span class="nav-number">1.2.</span> <span class="nav-text">根搜索法（GC Roots Tracing）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在谈引用"><span class="nav-number">1.3.</span> <span class="nav-text">在谈引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生存还是死亡？"><span class="nav-number">1.4.</span> <span class="nav-text">生存还是死亡？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法区的回收"><span class="nav-number">1.5.</span> <span class="nav-text">方法区的回收</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收算法"><span class="nav-number">2.</span> <span class="nav-text">垃圾回收算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标记-清除算法"><span class="nav-number">2.1.</span> <span class="nav-text">标记-清除算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复制算法"><span class="nav-number">2.2.</span> <span class="nav-text">复制算法</span></a></li></ol></li></ol></div>
             
 
           </div>
