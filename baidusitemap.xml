@@ -4,8 +4,46 @@
 
     
   <url>
+    <loc>http://yoursite.com/2017/06/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%A6%82%E8%AE%BA/</loc>
+    <lastmod>2017-06-28T07:04:31.893Z</lastmod>
+    <data>
+        <display>
+        <title>设计模式概论</title>
+        <pubTime>2017-06-27T16:00:00.000Z</pubTime>
+        
+        <tag>设计模式</tag>
+         
+         
+           
+             
+              <breadCrumb title="设计模式" url="http://yoursite.com/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2017/06/28/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2017-06-28T07:04:31.861Z</lastmod>
+    <data>
+        <display>
+        <title>工厂模式</title>
+        <pubTime>2017-06-27T16:00:00.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="设计模式" url="http://yoursite.com/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2017/06/22/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AD%96%E7%95%A5%E4%B8%8E%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E6%9C%BA%E5%88%B6/</loc>
-    <lastmod>2017-06-25T08:00:54.519Z</lastmod>
+    <lastmod>2017-06-28T07:04:31.861Z</lastmod>
     <data>
         <display>
         <title>垃圾回收策略与内存分配机制</title>

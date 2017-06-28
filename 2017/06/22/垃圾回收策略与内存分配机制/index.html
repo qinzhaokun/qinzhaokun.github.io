@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/06/22/垃圾回收策略与内存分配机制/index.html">
 <meta property="og:site_name" content="Hello, World">
 <meta property="og:description" content="说起垃圾回收，需要提起三件事：  哪些需要回收  什么时候回收  怎么回收   对象“已死”？在进行垃圾回收之前，第一步需要判断的就是哪些对象还存活着，哪些对象已经死去 引用计数法给每个实例对象添加一个引用计数器，每当有一个地方引用它，计数器值就加1，当引用失效时，计数器就减1。它的特点有实现简单，效率高，在大多数情况下是不错的选择。但有一个严重的缺陷，就是无法解决相互引用。 根搜索法（GC Ro">
-<meta property="og:updated_time" content="2017-06-25T08:00:54.519Z">
+<meta property="og:updated_time" content="2017-06-28T07:04:31.861Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="垃圾回收策略与内存分配机制">
 <meta name="twitter:description" content="说起垃圾回收，需要提起三件事：  哪些需要回收  什么时候回收  怎么回收   对象“已死”？在进行垃圾回收之前，第一步需要判断的就是哪些对象还存活着，哪些对象已经死去 引用计数法给每个实例对象添加一个引用计数器，每当有一个地方引用它，计数器值就加1，当引用失效时，计数器就减1。它的特点有实现简单，效率高，在大多数情况下是不错的选择。但有一个严重的缺陷，就是无法解决相互引用。 根搜索法（GC Ro">
@@ -421,13 +421,13 @@
 <h3 id="在谈引用"><a href="#在谈引用" class="headerlink" title="在谈引用"></a>在谈引用</h3><p>在JDK1.2之前，引用的定义很传统，如果reference类型的数据中存储的数值代表的是另一块内存的起始地址，就称这块内存代表着一个引用，这样定义的对象只有两种状态，要么被引用，要么没有。我们更希望能够描述这样一种对象，当内存空间还足够时，则能保留在内存中，而如果内存在进行垃圾回收后还十分紧张，则可以抛弃这些对象，即缓存这样的场景。</p>
 <p>因此在JDK1.2后，引用得以扩充，分为强引用（Strong Reference），软引用（Soft Reference），弱引用（Weak Reference）和虚引用（Phantom Reference），强度依次减弱。</p>
 <ul>
-<li><p>强引用就是指在代码中普遍存在的，Obj obj = new Object()的引用，只要有强引用，对象永远不会被回收</p>
+<li><p><em>强引用</em>就是指在代码中普遍存在的，<code>Obj obj = new Object()</code>的引用，只要有强引用，对象永远不会被回收</p>
 </li>
-<li><p>软引用用来描述你一些还有用，但是非必须的对象，对于关联软引用的对象，在系统将要发生内存溢出异常之前，将会把这些对象进行二次回收，如果仍没有足够的内存，才会抛出内存溢出异常。使用SoftReference类来实现</p>
+<li><p><em>软引用</em>用来描述你一些还有用，但是非必须的对象，对于关联软引用的对象，在系统将要发生内存溢出异常之前，将会把这些对象进行二次回收，如果仍没有足够的内存，才会抛出内存溢出异常。使用SoftReference类来实现</p>
 </li>
-<li><p>弱引用也是描述非必须的对象，被它关联的对象，只能生存到下一次垃圾回收发生之前，当垃圾回收时，无论内存是否足够，都会被回收，系统提供WeakReference类来实现弱引用。</p>
+<li><p><em>弱引用</em>也是描述非必须的对象，被它关联的对象，只能生存到下一次垃圾回收发生之前，当垃圾回收时，无论内存是否足够，都会被回收，系统提供WeakReference类来实现弱引用。</p>
 </li>
-<li><p>虚引用也被称为幽灵引用，是四种当中最弱的，一个对象是否有虚引用存在，完全不会对其生存时间构成影响，也无法通过虚引用来取得一个对象的实例，它存在的目的是希望这个对象被回收时得到一个系统通知，系统PhantomRefernece来实现虚引用。</p>
+<li><p><em>虚引用</em>也被称为幽灵引用，是四种当中最弱的，一个对象是否有虚引用存在，完全不会对其生存时间构成影响，也无法通过虚引用来取得一个对象的实例，它存在的目的是希望这个对象被回收时得到一个系统通知，系统PhantomRefernece来实现虚引用。</p>
 </li>
 </ul>
 <h3 id="生存还是死亡？"><a href="#生存还是死亡？" class="headerlink" title="生存还是死亡？"></a>生存还是死亡？</h3><p>有时候对象不可达，也不一定是“非死不可”，这时候它暂时处于“缓刑”阶段，真正判断对象已经死亡了，要经历两个过程。 通过根搜索法发现对象没有到达GC Roots的引用链，它会被<strong>第一次标记</strong>，然后再<strong>筛选</strong>，条件是有没有必要执行finalize()方法，如果对象没有覆盖该方法，或该方法已经被执行过，则马上需要回收，否则，将该对象放在一个F-Queue队列中。虚拟机的一个线程去调用该方法。队列中，虚拟机线程对其进行二次标记，如果还是标记上了，则需要回收了，如果能够在finalize方法中关联上一个到达GC Roots的引用，则能够“死里逃生”。</p>
@@ -438,9 +438,9 @@
 <ul>
 <li><p>该类的所有实例均已被回收，即堆中不存在该类的对象</p>
 </li>
-<li><p>加载该类的classLoader被回收</p>
+<li><p>加载该类的<code>classLoader</code>被回收</p>
 </li>
-<li><p>该类对应的java.lang.Class对象没有在任何地方被引用，无法在任何地方通过反射访问该类的方法。</p>
+<li><p>该类对应的<code>java.lang.Class</code>对象没有在任何地方被引用，无法在任何地方通过反射访问该类的方法。</p>
 </li>
 </ul>
 <h2 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h2><h3 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记-清除算法"></a>标记-清除算法</h3><p>顾名思义，<strong>标记-清除算法</strong>分为两个阶段：标记和清除。使用根搜索法来标记“已死对象”，之后在统一回收。这是最基本的垃圾回收算法，它的缺陷有如下两个：</p>
@@ -451,7 +451,32 @@
 </li>
 </ol>
 <h3 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h3><p>为了解决回收的效率问题，复制算法出现了，它将内存容量划分成两块相等的，每次只使用一块。每当一块用完后，将存活的对象复制到另一块中，在一次性清空之前那一块内存。该方法虽然提升了效率，但是每次都浪费了一半的内存。</p>
-<p>现在商用的Java虚拟机，都采用复制算法来回收新生代内存。系统将内存划分为一个较大的<strong>Eden</strong>（新生代）和两个相等的叫小的<strong>Survivor</strong>(老年代)，每次只使用Eden和一个Survivor。每当回收时，将Eden和正在使用Survivor的对象拷贝到另一个没有使用的Survivor中，在一次性清空它们。</p>
+<p>现在商用的Java虚拟机，都采用复制算法来回收新生代内存。系统将内存划分为一个较大的<strong>Eden</strong>（新生代）和两个相等的叫小的<strong>Survivor</strong>(老年代)，每次只使用Eden和一个Survivor。每当回收时，将Eden和正在使用Survivor的对象拷贝到另一个没有使用的Survivor中，在一次性清空它们。如果Survivor的空间不足以放下这么多的数据，则会启用<strong>分配担保</strong>。</p>
+<h3 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h3><p>当对象的存活率较高时，复制算法会变得效率低下。因此，存储生命周期较长的老年代，复制算法并不适用。在老年代中，使用的是标记-整理算法。这种算法和标记-清理很像，都是使用GC-Root来对对象进行标记，之后让所有存活的对象都靠一边移动，之后清除掉边界以外的对象。</p>
+<h3 id="分代回收算法"><a href="#分代回收算法" class="headerlink" title="分代回收算法"></a>分代回收算法</h3><p>Java中把堆分成了新生代和老年代，新生代由于对象存活率不高，需要回收的数量很多，采用复制算法；老年代由于对象存活率高，需要回收的很少，采用标记-整理算法。</p>
+<h2 id="内存分配和回收策略"><a href="#内存分配和回收策略" class="headerlink" title="内存分配和回收策略"></a>内存分配和回收策略</h2><p>本小节重点讨论Java虚拟机<strong>如何给对象分配内存</strong>和<strong>如何回收对象内存</strong>这两个关键的问题。<br>首先，对于给对象分配内存，一般情况是分配在新生代的Eden区，如果启动了本地线程缓存区，对象优先分配到TLAB，少数情况下，对象直接分配到老年代。</p>
+<h3 id="新生代分配内存"><a href="#新生代分配内存" class="headerlink" title="新生代分配内存"></a>新生代分配内存</h3><p>当新生代Eden没有足够的内存空间给新对象时，会发生一次<code>minor GC</code>，</p>
+<blockquote>
+<p>MinorGC 和 Full GC 分别是什么？<br>Minor GC 是指发生在新生代的垃圾回收动作，由于对象朝生熄灭的特性，Minor GC 非常频繁，回收速度很快。<br>Full GC 也可叫Major GC，是发生在老年代的GC，出现Full GC一般会伴有至少一次的Minor GC，但并不是绝对的，它的速度很慢，一般是Minor慢10倍。</p>
+</blockquote>
+<h3 id="大对象直接进入老念代"><a href="#大对象直接进入老念代" class="headerlink" title="大对象直接进入老念代"></a>大对象直接进入老念代</h3><p>大对象到底多大才算大的？如果大对象能够分配在Eden中，是否会分配？如果不够分配，是否触发Minor GC。虚拟机提供了一个参数，-XX:PretenureSizeThreshold的参数，当对象大于此值，则会直接分配到老年代。这样做避免了Eden和两个Survivor区之间发生的大量内存拷贝。</p>
+<h3 id="长期存活的对象将进入老年代"><a href="#长期存活的对象将进入老年代" class="headerlink" title="长期存活的对象将进入老年代"></a>长期存活的对象将进入老年代</h3><p>虚拟机给每个对象定义了一个对象年龄计数器，如果对象在Eden出生并经过第一次Minor GC后仍然存活，之后被移动到Survivor区，对象的年龄设置为1，此后，每经历过一次Minor GC，年龄就+1，当年龄超过一定岁数（默认15岁），就会被放入老年代中。我们可以通过参数<code>-XX:MaxTrnuringThreshold=15</code>来设置。<br>此外，如果在Survivor空间中相同年龄的所有对象大小的总和大于Survivor空间的一半，那么年龄大于或等于该年龄的对象就直接进入老年代，无需等到15岁。</p>
+<h3 id="空间分配担保"><a href="#空间分配担保" class="headerlink" title="空间分配担保"></a>空间分配担保</h3><p>在Minor GC时，虚拟机中会计算每次晋升到老年代的平均大小是否大于老年代的剩余空间，如果大于，进行Full GC，如果小于，则查看是否允许担保失败，如果允许，则只进行Minor GC， 否则要进行Full GC，以尽力保证有足够的空间做担保。</p>
+<p>那么什么是分配担保呢？？当发生Minor GC时，Eden和已经使用了的Suvivor区中的数据要一同放入另一个Suvivor区，如果，另外一个Suvivor的空间不足以装下这些对象，则需要老年代分配担保，让Suvivor无法容纳的对象直接进入老年代，这个过程就是老年代分配担保，当老年代空间不足时，则需要进行Full GC。</p>
+<h3 id="GC触发条件"><a href="#GC触发条件" class="headerlink" title="GC触发条件"></a>GC触发条件</h3><p>Minor GC触发条件：当Eden区满时，触发Minor GC。</p>
+<p>Full GC触发条件：</p>
+<ol>
+<li><p>调用System.gc时，系统建议执行Full GC，但是不必然执行</p>
+</li>
+<li><p>老年代空间不足</p>
+</li>
+<li><p>方法区空间不足</p>
+</li>
+<li><p>通过Minor GC后进入老年代的平均大小大于老年代的可用内存</p>
+</li>
+<li><p>由Eden区、From Space区向To Space区复制时，对象大小大于To Space可用内存，则把该对象转存到老年代，且老年代的可用内存小于该对象大小</p>
+</li>
+</ol>
 
       
     </div>
@@ -503,6 +528,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/28/设计模式概论/" rel="prev" title="设计模式概论">
+                设计模式概论 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -576,7 +605,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -587,7 +616,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -598,7 +627,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -644,7 +673,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#对象“已死”？"><span class="nav-number">1.</span> <span class="nav-text">对象“已死”？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引用计数法"><span class="nav-number">1.1.</span> <span class="nav-text">引用计数法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#根搜索法（GC-Roots-Tracing）"><span class="nav-number">1.2.</span> <span class="nav-text">根搜索法（GC Roots Tracing）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在谈引用"><span class="nav-number">1.3.</span> <span class="nav-text">在谈引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生存还是死亡？"><span class="nav-number">1.4.</span> <span class="nav-text">生存还是死亡？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法区的回收"><span class="nav-number">1.5.</span> <span class="nav-text">方法区的回收</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收算法"><span class="nav-number">2.</span> <span class="nav-text">垃圾回收算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标记-清除算法"><span class="nav-number">2.1.</span> <span class="nav-text">标记-清除算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复制算法"><span class="nav-number">2.2.</span> <span class="nav-text">复制算法</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#对象“已死”？"><span class="nav-number">1.</span> <span class="nav-text">对象“已死”？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引用计数法"><span class="nav-number">1.1.</span> <span class="nav-text">引用计数法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#根搜索法（GC-Roots-Tracing）"><span class="nav-number">1.2.</span> <span class="nav-text">根搜索法（GC Roots Tracing）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在谈引用"><span class="nav-number">1.3.</span> <span class="nav-text">在谈引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生存还是死亡？"><span class="nav-number">1.4.</span> <span class="nav-text">生存还是死亡？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法区的回收"><span class="nav-number">1.5.</span> <span class="nav-text">方法区的回收</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收算法"><span class="nav-number">2.</span> <span class="nav-text">垃圾回收算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标记-清除算法"><span class="nav-number">2.1.</span> <span class="nav-text">标记-清除算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复制算法"><span class="nav-number">2.2.</span> <span class="nav-text">复制算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标记-整理算法"><span class="nav-number">2.3.</span> <span class="nav-text">标记-整理算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分代回收算法"><span class="nav-number">2.4.</span> <span class="nav-text">分代回收算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存分配和回收策略"><span class="nav-number">3.</span> <span class="nav-text">内存分配和回收策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新生代分配内存"><span class="nav-number">3.1.</span> <span class="nav-text">新生代分配内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大对象直接进入老念代"><span class="nav-number">3.2.</span> <span class="nav-text">大对象直接进入老念代</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#长期存活的对象将进入老年代"><span class="nav-number">3.3.</span> <span class="nav-text">长期存活的对象将进入老年代</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#空间分配担保"><span class="nav-number">3.4.</span> <span class="nav-text">空间分配担保</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GC触发条件"><span class="nav-number">3.5.</span> <span class="nav-text">GC触发条件</span></a></li></ol></li></ol></div>
             
 
           </div>
