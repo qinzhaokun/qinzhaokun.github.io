@@ -4,6 +4,36 @@
 
     
   <url>
+    <loc>http://yoursite.com/2017/06/30/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2017-06-30T07:57:32.523Z</lastmod>
+    <data>
+        <display>
+        <title></title>
+        <pubTime>2017-06-30T07:57:32.523Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2017/06/29/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2017-06-30T07:57:32.523Z</lastmod>
+    <data>
+        <display>
+        <title>单例模式</title>
+        <pubTime>2017-06-28T16:00:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2017/06/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%A6%82%E8%AE%BA/</loc>
     <lastmod>2017-06-28T07:04:31.893Z</lastmod>
     <data>
@@ -13,24 +43,6 @@
         
         <tag>设计模式</tag>
          
-         
-           
-             
-              <breadCrumb title="设计模式" url="http://yoursite.com/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2017/06/28/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</loc>
-    <lastmod>2017-06-28T07:04:31.861Z</lastmod>
-    <data>
-        <display>
-        <title>工厂模式</title>
-        <pubTime>2017-06-27T16:00:00.000Z</pubTime>
-        
          
            
              
@@ -55,6 +67,24 @@
            
              
               <breadCrumb title="Java" url="http://yoursite.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2017/06/28/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2017-06-28T07:04:31.861Z</lastmod>
+    <data>
+        <display>
+        <title>工厂模式</title>
+        <pubTime>2017-06-27T16:00:00.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="设计模式" url="http://yoursite.com/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
           
         </display>
     </data>

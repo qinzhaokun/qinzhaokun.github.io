@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -93,17 +93,16 @@
 
 
 
-<meta name="description" content="Java有很多修饰符，可以作用于类，方法，变量，很容易混淆，今天来给修饰符做一个简单的总结。 类的修饰符publicJava语言中类的可访问控制符只有一个：public即公共的。每个Java程序的主类都必须是public类，作为公共工具供其它类和程序使用的应定义为public类。 abstract抽象类修饰符abstract：凡是用abstract修饰符修饰的类，被称为抽象类。所谓抽象类是指这种类">
-<meta name="keywords" content="Java">
+<meta name="description" content="概念在整个系统中只出现该类的一个对象。基本思路就是私有化其构造函数，在提供一个静态类的成员变量作为私有成员，提供一个类似getInstance()的方法来返回该对象，下面介绍实现单例模式的几种方式： 饿汉式当类被加载的时候对象就被创造 123456789class Singleton&amp;#123;  private static Singleton singleton = new Singleton">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java修饰符">
-<meta property="og:url" content="http://yoursite.com/2017/06/13/Java修饰符/index.html">
+<meta property="og:title" content="单例模式">
+<meta property="og:url" content="http://yoursite.com/2017/06/29/单例模式/index.html">
 <meta property="og:site_name" content="Hello, World">
-<meta property="og:description" content="Java有很多修饰符，可以作用于类，方法，变量，很容易混淆，今天来给修饰符做一个简单的总结。 类的修饰符publicJava语言中类的可访问控制符只有一个：public即公共的。每个Java程序的主类都必须是public类，作为公共工具供其它类和程序使用的应定义为public类。 abstract抽象类修饰符abstract：凡是用abstract修饰符修饰的类，被称为抽象类。所谓抽象类是指这种类">
-<meta property="og:updated_time" content="2017-06-13T05:24:57.390Z">
+<meta property="og:description" content="概念在整个系统中只出现该类的一个对象。基本思路就是私有化其构造函数，在提供一个静态类的成员变量作为私有成员，提供一个类似getInstance()的方法来返回该对象，下面介绍实现单例模式的几种方式： 饿汉式当类被加载的时候对象就被创造 123456789class Singleton&amp;#123;  private static Singleton singleton = new Singleton">
+<meta property="og:updated_time" content="2017-06-30T07:57:32.523Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java修饰符">
-<meta name="twitter:description" content="Java有很多修饰符，可以作用于类，方法，变量，很容易混淆，今天来给修饰符做一个简单的总结。 类的修饰符publicJava语言中类的可访问控制符只有一个：public即公共的。每个Java程序的主类都必须是public类，作为公共工具供其它类和程序使用的应定义为public类。 abstract抽象类修饰符abstract：凡是用abstract修饰符修饰的类，被称为抽象类。所谓抽象类是指这种类">
+<meta name="twitter:title" content="单例模式">
+<meta name="twitter:description" content="概念在整个系统中只出现该类的一个对象。基本思路就是私有化其构造函数，在提供一个静态类的成员变量作为私有成员，提供一个类似getInstance()的方法来返回该对象，下面介绍实现单例模式的几种方式： 饿汉式当类被加载的时候对象就被创造 123456789class Singleton&amp;#123;  private static Singleton singleton = new Singleton">
 
 
 
@@ -131,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/13/Java修饰符/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/06/29/单例模式/"/>
 
 
 
 
 
-  <title>Java修饰符 | Hello, World</title>
+  <title>单例模式 | Hello, World</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -287,7 +286,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/13/Java修饰符/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/29/单例模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qinzhaokun">
@@ -304,7 +303,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java修饰符</h1>
+          <h1 class="post-title" itemprop="name headline">单例模式</h1>
         
 
         <div class="post-meta">
@@ -316,8 +315,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-13T18:18:25+08:00">
-                2017-06-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-29T00:00:00+08:00">
+                2017-06-29
               </time>
             
 
@@ -326,28 +325,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -358,8 +335,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/06/13/Java修饰符/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/06/13/Java修饰符/" itemprop="commentsCount"></span>
+                <a href="/2017/06/29/单例模式/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/06/29/单例模式/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -367,7 +344,7 @@
 
           
           
-             <span id="/2017/06/13/Java修饰符/" class="leancloud_visitors" data-flag-title="Java修饰符">
+             <span id="/2017/06/29/单例模式/" class="leancloud_visitors" data-flag-title="单例模式">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -395,55 +372,40 @@
       
 
       
-        <p>Java有很多修饰符，可以作用于类，方法，变量，很容易混淆，今天来给修饰符做一个简单的总结。</p>
-<h2 id="类的修饰符"><a href="#类的修饰符" class="headerlink" title="类的修饰符"></a>类的修饰符</h2><h3 id="public"><a href="#public" class="headerlink" title="public"></a>public</h3><p>Java语言中类的可访问控制符只有一个：public即公共的。每个Java程序的主类都必须是public类，作为公共工具供其它类和程序使用的应定义为public类。</p>
-<h3 id="abstract"><a href="#abstract" class="headerlink" title="abstract"></a>abstract</h3><p>抽象类修饰符abstract：凡是用abstract修饰符修饰的类，被称为抽象类。所谓抽象类是指这种类没有具体对象的一种概念类。这样的类就是Java语言的abstract类。</p>
-<h3 id="final"><a href="#final" class="headerlink" title="final"></a>final</h3><p>最终类修饰符final：当一个类不可能有子类时可用修饰符final把它说明为最终类。被定义为final的类通常是一些有固定作用、用来完成某种标准功能的类。</p>
-<h3 id="defalut"><a href="#defalut" class="headerlink" title="defalut"></a>defalut</h3><p>类缺省访问控制符：如果一个类没有访问控制符，说明它具有缺省的访问控制符特性。此时，这个类只能被同一个包中的类访问或引用。这一访问特性又称为包访问性。</p>
-<p>protected正常来说不能够修饰类，内部类例外。</p>
-<h2 id="域的修饰符"><a href="#域的修饰符" class="headerlink" title="域的修饰符"></a>域的修饰符</h2><p>大致可分为两类，一种是访问控制的，另一种是非访问控制的。 </p>
-<h3 id="访问控制"><a href="#访问控制" class="headerlink" title="访问控制"></a>访问控制</h3><ul>
-<li><p>公共访问控制符：public；用public修饰的域称为公共域。如果公共域属于一个公共类，则可以被所有其它类所引用。由于public修饰符会降低运行的安全性和数据的封装性，所以一般应减少public域的使用。</p>
-</li>
-<li><p>私有访问控制符：private；用private修饰的成员变量 ( 域 ) 只能被该类自身所访问，而不能被任何其它类（包括子类）所引用。</p>
-</li>
-<li><p>保护访问控制符：protected；用protected修饰的成员变量可以被三种类所引用：①该类自身；②与它在同一个包中的其它类；③在其它包中的该类的子类。使用修饰符protected的主要作用是允许其它包中它的子类来访问父类的特定属性。</p>
-</li>
-<li><p>私有保护访问控制符：private、protected；用修饰符private、protected修饰的成员变量可以被该类本身或该类的子类两种类访问和引用。</p>
-</li>
+        <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>在整个系统中只出现该类的一个对象。基本思路就是<strong>私有化其构造函数</strong>，在提供一个静态类的成员变量作为私有成员，提供一个类似getInstance()的方法来返回该对象，下面介绍实现单例模式的几种方式：</p>
+<h2 id="饿汉式"><a href="#饿汉式" class="headerlink" title="饿汉式"></a>饿汉式</h2><p>当类被加载的时候对象就被创造</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">class Singleton&#123;</div><div class="line">  private static Singleton singleton = new Singleton();</div><div class="line">  </div><div class="line">  private Singleton()&#123;&#125;</div><div class="line">  </div><div class="line">  public static Singletion getInstance()&#123;</div><div class="line">    return singleton;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这种饿汉式写法的优点就是不会有多线程的问题，确保对象只有一个；缺点就是无论是否使用该对象，都会被创建，不能够延迟加载，也不能够有效减少负荷。</p>
+<h2 id="懒汉式"><a href="#懒汉式" class="headerlink" title="懒汉式"></a>懒汉式</h2><p>针对上述缺点，提供了懒汉式的写法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">class Singleton&#123;</div><div class="line">  private static Singleton singleton = null;</div><div class="line">  </div><div class="line">  private Singleton()&#123;&#125;</div><div class="line">  </div><div class="line">  public static Singletion getInstance()&#123;</div><div class="line">    if(singleton == null)&#123;</div><div class="line">      singleton = new Singleton();</div><div class="line">    &#125;</div><div class="line">    return singleton;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这种写法能够达到延迟加载的效果，有效的减小了系统负荷，但是，如果是多线程的情况下，有可能会生成多个实例，因此不能保证单例，连最基本的需要都达不到怎么行？</p>
+<h3 id="synchronized改进1"><a href="#synchronized改进1" class="headerlink" title="synchronized改进1"></a>synchronized改进1</h3><p>在Java中，如果需要多线程同步，首先想到的就是<code>synchronized</code>关键字。那么如果我们加上<code>synchronized</code>如何？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class Singleton&#123;</div><div class="line">  private static Singleton singleton = null;</div><div class="line">  </div><div class="line">  private Singleton()&#123;&#125;</div><div class="line">  </div><div class="line">  public static Singletion getInstance()&#123;</div><div class="line">    if(singleton == null)&#123;</div><div class="line">      synchronized (Singleton.class) &#123;</div><div class="line">        singleton = new Singleton();</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    return singleton;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上述代码在极端情况下仍会出现多例的情况，例如，两个线程同时进入了<code>if(singleton == null)</code>的块里，那么一个线程先创建对象，另一个也会再次创建。如果把<code>synchronized (Singleton.class)</code>写在外层，如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">synchronized (Singleton.class) &#123;</div><div class="line">  if(singleton == null)&#123;</div><div class="line">    singleton = new Singleton();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样虽然能够达到在多线程下确保单例，但效率非常低下，因为每次得到实例都要进行加锁，解锁的操作。</p>
+<h3 id="synchronized改进2"><a href="#synchronized改进2" class="headerlink" title="synchronized改进2"></a>synchronized改进2</h3><p>对于上面加<code>synchronized</code>的情况，似乎都不太好，因此我们考虑使用两次<code>if(singleton == null)</code>来实现确保单例的同时又保证效率</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">class Singleton&#123;</div><div class="line">  private static Singleton singleton = null;</div><div class="line">  </div><div class="line">  private Singleton()&#123;&#125;</div><div class="line">  </div><div class="line">  public static Singletion getInstance()&#123;</div><div class="line">    if(singleton == null)&#123;</div><div class="line">      synchronized (Singleton.class) &#123;</div><div class="line">        if(singleton == null)&#123;</div><div class="line">          singleton = new Singleton();</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    return singleton;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上述代码基本能够满足懒汉式创建单例时，保证多线程下能够正常工作。这种方式也可以叫做双重检查“Double-Check”法</p>
+<p>到此为止，我们觉得应该大功告成了吧，如果是C++（<code>synchronized</code>换成加锁，解锁的操作）那么应该就没问题了，但是在Java中，JVM会进行指令重排序，因此，对于一个简单的<code>new</code>, 如<code>Singleton singleton = new Singleton()</code>,它并不是原子的，它可以分为三个步骤：</p>
+<ol>
+<li>分配内存地址</li>
+<li>初始化成员变量</li>
+<li>singleton引用指向该地址</li>
+</ol>
+<p>如果重排序的结果是1,3,2,，在线程执行完1,3后，被另一个线程抢占了，由于3执行后已经非null，线程2可以使用singleton，但实际上它并没有初始化（执行2），因此可能出错。在使用以上写法时，考虑使用关键字<code>volatile</code>禁止指令重排序.</p>
+<h2 id="两种更可靠的写法"><a href="#两种更可靠的写法" class="headerlink" title="两种更可靠的写法"></a>两种更可靠的写法</h2><h3 id="静态内部类法"><a href="#静态内部类法" class="headerlink" title="静态内部类法"></a>静态内部类法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public class Singleton &#123;</div><div class="line">    private static class Holder &#123;</div><div class="line">        private static Singleton singleton = new Singleton();</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    private Singleton()&#123;&#125;</div><div class="line"> </div><div class="line">    public static Singleton getSingleton()&#123;</div><div class="line">        return Holder.singleton;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>即保证了效率有可以延迟加载，很好！！</p>
+<p>但是！！，以上的方法有两个缺陷：1. 需要额外的工作来保证序列化,<strong>反序列化会创建新的对象</strong>；2. <strong>可以通过反射机制来调用私有构造函数</strong></p>
+<h3 id="枚举写法"><a href="#枚举写法" class="headerlink" title="枚举写法"></a>枚举写法</h3><p>终极写法！！《Efftive Java》推荐写法<br>优点：</p>
+<ul>
+<li>非常简单</li>
+<li>默认线程安全</li>
+<li>防止反射机制调用私有构造函数</li>
+<li>提供了自动序列化机制，防止反序列化的时候创建新的对象</li>
 </ul>
-<h3 id="非访问控制"><a href="#非访问控制" class="headerlink" title="非访问控制"></a>非访问控制</h3><ul>
-<li><p>静态域修饰符：static；用static修饰的成员变量仅属于类的变量，而不属于任何一个具体的对象，静态成员变量的值是保存在类的内存区域的公共存储单元（静态存储区），而不是保存在某一个对象的内存区间。任何一个类的对象访问它时取到的都是相同的数据；任何一个类的对象修改它时，也都是对同一个内存单元进行操作。</p>
-</li>
-<li><p>最终域修饰符：final；最终域修饰符final是用来定义符号常量的。一个类的域 ( 成员变量 )如果被修饰符final说明，则它的取值在程序的整个执行过程中都是不变的。</p>
-</li>
-</ul>
-<p>易失( 共享/同步)域修饰符：volatile；volatile是用来说明这个成员变量可能被几个线程所控制和修改。也就是说在程序运行过程中，这个成员变量有可能被其它的程序影响或改变它的取值。因此，在使用中要注意这种成员变量取值的变化。通常volatile用来修饰接受外部输入的域。</p>
-<p>暂时性域修饰符：transient；用来定义一个暂时性变量。其特点是：用修饰符transient限定的暂时性变量，将指定Java虚拟机认定该暂时性变量不属于永久状态，以实现不同对象的存档功能。否则，类中所有变量都是对象的永久状态的一部分，存储对象时必须同时保存这些变量。</p>
-<h2 id="方法的控制修饰符"><a href="#方法的控制修饰符" class="headerlink" title="方法的控制修饰符"></a>方法的控制修饰符</h2><p>总体来说也可分为：可访问控制符和非访问控制符两类。 </p>
-<h3 id="访问控制-1"><a href="#访问控制-1" class="headerlink" title="访问控制"></a>访问控制</h3><ul>
-<li><p>公共访问控制符：public；</p>
-</li>
-<li><p>私有访问控制符：private；</p>
-</li>
-<li><p>保护访问控制符：protected；</p>
-</li>
-<li><p>私有保护访问控制符：private、protected。</p>
-</li>
-</ul>
-<p>含义同上。</p>
-<h3 id="非访问控制-1"><a href="#非访问控制-1" class="headerlink" title="非访问控制"></a>非访问控制</h3><ul>
-<li><p>抽象方法控制符：abstract；用修饰符abstract修饰的方法称为抽象方法。抽象方法是一种仅有方法头，没有方法体和操作实现的一种方法。</p>
-</li>
-<li><p>静态方法控制符：static；用修饰符static修饰的方法称为静态方法。静态方法是属于整个类的类方法；而不使用static修饰、限定的方法是属于某个具体类对象的方法。由于static方法是属于整个类的，所以它不能操纵和处理属于某个对象的成员变量，而只能处理属于整个类的成员变量，即static方法只能处理static的域。</p>
-</li>
-<li><p>最终方法控制符：final；用修饰符final修饰的方法称为最终方法。最终方法是功能和内部语句不能更改的方法，即最终方法不能重载。这样，就固定了这个方法所具有的功能和操作，防止当前类的子类对父类关键方法的错误定义，保证了程序的安全性和正确性。所有被private修饰符限定为私有的方法，以及所有包含在final类 ( 最终类 ) 中的方法，都被认为是最终方法。</p>
-</li>
-<li><p>本地方法控制符：native；用修饰符native修饰的方法称为本地方法。为了提高程序的运行速度，需要用其它的高级语言书写程序的方法体，那么该方法可定义为本地方法用修饰符native来修饰。</p>
-</li>
-<li><p>同步方法控制符：synchronized；该修饰符主要用于多线程共存的程序中的协调和同步。</p>
-</li>
-</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public enum Singleton &#123;</div><div class="line">    INSTANCE;</div><div class="line">    private String name;</div><div class="line">    public String getName()&#123;</div><div class="line">        return name;</div><div class="line">    &#125;</div><div class="line">    public void setName(String name)&#123;</div><div class="line">        this.name = name;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>或者更优雅<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public enum Singleton&#123;</div><div class="line">   INSTANCE;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public static voi main()&#123;</div><div class="line">  Singleton s = Singleton.INSTANCE;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>默认枚举实例的创建是线程安全的，但是在枚举中的其他任何方法由程序员自己负责。</p>
 
       
     </div>
@@ -471,12 +433,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Java/" rel="tag"># Java</a>
-          
-        </div>
-      
 
       
       
@@ -486,8 +442,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/13/复用类/" rel="next" title="复用类">
-                <i class="fa fa-chevron-left"></i> 复用类
+              <a href="/2017/06/28/工厂模式/" rel="next" title="工厂模式">
+                <i class="fa fa-chevron-left"></i> 工厂模式
               </a>
             
           </div>
@@ -496,8 +452,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/15/抽象类与接口/" rel="prev" title="接口">
-                接口 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/06/30/原型模式/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -640,7 +596,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#类的修饰符"><span class="nav-number">1.</span> <span class="nav-text">类的修饰符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#public"><span class="nav-number">1.1.</span> <span class="nav-text">public</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#abstract"><span class="nav-number">1.2.</span> <span class="nav-text">abstract</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#final"><span class="nav-number">1.3.</span> <span class="nav-text">final</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#defalut"><span class="nav-number">1.4.</span> <span class="nav-text">defalut</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#域的修饰符"><span class="nav-number">2.</span> <span class="nav-text">域的修饰符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#访问控制"><span class="nav-number">2.1.</span> <span class="nav-text">访问控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非访问控制"><span class="nav-number">2.2.</span> <span class="nav-text">非访问控制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法的控制修饰符"><span class="nav-number">3.</span> <span class="nav-text">方法的控制修饰符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#访问控制-1"><span class="nav-number">3.1.</span> <span class="nav-text">访问控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非访问控制-1"><span class="nav-number">3.2.</span> <span class="nav-text">非访问控制</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#饿汉式"><span class="nav-number">2.</span> <span class="nav-text">饿汉式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#懒汉式"><span class="nav-number">3.</span> <span class="nav-text">懒汉式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronized改进1"><span class="nav-number">3.1.</span> <span class="nav-text">synchronized改进1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronized改进2"><span class="nav-number">3.2.</span> <span class="nav-text">synchronized改进2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两种更可靠的写法"><span class="nav-number">4.</span> <span class="nav-text">两种更可靠的写法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#静态内部类法"><span class="nav-number">4.1.</span> <span class="nav-text">静态内部类法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#枚举写法"><span class="nav-number">4.2.</span> <span class="nav-text">枚举写法</span></a></li></ol></li></ol></div>
             
 
           </div>
