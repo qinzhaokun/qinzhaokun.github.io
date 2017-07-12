@@ -101,7 +101,7 @@
 <meta property="og:site_name" content="Hello, World">
 <meta property="og:description" content="定义 表示一个作用于某对象结构中的各元素的操作。它使你可以在不改变各元素类的前提下定义作用于这些元素的新操作。  一个简单的例子：1234567891011121314151617181920212223class A &amp;#123;      public void method1()&amp;#123;          System.out.println(&amp;quot;我是A&amp;quot;);">
 <meta property="og:image" content="http://yoursite.com/images/访问者模式_01.png">
-<meta property="og:updated_time" content="2017-07-12T06:44:16.987Z">
+<meta property="og:updated_time" content="2017-07-12T06:51:32.218Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="访问者模式">
 <meta name="twitter:description" content="定义 表示一个作用于某对象结构中的各元素的操作。它使你可以在不改变各元素类的前提下定义作用于这些元素的新操作。  一个简单的例子：1234567891011121314151617181920212223class A &amp;#123;      public void method1()&amp;#123;          System.out.println(&amp;quot;我是A&amp;quot;);">
@@ -444,7 +444,7 @@
 <li><p>可以跨越类层次结构，访问不同层次的元素类，做出相应的操作。</p>
 </li>
 </ol>
-<h2 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h2><ol>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><ol>
 <li><p>增加新的元素会非常困难。</p>
 </li>
 <li><p>实现起来比较复杂，会增加系统的复杂性。</p>
@@ -452,7 +452,7 @@
 <li><p>破坏封装，如果将访问行为放在各个元素中，则可以不暴露元素的内部结构和状态，但使用访问者模式的时候，为了让访问者能获取到所关心的信息，元素类不得不暴露出一些内部的状态和结构，就像收入和支出类必须提供访问金额和单子的项目的方法一样。</p>
 </li>
 </ol>
-<h2 id="适用场景："><a href="#适用场景：" class="headerlink" title="适用场景："></a>适用场景：</h2><ol>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ol>
 <li><p>数据结构稳定，作用于数据结构的操作经常变化的时候。</p>
 </li>
 <li><p>当一个数据结构中，一些元素类需要负责与其不相关的操作的时候，为了将这些操作分离出去，以减少这些元素类的职责时，可以使用访问者模式。</p>
@@ -655,7 +655,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模式解析"><span class="nav-number">2.</span> <span class="nav-text">模式解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UML图"><span class="nav-number">2.1.</span> <span class="nav-text">UML图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#角色"><span class="nav-number">2.2.</span> <span class="nav-text">角色</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">3.</span> <span class="nav-text">代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Visitor接口"><span class="nav-number">3.1.</span> <span class="nav-text">Visitor接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcreteVisitor"><span class="nav-number">3.2.</span> <span class="nav-text">ConcreteVisitor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Element接口"><span class="nav-number">3.3.</span> <span class="nav-text">Element接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcreteElement"><span class="nav-number">3.4.</span> <span class="nav-text">ConcreteElement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ObjectStructure"><span class="nav-number">3.5.</span> <span class="nav-text">ObjectStructure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端"><span class="nav-number">3.6.</span> <span class="nav-text">客户端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优点"><span class="nav-number">4.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缺点："><span class="nav-number">5.</span> <span class="nav-text">缺点：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#适用场景："><span class="nav-number">6.</span> <span class="nav-text">适用场景：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#忠告"><span class="nav-number">7.</span> <span class="nav-text">忠告</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模式解析"><span class="nav-number">2.</span> <span class="nav-text">模式解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UML图"><span class="nav-number">2.1.</span> <span class="nav-text">UML图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#角色"><span class="nav-number">2.2.</span> <span class="nav-text">角色</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">3.</span> <span class="nav-text">代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Visitor接口"><span class="nav-number">3.1.</span> <span class="nav-text">Visitor接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcreteVisitor"><span class="nav-number">3.2.</span> <span class="nav-text">ConcreteVisitor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Element接口"><span class="nav-number">3.3.</span> <span class="nav-text">Element接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcreteElement"><span class="nav-number">3.4.</span> <span class="nav-text">ConcreteElement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ObjectStructure"><span class="nav-number">3.5.</span> <span class="nav-text">ObjectStructure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端"><span class="nav-number">3.6.</span> <span class="nav-text">客户端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优点"><span class="nav-number">4.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缺点"><span class="nav-number">5.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#适用场景"><span class="nav-number">6.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#忠告"><span class="nav-number">7.</span> <span class="nav-text">忠告</span></a></li></ol></div>
             
 
           </div>
