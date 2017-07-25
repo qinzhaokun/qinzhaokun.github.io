@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="JVM承担着管理Java程序运行时内存的责任，程序员无需关心内存分配和释放的问题，但正因为如此，一旦出现了内存泄露和溢出的问题，排查错误将会变得很艰难。 运行时的数据区域在执行java程序的过程当中，JVM会把其所管理的内存划分为不同的数据区域，有些区域是随着java进程的启动而创建，进程的结束而销毁，有些则是和线程的生命周期绑定。包括如下几个数据区域：  方法区 Method Area  虚拟机">
+<meta name="description" content="之前讲解了Java将代码编译成.class文件格式进行存储，class文件描述的各种信息，而这些信息都要最终加载到虚拟机中才能被运行和使用，虚拟机会将class文件到内存，并对数据进行校验，转换解析和初始化，最终形成能被虚拟机直接使用的Java类型。像C++这样的语言，连接阶段是在编译时完成的，而Java则是在程序运行时完成的，这样可提供较高的灵活性，具有动态拓展和动态连接。 类加载的时机类在内存">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="自动内存管理机制">
-<meta property="og:url" content="http://yoursite.com/2017/06/16/自动内存管理机制/index.html">
+<meta property="og:title" content="虚拟机类加载机制">
+<meta property="og:url" content="http://yoursite.com/2017/07/18/虚拟机类加载机制/index.html">
 <meta property="og:site_name" content="Hello, World">
-<meta property="og:description" content="JVM承担着管理Java程序运行时内存的责任，程序员无需关心内存分配和释放的问题，但正因为如此，一旦出现了内存泄露和溢出的问题，排查错误将会变得很艰难。 运行时的数据区域在执行java程序的过程当中，JVM会把其所管理的内存划分为不同的数据区域，有些区域是随着java进程的启动而创建，进程的结束而销毁，有些则是和线程的生命周期绑定。包括如下几个数据区域：  方法区 Method Area  虚拟机">
-<meta property="og:updated_time" content="2017-06-19T06:13:07.081Z">
+<meta property="og:description" content="之前讲解了Java将代码编译成.class文件格式进行存储，class文件描述的各种信息，而这些信息都要最终加载到虚拟机中才能被运行和使用，虚拟机会将class文件到内存，并对数据进行校验，转换解析和初始化，最终形成能被虚拟机直接使用的Java类型。像C++这样的语言，连接阶段是在编译时完成的，而Java则是在程序运行时完成的，这样可提供较高的灵活性，具有动态拓展和动态连接。 类加载的时机类在内存">
+<meta property="og:updated_time" content="2017-07-25T06:22:57.590Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="自动内存管理机制">
-<meta name="twitter:description" content="JVM承担着管理Java程序运行时内存的责任，程序员无需关心内存分配和释放的问题，但正因为如此，一旦出现了内存泄露和溢出的问题，排查错误将会变得很艰难。 运行时的数据区域在执行java程序的过程当中，JVM会把其所管理的内存划分为不同的数据区域，有些区域是随着java进程的启动而创建，进程的结束而销毁，有些则是和线程的生命周期绑定。包括如下几个数据区域：  方法区 Method Area  虚拟机">
+<meta name="twitter:title" content="虚拟机类加载机制">
+<meta name="twitter:description" content="之前讲解了Java将代码编译成.class文件格式进行存储，class文件描述的各种信息，而这些信息都要最终加载到虚拟机中才能被运行和使用，虚拟机会将class文件到内存，并对数据进行校验，转换解析和初始化，最终形成能被虚拟机直接使用的Java类型。像C++这样的语言，连接阶段是在编译时完成的，而Java则是在程序运行时完成的，这样可提供较高的灵活性，具有动态拓展和动态连接。 类加载的时机类在内存">
 
 
 
@@ -131,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/16/自动内存管理机制/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/07/18/虚拟机类加载机制/"/>
 
 
 
 
 
-  <title>自动内存管理机制 | Hello, World</title>
+  <title>虚拟机类加载机制 | Hello, World</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/16/自动内存管理机制/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/18/虚拟机类加载机制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qinzhaokun">
@@ -304,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">自动内存管理机制</h1>
+          <h1 class="post-title" itemprop="name headline">虚拟机类加载机制</h1>
         
 
         <div class="post-meta">
@@ -316,8 +316,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-16T05:44:25+08:00">
-                2017-06-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-18T00:00:00+08:00">
+                2017-07-18
               </time>
             
 
@@ -358,8 +358,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/06/16/自动内存管理机制/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/06/16/自动内存管理机制/" itemprop="commentsCount"></span>
+                <a href="/2017/07/18/虚拟机类加载机制/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/07/18/虚拟机类加载机制/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -367,7 +367,7 @@
 
           
           
-             <span id="/2017/06/16/自动内存管理机制/" class="leancloud_visitors" data-flag-title="自动内存管理机制">
+             <span id="/2017/07/18/虚拟机类加载机制/" class="leancloud_visitors" data-flag-title="虚拟机类加载机制">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -395,58 +395,57 @@
       
 
       
-        <p>JVM承担着管理Java程序运行时内存的责任，程序员无需关心内存分配和释放的问题，但正因为如此，一旦出现了内存泄露和溢出的问题，排查错误将会变得很艰难。</p>
-<h2 id="运行时的数据区域"><a href="#运行时的数据区域" class="headerlink" title="运行时的数据区域"></a>运行时的数据区域</h2><p>在执行java程序的过程当中，JVM会把其所管理的内存划分为不同的数据区域，有些区域是随着java进程的启动而创建，进程的结束而销毁，有些则是和线程的生命周期绑定。包括如下几个数据区域：</p>
+        <p>之前讲解了Java将代码编译成.class文件格式进行存储，class文件描述的各种信息，而这些信息都要最终加载到虚拟机中才能被运行和使用，虚拟机会将class文件到内存，并对数据进行校验，转换解析和初始化，最终形成能被虚拟机直接使用的Java类型。像C++这样的语言，连接阶段是在编译时完成的，而Java则是在程序运行时完成的，这样可提供较高的灵活性，具有动态拓展和动态连接。</p>
+<h2 id="类加载的时机"><a href="#类加载的时机" class="headerlink" title="类加载的时机"></a>类加载的时机</h2><p>类在内存中的生命周期可分为：加载，验证，准备，解析，初始化，使用，卸载这7个步骤。其中，验证，准备和解析三个部分统称为连接。</p>
+<h3 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h3><p>在加载阶段，虚拟机需要完成三件事：</p>
 <ul>
-<li><p>方法区 Method Area</p>
+<li><p>通过一个类的全限定名来获取定义此类的二进制字节流</p>
 </li>
-<li><p>虚拟机栈 VM Stack</p>
+<li><p>将这个字节流所代表的静态存储记过转化成方法区的运行时数据结构</p>
 </li>
-<li><p>本地方法栈 Native Method Stack</p>
-</li>
-<li><p>堆 Heap</p>
-</li>
-<li><p>程序计数器 Program Counter Register</p>
+<li><p>在Java堆中生成一个代表这个类的java.lang.Class对象，作为方法区这些数据的访问入口。</p>
 </li>
 </ul>
-<h3 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h3><p>他是一块较小的内存空间，作用是当前线程所执行的字节码的行号指示器，通过改变计数器的值来确定线程中程序执行到的位置。Java中线程轮流切换并分配CPU时间，为了确保线程切换后能够恢复到上次执行的位置继续执行，每个线程需要计数器来记录执行到得位置。<strong>程序计数器是线程私有的</strong>。</p>
-<h3 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h3><p>它同样是线程私有的，生命周期与线程相同。每个方法的执行同时都会创建一个栈帧（Stack Frame），用于存储局部变量，操作栈，动态链接方法出口等信息，方法调用的开始和结束对应着栈帧的入栈和出栈。<strong>局部变量表</strong>存放着编译期间可知的数据类型，基本类型和引用（对象的指针或对象的句柄）。局部变量表的所需的内存空间会在编译期间确定。</p>
-<p>在栈中，存在两种异常状况：StackOverflowError异常，即请求栈深度大于虚拟机允许的的深度；OutOfMemoryError异常，拓展栈空间时无法申请足够的内存。</p>
-<h3 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h3><p>执行Native方法时使用的栈，同样会抛出上面两种异常。（使用native关键字的定义的方法，表示改方法的实现是非java代码实现的）</p>
-<h3 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h3><p>堆是内存中最大的一块空间，它是所有线程共享的，它随着虚拟机的启动而生成。<strong>几乎所有的对象实例都会分配到堆上</strong>。为什么是几乎所有而不是所有呢？因为有例外，对象除了在堆上分配，还可以在分配缓冲区（Thread Local Allocation Buffer， TLAB）和栈上分配。</p>
-<p>对于TLAB，在Eden中会开辟一个线程私有的空间，一般占用Eden的1%，在存放某些线程私有的数据，由于是线程私有，因此分配时不用上锁，效率高</p>
-<p>对于栈上，Java会通过逃逸分析，分析出一个对象是否永远在一个方法里，在一个线程里，如果分析的结果是是，那么可以考虑将其分配到栈上。</p>
-<p>另外，由于堆是线程共享的，所以new时会加锁，效率低。</p>
-<h3 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h3><p>方法区用于存储类信息，静态变量（static），常量，即时编译器编译后的代码等数据，虽然它也算是堆的一部分，但是常用（No Heap）来描述。</p>
-<h3 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h3><p><strong>运行时常量池属于方法区的一部分</strong>。Class文件中除了有类的版本，字段，方法，接口等描述信息外，还有常量池，用于存放编译期生成的各种字面量和符号引用。运行期间也会放入新的常量。</p>
-<h3 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h3><p>这部分内存不是虚拟机运行时的数据部分，自从JDK1.4引入NIO后，它可以通过native函数库直接分配堆外内存，然后通过存储在Java堆中的DirectByteBuffer对象来操作这块内存。因此，来分配虚拟机内存的时候，应该预留可用的内存给直接内存。</p>
-<h2 id="对象访问"><a href="#对象访问" class="headerlink" title="对象访问"></a>对象访问</h2><p>在Java中，对象访问时如何进行的呢？即使最简单的访问，也会涉及Java栈，堆和方法区等重要的内存区域。主流的访问方式有两种：<strong>使用句柄</strong>和<strong>直接指针</strong></p>
+<p>这里的二进制字节流不一定从.class文件获取，也可以从Jar包，网络（applet）和其他文件（jsp）获取。加载时通过类加载器完成的。</p>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><p>验证是连接的第一步主要保证字节流满足虚拟机的要求，不会影响虚拟机的安全。验证阶段在类加载子系统中占用了很大一部分，一般的虚拟机都会实现四个阶段的验证。</p>
 <ul>
-<li><p>句柄池，在堆中划分一块内存在作为句柄池，在栈上的引用将指向句柄地址，其中包含了<em>对象的实例数据地址</em>（堆中）和<em>类型数据地址</em>（方法区中）。</p>
+<li><p>文件格式验证：是否以魔数开头；主次版本号是够在虚拟机处理范围内；常量池的常量tag标志是否在范围内；索引的指向是否有效；CONSTANT_Utf8_INFO是否符合编码要求等</p>
 </li>
-<li><p>直接指针，引用直接指向堆中数据的直接地址，而在堆中的对象实例数据中，有保存到对象类类型数据的指针。</p>
+<li><p>元数据验证：语义分析要求符合Java规范，例如：类是否有父类；是否继承了不允许的父类；类的字段，方法是否和父类产生矛盾</p>
+</li>
+<li><p>字节码验证：进行数据流和控制流分析，例如，类型转换是否合法，非法跳转（跳转到方法以外）等</p>
+</li>
+<li><p>符号引用验证：确保解析动作能够正常执行，例如通过全限定名能够找到对应的类</p>
 </li>
 </ul>
-<p>两种方式各有优势：句柄池的好处是稳定的句柄地址，对象移动时（在垃圾回收时移动对象非常普遍），只会改变句柄中的实例数据指针，而引用不需要改变。而直接指针的方式是速度快，省去了一次定位的时间开销。</p>
-<h2 id="outOfMemoryError异常"><a href="#outOfMemoryError异常" class="headerlink" title="outOfMemoryError异常"></a>outOfMemoryError异常</h2><p>在Java虚拟机中，除了程序计数器外，其他区域都有可能会出现OOM异常</p>
-<h3 id="堆内存溢出"><a href="#堆内存溢出" class="headerlink" title="堆内存溢出"></a>堆内存溢出</h3><p>首先要设置Java虚拟机参数，-Xms和-XMmx分别对应堆的最大值和最小值，两种相同表示堆不支持动态拓展。当出现堆内存异常时：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">List&lt;Object&gt; list = new ArrayList();</div><div class="line">while(true)&#123;</div><div class="line">  list.add(new Object());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>会提示java.lang.OutOfMemoryError: java heap space</p>
-<p>首先要分析是<strong>内存泄漏</strong>还是<strong>内存溢出</strong>，也就是开该对象是否是必要的。如果是必要的，则是内存溢出，不必要则是内存溢出。对于内存泄漏，可通过GC Roots 引用链信息定位错误代码位置，内存溢出则需要调参数。</p>
-<h3 id="栈空间溢出"><a href="#栈空间溢出" class="headerlink" title="栈空间溢出"></a>栈空间溢出</h3><p>当请求的栈深度大于虚拟机的最大深度，则会提示StackOverFlowError错误，如无穷递归等</p>
-<h3 id="常量池溢出"><a href="#常量池溢出" class="headerlink" title="常量池溢出"></a>常量池溢出</h3><p>由于常量池属于方法区，因此通过配置-XX:Premsize和-XX:MaxPremSize来设定方法区的大小，同时，使用String.intern()方法将变量存储在常量池中，如果发生溢出，则会出现：</p>
-<p>会提示java.lang.OutOfMemoryError: PermGen space</p>
-<h3 id="方法区溢出"><a href="#方法区溢出" class="headerlink" title="方法区溢出"></a>方法区溢出</h3><h3 id="本机直接内存溢出"><a href="#本机直接内存溢出" class="headerlink" title="本机直接内存溢出"></a>本机直接内存溢出</h3><h3 id="OutOfMemroyError总结"><a href="#OutOfMemroyError总结" class="headerlink" title="OutOfMemroyError总结"></a>OutOfMemroyError总结</h3><p>程序运行中容易出现OutOfMemoryError，出错的原因有很多，常见的如下：</p>
+<p>在实施阶段就可以考虑使用-Xverify:none参数来关闭大部分的类验证措施，以缩短虚拟机类加载的时间。</p>
+<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>为类的变量分配内存并设置变量的初始值，这些内存都是在方法区的进行分配的，这些变量仅包括类变量（被static修饰的变量），<strong>不包括实例变量</strong>，通常情况下都是赋给对应数据类型的零值。我的理解是这里仅仅是给类变量分配内存空间而已。如<code>public static in abc = 123</code>, abc在方法区中被设置为0. 但是如果是常量变量，例如<code>public static final abc = 123;</code> ，则会立刻赋值给123，这也说明了static final变量必须在定义时初始化。</p>
+<h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><p>将虚拟机中的常量池内的符号引用替换成直接引用，主要针对类或接口，字段，类方法，接口方法四类符号。</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>执行类构造器<clinit>，初始化静态变量，静态块中的数据（一个类只会初始化一次），如在准备的阶段赋值的abc，这这个阶段被赋值为123.那么这个clinit方法是什么呢？它是有编译器自动收集类中所有的类变量的赋值动作和静态语句块（static{}块）合并产生的方法，顺序就是定义的顺序，并且保证，父类的clinit优先于子类的执行。并且clinit能够保证多线程同步。</clinit></p>
+<h2 id="类加载器（ClassLoader）"><a href="#类加载器（ClassLoader）" class="headerlink" title="类加载器（ClassLoader）"></a>类加载器（ClassLoader）</h2><p>通过一个类的全限定名来获取描述此类的二进制字节流。<strong>类加载器</strong>在上述流程中的加载阶段。</p>
+<h3 id="启动类加载器（Bootstrap-ClassLoader）"><a href="#启动类加载器（Bootstrap-ClassLoader）" class="headerlink" title="启动类加载器（Bootstrap ClassLoader）"></a>启动类加载器（Bootstrap ClassLoader）</h3><p>这个类加载器负责将存放在<java_home>\lib目录中的，或者被-Xbootclasspath参数指定的路径的类库加载至虚拟机内存中，由C++编写，无法被Java程序直接引用</java_home></p>
+<h3 id="拓展类加载器（Extension-ClassLoader）"><a href="#拓展类加载器（Extension-ClassLoader）" class="headerlink" title="拓展类加载器（Extension ClassLoader）"></a>拓展类加载器（Extension ClassLoader）</h3><p>ExtClassLoader（sun.misc.Launcher$ExtClassLoader）实现的。它负责将jdk中jre/lib/ext或者由系统变量-Djava.ext.dir指定位置中的类库加载到内存中。开发者可以直接使用标准扩展类加载器</p>
+<h3 id="应用程序类加载器（Application-ClassLoader）"><a href="#应用程序类加载器（Application-ClassLoader）" class="headerlink" title="应用程序类加载器（Application ClassLoader）"></a>应用程序类加载器（Application ClassLoader）</h3><p>系统类加载器是由 Sun的 AppClassLoader（sun.misc.Launcher$AppClassLoader）实现的。它负责将系统类路径java -classpath或-Djava.class.path变量所指的目录下的类库加载到内存中。开发者可以直接使用系统类加载器。通过ClassLoader的getSystemClassLoader()方法的返回值，用户编写的类，默认是使用该类作为默认类加载器。</p>
+<h3 id="双亲委派机制"><a href="#双亲委派机制" class="headerlink" title="双亲委派机制"></a>双亲委派机制</h3><p>双亲委派模型要求除了顶层的启动类加载器，其余的类加载器都应该有自己的父类加载器。这里类加载器之间的父子关系一般不会以继承关系来实现，而是使用组合关系来复用父加载器的代码。</p>
+<p>双亲委托模型的工作过程是：如果一个类加载器收到了类加载器的请求，它首先不会自己尝试加载这个类，而是把这个请求委派给父类加载器去完成，没一个层次的类加载器都是如此，因此所有的加载请求最终都应该传送到顶层的启动类加载器中，只有当父类加载器反馈自己无法完成这个加载请求（它的搜说范围中没有找到所需的类时，子加载类才会尝试自己去加载</p>
+<p>优点：</p>
 <ul>
-<li><p>内存中一次性加载的数据量过大，比如一次性从数据库中读出很多数据。在数据库查询时，如果查询的数据量过大，很容易造成内存溢出，这类型的问题一般比较隐蔽，因为上线前测试的数据量较小，不会溢出，而上线后随着数据量变大，很可能会溢出，因此，<strong>对于大量的数据查询，应使用分页查询</strong>。</p>
+<li><p>使得类具有一定优先级的层次关系，例如，Object类在rt.jar中，那么无论是哪一个类记载其要加载它，都会委派给启动类加载器加载，保证在各类加载器中得到同一个类</p>
 </li>
-<li><p>集合类中有对象的引用，当不需要里面的实体对象时，为清除集合类的引用。</p>
-</li>
-<li><p>循环产生大对象。</p>
-</li>
-<li><p>内存容量过小，应调整内存的大小。</p>
+<li><p>防止内存中出现多份同样的字节码，相同的类加载器，不会加载同一个类两次，而不同的类加载器，会加载同一个类，从而有两份相同字节码的类</p>
 </li>
 </ul>
+<h3 id="破坏双亲委派机制"><a href="#破坏双亲委派机制" class="headerlink" title="破坏双亲委派机制"></a>破坏双亲委派机制</h3><ol>
+<li><p>JDK 1.2发布之前：压根就没双亲委派模型，但是classloader在JDK 1.0就存在了。所以引入双亲委派模型也做一点妥协，具体的不用关心。反正现在出现的概率为0了</p>
+</li>
+<li><p>自身缺陷：双亲委派机制解决了各类加载器的基础类统一的问题，这些基础类，它们一般会作为被用户代码所调用的API，但如果是返回来，用户类提供API，供给基础类调用呢？比如JNDI（Java Naming Directory Interface）,它是由启动类加载器加载的，目的是对资源进行集中的管理和查找，它需要调用独立厂商在ClassPath下的JNDI提供者的代码，因此，启动类加载器无法委托其他加载器去加载用户代码，因为它无法委托子加载器。 为此虚拟机团队设计了一个无奈之举：<strong>线程上下文类加载器</strong>。包括最常用的JDBC也是使用线程上下文类加载器。</p>
+</li>
+<li><p>动态替换：也就是所谓的热部署，典型就是<strong>OSGi</strong>了</p>
+</li>
+</ol>
+<p>Java 提供了很多服务提供者接口（Service Provider Interface，SPI），允许第三方为这些接口提供实现。常见的 SPI 有 JDBC、JCE、JNDI、JAXP 和 JBI 等。</p>
+<p>针对第二点，一些 SPI 的接口由 Java 核心库来提供，而这些 SPI 的实现代码则是作为 Java 应用所依赖的 jar 包被包含进类路径（CLASSPATH）里。SPI接口中的代码经常需要加载具体的实现类。那么问题来了，SPI的接口是Java核心库的一部分，是由引导类加载器来加载的；SPI的实现类是由系统类加载器来加载的。引导类加载器是无法找到 SPI 的实现类的，因为依照双亲委派模型，BootstrapClassloader无法委派AppClassLoader来加载类。</p>
+<p>而线程上下文类加载器破坏了“双亲委派模型”，可以在执行线程中抛弃双亲委派加载链模式，使程序可以逆向使用类加载器。首先，科同过java.lang.Thread类的setContextClassLoader()方法进行设置，JNDI服务科使用上下文类加载器加载所需要的SPI代码，父类加载器请求子类加载器完成加载动作。</p>
 
       
     </div>
@@ -489,8 +488,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/15/抽象类与接口/" rel="next" title="接口">
-                <i class="fa fa-chevron-left"></i> 接口
+              <a href="/2017/07/17/类文件结构/" rel="next" title="类文件结构">
+                <i class="fa fa-chevron-left"></i> 类文件结构
               </a>
             
           </div>
@@ -499,8 +498,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/22/垃圾回收策略与内存分配机制/" rel="prev" title="垃圾回收策略与内存分配机制">
-                垃圾回收策略与内存分配机制 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/19/虚拟机字节码执行引擎/" rel="prev" title="虚拟机字节码执行引擎">
+                虚拟机字节码执行引擎 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -643,7 +642,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#运行时的数据区域"><span class="nav-number">1.</span> <span class="nav-text">运行时的数据区域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序计数器"><span class="nav-number">1.1.</span> <span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java虚拟机栈"><span class="nav-number">1.2.</span> <span class="nav-text">Java虚拟机栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地方法栈"><span class="nav-number">1.3.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆"><span class="nav-number">1.4.</span> <span class="nav-text">堆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法区"><span class="nav-number">1.5.</span> <span class="nav-text">方法区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时常量池"><span class="nav-number">1.6.</span> <span class="nav-text">运行时常量池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#直接内存"><span class="nav-number">1.7.</span> <span class="nav-text">直接内存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象访问"><span class="nav-number">2.</span> <span class="nav-text">对象访问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#outOfMemoryError异常"><span class="nav-number">3.</span> <span class="nav-text">outOfMemoryError异常</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#堆内存溢出"><span class="nav-number">3.1.</span> <span class="nav-text">堆内存溢出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈空间溢出"><span class="nav-number">3.2.</span> <span class="nav-text">栈空间溢出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常量池溢出"><span class="nav-number">3.3.</span> <span class="nav-text">常量池溢出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法区溢出"><span class="nav-number">3.4.</span> <span class="nav-text">方法区溢出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本机直接内存溢出"><span class="nav-number">3.5.</span> <span class="nav-text">本机直接内存溢出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OutOfMemroyError总结"><span class="nav-number">3.6.</span> <span class="nav-text">OutOfMemroyError总结</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载的时机"><span class="nav-number">1.</span> <span class="nav-text">类加载的时机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加载"><span class="nav-number">1.1.</span> <span class="nav-text">加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证"><span class="nav-number">1.2.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准备"><span class="nav-number">1.3.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解析"><span class="nav-number">1.4.</span> <span class="nav-text">解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化"><span class="nav-number">1.5.</span> <span class="nav-text">初始化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载器（ClassLoader）"><span class="nav-number">2.</span> <span class="nav-text">类加载器（ClassLoader）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启动类加载器（Bootstrap-ClassLoader）"><span class="nav-number">2.1.</span> <span class="nav-text">启动类加载器（Bootstrap ClassLoader）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拓展类加载器（Extension-ClassLoader）"><span class="nav-number">2.2.</span> <span class="nav-text">拓展类加载器（Extension ClassLoader）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用程序类加载器（Application-ClassLoader）"><span class="nav-number">2.3.</span> <span class="nav-text">应用程序类加载器（Application ClassLoader）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双亲委派机制"><span class="nav-number">2.4.</span> <span class="nav-text">双亲委派机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#破坏双亲委派机制"><span class="nav-number">2.5.</span> <span class="nav-text">破坏双亲委派机制</span></a></li></ol></li></ol></div>
             
 
           </div>
