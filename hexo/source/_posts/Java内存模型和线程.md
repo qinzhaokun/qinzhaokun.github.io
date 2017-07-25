@@ -62,5 +62,36 @@ j++;
 
 主流的操作系统都实现了线程的实现，而Java则提供了在不同平台，不同系统的统一实现，每个线程都是`java.lang.Thread`的实例，这个类比较特殊，因为**它的所关键方法，都是Native方法**，这样的方法表示该方法没有使用或无法使用平台无关的手段来实现。
 
+实现线程主要有三种方式：内核线程，用户线程和用户线程加轻量级进程混合。这一段有些深入，目前不太了解
 
+### 状态转换
 
+Java定义了线程的5中状态，在任意的一个时间点，线程只能处于其中的一种状态。
+
++ 新建（New）线程对象以创建，Thread对象存在，但是没有启动，未调用start()方法
+
++ 运行（Runable）**这个状态包括了操作系统中的Running和Ready**,处在这个状态，它可能正在执行（占用CPU时间），也可能正在等待CPU分配执行时间。
+
++ 无线等待（Waiting）CPU不会分配执行时间给该线程，它要等到一些外部条件（notify）触发才能进入运行状态，页就是说，它需要被其他线程显示唤醒。可以使用下面几种方式使线程进入waiting状态。1) `Object.wait()` 2) `Thread.join()` 3) `LockSupport.park()`
+
++ 期限等待（Timed Waitting）处于改状态的线程也不会被分配CPU时间，不过它无需被其他线程显示唤醒，而是在一段时间后有系统自动唤醒，以下方法能使线程进入该状态。1) `Thread.sleep()` 2) 设置了timeout的`wait()和join()` 等
+
++ 阻塞（Blocked）它线程试图获取一个排它锁而未遂时，进入该状态，最常见的就是sychronized尝试进入同步区域时。
+
++ 结束（Terminated）线程已经终止，执行完毕。
+
+### 线程相关的方法
+
++ sleep() 它是Thread的static方法，使得线程从Runable态进入Timed Waiting态，因此它和锁不相关，它可以在任何地方使用，不必再sychronized中就能使用，如果在sychronized块中使用，它也不会释放锁。
+
++ wait() 它是Object类的成员方法，因此，每个对象均有该方法，它可以使线程从runable态进入waiting态（不加时间）或进入timed waiting态（加时间），由于它是对象方法，因此调用它时必须持有该对象的锁，也即要在sychronized块中使用，否则在运行时抛出`java.lang.IllegalMonitorStateException`，调用后，**它会释放锁**
+
++ notify() 它是Object类的成员方法, 也是每个对象的都有，由此可知必须拥有该对象的锁才能调用该方法。它可以通知一个在该对象等待池冲的线程，从waiting状态到runable状态，但是该线程并不会马上执行，会等待CPU分配执行时间，即ready状态
+
++ notifyAll() 同上，只是不是随机通知一个线程，而是通知所有线程，从waiting 到 runable，然后他们相互竞争CPU时间运行。
+
++ yield() 和sleep()一样，是Thread的**静态方法**，它可以让自己立刻让出CPU的执行时间，让CPU重新分配时间给其他线程执行。它的状态没改变，从runable-> runable，如果非要说改变了，可以说是从running -> ready
+
++ join() 它是线程的**实例方法**，可以使得一个线程在另一个线程结束后再执行。使得该线程从runable到waiting（不加时间）或timed waiting(加时间)。如果join()方法在一个线程实例上调用，当前运行着的线程将阻塞直到这个线程实例完成了执行，最简单的例子就是主线程Main中，调用子线程t的t.join(),表示Main线程会等到t线程结束后在执行。也可在join中传入时间，表示过了一段时候后，Main不在等待，重新竞争CPU时间。
+
++ interrupt() 它是线程的**实例方法**,调用处于waiting和timed waiting状态的线程时，该线程的中断状态将被清除，会抛出InterruptedException。 
