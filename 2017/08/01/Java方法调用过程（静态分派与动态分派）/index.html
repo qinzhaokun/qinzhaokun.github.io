@@ -100,10 +100,14 @@
 <meta property="og:url" content="http://yoursite.com/2017/08/01/Java方法调用过程（静态分派与动态分派）/index.html">
 <meta property="og:site_name" content="Hello, World">
 <meta property="og:description" content="在任何程序中，方法的调用都是非常拼单的操作，而掌握Java方法的调用，需要综合多方面的知识，其中包括class文件的结构，类加载的过程，类型转换和多态等概念，下面就详细讲解一下Java方法调用的过程。 Class文件的编译和加载由之前的学习的Class文件结构和类加载过程可知，编译器将.java文件编译成.class文件的过程中，不包含传统的连接过程，方法在.class文件当中知识符号引用，指向常">
-<meta property="og:updated_time" content="2017-08-01T07:08:38.988Z">
+<meta property="og:image" content="http://yoursite.com/images/Java方法调用_01.png">
+<meta property="og:image" content="http://yoursite.com/images/Java方法调用_02.png">
+<meta property="og:image" content="http://yoursite.com/images/Java方法调用_03.png">
+<meta property="og:updated_time" content="2017-08-01T08:01:58.461Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java方法调用过程（静态分派与动态分派）">
 <meta name="twitter:description" content="在任何程序中，方法的调用都是非常拼单的操作，而掌握Java方法的调用，需要综合多方面的知识，其中包括class文件的结构，类加载的过程，类型转换和多态等概念，下面就详细讲解一下Java方法调用的过程。 Class文件的编译和加载由之前的学习的Class文件结构和类加载过程可知，编译器将.java文件编译成.class文件的过程中，不包含传统的连接过程，方法在.class文件当中知识符号引用，指向常">
+<meta name="twitter:image" content="http://yoursite.com/images/Java方法调用_01.png">
 
 
 
@@ -433,6 +437,12 @@
 </ol>
 <p>由以上我们可以知道，对于重写的方法<code>sayHello()</code>，在父类（Human）和子类（Man和Woman）中的方法表的<strong>偏移量都是相同的</strong>，即22，但里面的指针指向不同代码块。在编译期间，由于静态类型是Human，因此，查找Human方法表中的<code>sayHello()</code>，定位在22，得到了<code>invokevirtual #22</code>这个指令；而在运行期间，根据对象的this指针知道实际的类型，找到实际类型的方法表，索引到22这个位置，由于方法表<code>sayHello()</code>的偏移量都相同，因此22仍是对应<code>sayHello()</code>方法；继而找到指向子类的代码块的指针进行运行。</p>
 <p>以上就是虚拟机执行<code>invokevirtual</code>指令，虚拟机实现多态，动态分派的原理。</p>
+<h3 id="方法表的内存模型"><a href="#方法表的内存模型" class="headerlink" title="方法表的内存模型"></a>方法表的内存模型</h3><p><img src="/images/Java方法调用_01.png" alt=""></p>
+<p>由图可知，Girl和Boy的方法表的前面几项都是来自父类的，并且顺序都是相同的，如果没有重写，指向的都是父类的方法区代码块，toString()除外。</p>
+<p><img src="/images/Java方法调用_02.png" alt=""></p>
+<p>执行方法调用的过程中，根据索引值，能够快速的找到对应的方法代码块的指针，不用重新遍历，这一切都取决于固定的索引值。</p>
+<p><img src="/images/Java方法调用_03.png" alt=""></p>
+<p>对于接口的重载，情况变得不一样，由图可以看出，同一方法，在不同类的位置是不同的，因此不能使用索引快速定位，要采用遍历的方式进行搜索，效率没有类继承方式实现多态的情况快。</p>
 <h3 id="单分派和多分派"><a href="#单分派和多分派" class="headerlink" title="单分派和多分派"></a>单分派和多分派</h3><p>方法的接收者和方法的参数统一称为方法<strong>宗量</strong>。基于宗量，分派可以划分为<strong>单分派</strong>和<strong>多分派</strong>；单分派是根据一个宗量来对目标方法进行选择，多分派则是根据多于一个宗量对目标方法进行选择。</p>
 <p>结论：<strong>Java是静态多分派，动态单分派的语言</strong>。</p>
 <ol>
@@ -441,6 +451,9 @@
 <li><p>动态分派过程只能接收者的实际类型一个宗量作为目标方法选择依据</p>
 </li>
 </ol>
+<h2 id="Java和C-在实现多态上的区别"><a href="#Java和C-在实现多态上的区别" class="headerlink" title="Java和C++在实现多态上的区别"></a>Java和C++在实现多态上的区别</h2><p>C++也是非常流行的语言，不同的是，它在编译期间已经找到绑定了方法的直接引用，而不是Java的符号引用。C++中是可以<strong>单继承</strong>和<strong>多继承</strong>的。</p>
+<p>单继承的情况下，函数的调用和Java类似，通过方法表。C++的对象的头部都有一个指针，指向一个虚函数表，这个虚函数表就和Java的方法表功能一样，存储的是每个方法的具体代码块的指针。<strong>不同的是</strong>，只有被<code>vitural</code>关键字修饰的方法才会出现虚函数表中。正常的方法，则是在编译时确定函数的调用的地址，称为早期绑定，而虚函数，则通过虚表来进行迟绑定。</p>
+<p>多继承的情况下，对象的头有多个虚指针，指向不同的虚表。因此C++不用像Java那样搜索方法表</p>
 
       
     </div>
@@ -483,8 +496,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/01/代理模式/" rel="next" title="代理模式">
-                <i class="fa fa-chevron-left"></i> 代理模式
+              <a href="/2017/07/26/Java高效并发/" rel="next" title="Java高效并发">
+                <i class="fa fa-chevron-left"></i> Java高效并发
               </a>
             
           </div>
@@ -492,6 +505,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/01/代理模式/" rel="prev" title="代理模式">
+                代理模式 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -633,7 +650,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Class文件的编译和加载"><span class="nav-number">1.</span> <span class="nav-text">Class文件的编译和加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法解析"><span class="nav-number">2.</span> <span class="nav-text">方法解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分派"><span class="nav-number">3.</span> <span class="nav-text">分派</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#静态分派"><span class="nav-number">3.1.</span> <span class="nav-text">静态分派</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态分派"><span class="nav-number">3.2.</span> <span class="nav-text">动态分派</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单分派和多分派"><span class="nav-number">3.3.</span> <span class="nav-text">单分派和多分派</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Class文件的编译和加载"><span class="nav-number">1.</span> <span class="nav-text">Class文件的编译和加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法解析"><span class="nav-number">2.</span> <span class="nav-text">方法解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分派"><span class="nav-number">3.</span> <span class="nav-text">分派</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#静态分派"><span class="nav-number">3.1.</span> <span class="nav-text">静态分派</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态分派"><span class="nav-number">3.2.</span> <span class="nav-text">动态分派</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法表的内存模型"><span class="nav-number">3.3.</span> <span class="nav-text">方法表的内存模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单分派和多分派"><span class="nav-number">3.4.</span> <span class="nav-text">单分派和多分派</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java和C-在实现多态上的区别"><span class="nav-number">4.</span> <span class="nav-text">Java和C++在实现多态上的区别</span></a></li></ol></div>
             
 
           </div>
