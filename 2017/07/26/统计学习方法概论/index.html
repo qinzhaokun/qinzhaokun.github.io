@@ -1,0 +1,972 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="机器学习," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="概括统计学习是关于计算机基础数据构建概率统计模型的并运模型对数据进行预测与分析的一门学科。 对象统计学习的对象是数据，从数据出发，提取数据的特征，抽象出数据的模型，发现数据中的知识，又回到对数据的分析和预测当中。数据包括数字，文字，图像，视频等 目的对数据进行预测和分析，给人们获得新知识，给人们带来新发现 前提统计学习关于数据的假设是同类数据具有一定的统计规律性，这是统计学习的前提。 方法统计学习">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="统计学习方法概论">
+<meta property="og:url" content="http://yoursite.com/2017/07/26/统计学习方法概论/index.html">
+<meta property="og:site_name" content="Hello, World">
+<meta property="og:description" content="概括统计学习是关于计算机基础数据构建概率统计模型的并运模型对数据进行预测与分析的一门学科。 对象统计学习的对象是数据，从数据出发，提取数据的特征，抽象出数据的模型，发现数据中的知识，又回到对数据的分析和预测当中。数据包括数字，文字，图像，视频等 目的对数据进行预测和分析，给人们获得新知识，给人们带来新发现 前提统计学习关于数据的假设是同类数据具有一定的统计规律性，这是统计学习的前提。 方法统计学习">
+<meta property="og:updated_time" content="2017-08-01T07:08:39.004Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="统计学习方法概论">
+<meta name="twitter:description" content="概括统计学习是关于计算机基础数据构建概率统计模型的并运模型对数据进行预测与分析的一门学科。 对象统计学习的对象是数据，从数据出发，提取数据的特征，抽象出数据的模型，发现数据中的知识，又回到对数据的分析和预测当中。数据包括数字，文字，图像，视频等 目的对数据进行预测和分析，给人们获得新知识，给人们带来新发现 前提统计学习关于数据的假设是同类数据具有一定的统计规律性，这是统计学习的前提。 方法统计学习">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/26/统计学习方法概论/"/>
+
+
+
+
+
+  <title>统计学习方法概论 | Hello, World</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello, World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/26/统计学习方法概论/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qinzhaokun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello, World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">统计学习方法概论</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-26T00:00:00+08:00">
+                2017-07-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/07/26/统计学习方法概论/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/07/26/统计学习方法概论/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/07/26/统计学习方法概论/" class="leancloud_visitors" data-flag-title="统计学习方法概论">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="概括"><a href="#概括" class="headerlink" title="概括"></a>概括</h2><p>统计学习是关于计算机基础数据构建概率统计模型的并运模型对数据进行预测与分析的一门学科。</p>
+<h3 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h3><p><strong>统计学习</strong>的对象是数据，从数据出发，提取数据的特征，抽象出数据的模型，发现数据中的知识，又回到对数据的分析和预测当中。数据包括数字，文字，图像，视频等</p>
+<h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>对数据进行预测和分析，给人们获得新知识，给人们带来新发现</p>
+<h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><p><strong>统计学习关于数据的假设是同类数据具有一定的统计规律性</strong>，这是统计学习的前提。</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>统计学习由<em>监督学习</em>，<em>非监督学习</em>，<em>半监督学习</em>和<em>强化学习</em>等组成。其中<strong>监督学习</strong>是主要讨论的。它由三要素构成，模型的假设空间（<strong>模型（model）</strong>），模型选择的准则（<strong>策略（strategy）</strong>）和模型学习的算法（<strong>算法（algorithm）</strong>）</p>
+<h2 id="监督学习"><a href="#监督学习" class="headerlink" title="监督学习"></a>监督学习</h2><p>学习出一个模型，使得模型对任意给定的输入，对应相应的输出做出一个很好的预测</p>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><h4 id="输入空间，特征空间和输出空间"><a href="#输入空间，特征空间和输出空间" class="headerlink" title="输入空间，特征空间和输出空间"></a>输入空间，特征空间和输出空间</h4><p>输入和输出的所有可能取值的集合分别称为<em>输入空间</em>和<em>输出空间</em>，它们可以是有限元素的集合，也可以是整个欧式空间，通常输出空间远小于输入空间。每一个具体的输入时一个实例（instance），通常有<em>特征向量</em>表示，所有特征向量称为特征空间</p>
+<h4 id="联合概率分布"><a href="#联合概率分布" class="headerlink" title="联合概率分布"></a>联合概率分布</h4><p>监督学习假设输入和输出的随机变量X和Y遵循联合概率分布P(X,Y)，这是关于数据的基本假设，训练数据和测试数据都是被看做依照联合概率分布P(X,Y)堵路同分布产生的。</p>
+<h4 id="假设空间"><a href="#假设空间" class="headerlink" title="假设空间"></a>假设空间</h4><p>监督学习的目的就是在于<strong>学习一个由输入到输出的映射</strong>，而输入空间到输出空间的映射的集合，就是<em>假设空间</em>。这种映射关系可以<strong>条件概率分布</strong>P(Y|X)或<strong>决策函数</strong>Y=f(X)决定</p>
+<h2 id="统计学习的三要素"><a href="#统计学习的三要素" class="headerlink" title="统计学习的三要素"></a>统计学习的三要素</h2><p>方法=模型+策略+算法</p>
+<h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><p>我们需要学习什么样的模型，就是要学习什么样的条件概率分布或决策函数。<em>假设空间</em>包含所有可能的条件概率分布或决策函数，假设空间一般是无穷多的。一般的，由条件概率分布表示的为概率模型，而由决策函数表示的为概率模型</p>
+<h3 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h3><p>学习的准则是什么？如何从假设空间中选取最优模型。因此，我们引入了损失函数和风险函数。损失函数是用来度量预测错误的程度，例如输入为X，决策函数为f，输出为f(X), 损失函数记为L(Y,f(X)), 常用的损失函数如下：</p>
+<ol>
+<li><p>0-1损失函数</p>
+</li>
+<li><p>平方损失函数</p>
+</li>
+<li><p>绝对损失函数</p>
+</li>
+</ol>
+<p>损失函数越小，模型就越好。模型的输入和输出是随机变量，遵循联合分布P(X,Y),损失函数的期望是<em>风险函数</em>或期望损失，又叫做期望风险。我们学习的目的就是要<em>选择期望风险最小的模型</em>。计算期望风险需要知道联合分布，但是这正是我们需要学习的。因此无法直接计算期望风险。由此引入经验风险，它是建立在训练数据的平均损失。根据大数定律，当训练样本趋于无穷大时，经验风险等于期望风险。</p>
+<p>但是，样本根本不可能无穷大，是非常有限的，甚至样本有可能是错误的。<strong>因此需要对经验风险进行矫正</strong>。引入两个概念，<em>经验风险最小化</em>和<em>结构风险最小化</em><br>经验风险认为经验风险越小，模型就越优，现实中被广泛采用。<em>极大似然估计</em>就是一个例子。当样本足够大时，效果不错，但是当样本容量很小时，<em>经验风险最小化</em>未必最好，会产生<strong>过拟合</strong>的现象。</p>
+<p><em>结构风险最小化</em>是为了防止过拟合而提出的策略，它通过在损失函数后加上正则化项或罚项，从而来权衡经验风险和模型复杂度。最大后验概率就是一个例子。</p>
+<p>正则化项的加入时防止过拟合而出现的手段，为防止训练的参数过于复杂，具体可以分为L0范式，L1范式和L2范式</p>
+<ol>
+<li><p>L0，范式就是0-1范式，简单来理解就是范式就是非零参数的格式，加入L0范式能够减少参数。</p>
+</li>
+<li><p>L1,范式是绝对值方式，由于L0范式不好求导，模型求解上不方便，而L1范式可求导，<strong>它的等值线和损失函数的等值相交于坐标轴上</strong>，因此，它也能够达到减少模型复杂度，降低参数个数的目的</p>
+</li>
+<li><p>L2, 范式是平方范式，，<strong>它的等值线和损失函数的等值不相交于坐标轴上</strong>，无法减少参数个数，但能够减小参数值。L2范数更多是防止过拟合，并且让优化求解变得稳定很快速（这是因为加入了L2范式之后，满足了强凸）</p>
+</li>
+</ol>
+<p>L1与L2区别：使用L1可以得到稀疏的权值；用L2可以得到平滑的权值</p>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p>寻找模型的具体计算方法。</p>
+<h2 id="交叉验证"><a href="#交叉验证" class="headerlink" title="交叉验证"></a>交叉验证</h2><p>它是一种模型选择的方法，当数据不充足的情况下，对数据反复进行切分，组合成不同训练集和测试集，反复进行训练测试和模型选择，具体可分为：</p>
+<ul>
+<li><p>简单交叉验证</p>
+</li>
+<li><p>S折交叉验证</p>
+</li>
+<li><p>留-交叉验证</p>
+</li>
+</ul>
+<h2 id="生成模型和判别模型"><a href="#生成模型和判别模型" class="headerlink" title="生成模型和判别模型"></a>生成模型和判别模型</h2><p>在监督学习中，学习一个模型，一般形式有决策函数和条件概率分布</p>
+<h3 id="生成模型（generative-model）"><a href="#生成模型（generative-model）" class="headerlink" title="生成模型（generative model）"></a>生成模型（generative model）</h3><p>该模型学习的是联合概率分布P(X,Y),然后求出条件概率分布P(Y|X)作为预测模型，表示了给定输入X产生输出Y的关系，具体模型有：朴素贝叶斯发和隐马尔科夫模型。优点：可还原出联合概率P(X,Y)，收敛速度快，存在隐变量时，仍然可使用</p>
+<h3 id="判别模型（discriminative-model）"><a href="#判别模型（discriminative-model）" class="headerlink" title="判别模型（discriminative model）"></a>判别模型（discriminative model）</h3><p>该模型直接学习决策函数f(X)或条件概率分布P(Y|X)作为预测模型，关心对给定的输入X，应预测什么样的输出Y。模型包括：k邻近法，感知机，决策树，逻辑回归，支持向量机，条件随机场等。优点：准确率高，可对数据进行抽象，简化学习。</p>
+<h2 id="分类问题"><a href="#分类问题" class="headerlink" title="分类问题"></a>分类问题</h2><p>分为学习和分类两个过程，学习过程中，根据已知的训练数据集，利用有效的学习方法学习一个分类器，在分类过程中，利用学习的分类器对新的输入实例进行分类。有两个评价指标，精确率和召回率;</p>
+<p>TP – 将正类预测为正类</p>
+<p>FN – 将正类预测为负类</p>
+<p>FP – 将负类预测为正类</p>
+<p>TN – 将负类预测为负类</p>
+<p>精确率：P = TP/(TP+FP);</p>
+<p>召回率： R = TP/(TP+FN)；</p>
+<p>一个文本检索的例子，总共有100条文本，其中有60条包含关键字Apple，40条无该关键字，如果一个检索器，检索出50条记录，其中40条有关键字。那么精确率表示检索出正确的比率：40/50=80%， 召回率表示有多少正确的被检索出来了，40/60=66%</p>
+<h2 id="回归问题"><a href="#回归问题" class="headerlink" title="回归问题"></a>回归问题</h2><p>用于预测输入变量和输出变量之间的关系，等价于求变量之间的映射函数，函数拟合的过程</p>
+<blockquote>
+<p>若我们欲预测的是<strong>离散值</strong>，例如”好瓜””坏瓜”，此类学习任务称为 “分类”; 若欲预测的是<strong>连续值</strong>，例如西瓜的成熟度0.95 ,0.37,此类学习任务称为”回归”。</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/26/Java高效并发/" rel="next" title="Java高效并发">
+                <i class="fa fa-chevron-left"></i> Java高效并发
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/01/装饰模式/" rel="prev" title="装饰模式">
+                装饰模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="qinzhaokun" />
+          <p class="site-author-name" itemprop="name">qinzhaokun</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/qinzhaokun" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概括"><span class="nav-number">1.</span> <span class="nav-text">概括</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对象"><span class="nav-number">1.1.</span> <span class="nav-text">对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目的"><span class="nav-number">1.2.</span> <span class="nav-text">目的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前提"><span class="nav-number">1.3.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-number">1.4.</span> <span class="nav-text">方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监督学习"><span class="nav-number">2.</span> <span class="nav-text">监督学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">2.1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入空间，特征空间和输出空间"><span class="nav-number">2.1.1.</span> <span class="nav-text">输入空间，特征空间和输出空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#联合概率分布"><span class="nav-number">2.1.2.</span> <span class="nav-text">联合概率分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#假设空间"><span class="nav-number">2.1.3.</span> <span class="nav-text">假设空间</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#统计学习的三要素"><span class="nav-number">3.</span> <span class="nav-text">统计学习的三要素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模型"><span class="nav-number">3.1.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#策略"><span class="nav-number">3.2.</span> <span class="nav-text">策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法"><span class="nav-number">3.3.</span> <span class="nav-text">算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#交叉验证"><span class="nav-number">4.</span> <span class="nav-text">交叉验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成模型和判别模型"><span class="nav-number">5.</span> <span class="nav-text">生成模型和判别模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生成模型（generative-model）"><span class="nav-number">5.1.</span> <span class="nav-text">生成模型（generative model）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判别模型（discriminative-model）"><span class="nav-number">5.2.</span> <span class="nav-text">判别模型（discriminative model）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分类问题"><span class="nav-number">6.</span> <span class="nav-text">分类问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回归问题"><span class="nav-number">7.</span> <span class="nav-text">回归问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">大脸猫</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吃鱼</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt3gkj5W';
+      var conf = '6157060596fdd3e86c13f21ba008eb74';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("tXNJWqef5cXXkgOuTliYlvYP-gzGzoHsz", "KyQV3wFCnWrvzEpNLVMrhHBY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,956 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="在任何程序中，方法的调用都是非常拼单的操作，而掌握Java方法的调用，需要综合多方面的知识，其中包括class文件的结构，类加载的过程，类型转换和多态等概念，下面就详细讲解一下Java方法调用的过程。 Class文件的编译和加载由之前的学习的Class文件结构和类加载过程可知，编译器将.java文件编译成.class文件的过程中，不包含传统的连接过程，方法在.class文件当中知识符号引用，指向常">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java方法调用过程（静态分派与动态分派）">
+<meta property="og:url" content="http://yoursite.com/2017/08/01/Java方法调用过程（静态分派与动态分派）/index.html">
+<meta property="og:site_name" content="Hello, World">
+<meta property="og:description" content="在任何程序中，方法的调用都是非常拼单的操作，而掌握Java方法的调用，需要综合多方面的知识，其中包括class文件的结构，类加载的过程，类型转换和多态等概念，下面就详细讲解一下Java方法调用的过程。 Class文件的编译和加载由之前的学习的Class文件结构和类加载过程可知，编译器将.java文件编译成.class文件的过程中，不包含传统的连接过程，方法在.class文件当中知识符号引用，指向常">
+<meta property="og:updated_time" content="2017-08-01T07:08:38.988Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java方法调用过程（静态分派与动态分派）">
+<meta name="twitter:description" content="在任何程序中，方法的调用都是非常拼单的操作，而掌握Java方法的调用，需要综合多方面的知识，其中包括class文件的结构，类加载的过程，类型转换和多态等概念，下面就详细讲解一下Java方法调用的过程。 Class文件的编译和加载由之前的学习的Class文件结构和类加载过程可知，编译器将.java文件编译成.class文件的过程中，不包含传统的连接过程，方法在.class文件当中知识符号引用，指向常">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/01/Java方法调用过程（静态分派与动态分派）/"/>
+
+
+
+
+
+  <title>Java方法调用过程（静态分派与动态分派） | Hello, World</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello, World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/01/Java方法调用过程（静态分派与动态分派）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qinzhaokun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello, World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java方法调用过程（静态分派与动态分派）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-01T00:00:00+08:00">
+                2017-08-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/08/01/Java方法调用过程（静态分派与动态分派）/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/08/01/Java方法调用过程（静态分派与动态分派）/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/08/01/Java方法调用过程（静态分派与动态分派）/" class="leancloud_visitors" data-flag-title="Java方法调用过程（静态分派与动态分派）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在任何程序中，方法的调用都是非常拼单的操作，而掌握Java方法的调用，需要综合多方面的知识，其中包括class文件的结构，类加载的过程，类型转换和多态等概念，下面就详细讲解一下Java方法调用的过程。</p>
+<h2 id="Class文件的编译和加载"><a href="#Class文件的编译和加载" class="headerlink" title="Class文件的编译和加载"></a>Class文件的编译和加载</h2><p>由之前的学习的Class文件结构和类加载过程可知，编译器将.java文件编译成.class文件的过程中，不包含传统的连接过程，方法在.class文件当中知识符号引用，指向常量池中方法的全限定名，并不是直接引用，即实际代码块。这个特性给Java带来了更强大的<strong>动态拓展能力</strong>。符号引用并不能让方法能够顺利的调用，即执行到代码块，因此，<strong>符号引用</strong>一定要转换成直接引用。这个转化的过程，可以在两个阶段完成，1）类加载阶段；2）运行期间</p>
+<h2 id="方法解析"><a href="#方法解析" class="headerlink" title="方法解析"></a>方法解析</h2><p>对于方法的调用，虚拟机提供了四条方法调用的字节码指令，分别是：</p>
+<ol>
+<li><p><code>invokestatic</code>: 调用静态方法</p>
+</li>
+<li><p><code>invokespecial</code>: 调用构造方法，私有方法，父类方法</p>
+</li>
+<li><p><code>invokevirtual</code>: 调用虚方法</p>
+</li>
+<li><p><code>invokeinterface</code>: 调用接口方法</p>
+</li>
+</ol>
+<p>其中，1和2都可以在类加载阶段确定方法的唯一版本，因此，在<strong>类加载阶段</strong>就可以把符号引用解析为直接引用，在调用时刻直接找到方法代码块的内存地址进行执行（编译时已经找到了，并且存在方法调用的入口）；3和4则是在运行期间动态绑定方法的直接引用。注意，final修饰的方法也属于虚方法。</p>
+<h2 id="分派"><a href="#分派" class="headerlink" title="分派"></a>分派</h2><p>下面，继续沿着方法调用，讲解分派的概念</p>
+<p>假设类Man继承了类Human，定义一个类型为HUman的变量p如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Human p = new Man();</div></pre></td></tr></table></figure>
+<p>其中，Human是变量p的静态类型或外观类型，而Man是变量p的实际类型；<strong>p的静态类型在编译期就可以确定</strong>，而<strong>实际类型则是在运行期才能确定</strong></p>
+<h3 id="静态分派"><a href="#静态分派" class="headerlink" title="静态分派"></a>静态分派</h3><p>现在，有如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">class Annimal&#123;</div><div class="line">  </div><div class="line">&#125;</div><div class="line"></div><div class="line">class Cat extends Annimal&#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line">class Dog extends Annimal&#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line">class Test&#123;</div><div class="line">  public void say(Cat c)&#123;</div><div class="line">    System.out.println(&quot;miao&quot;);</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  public void say(Dog d)&#123;</div><div class="line">    System.out.println(&quot;wang&quot;);</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  public void say(Annimal a)&#123;</div><div class="line">    System.out.println(&quot;wuwu&quot;);</div><div class="line">  &#125;</div><div class="line">  public static void main&#123;</div><div class="line">    Annimal a1 = new Cat();</div><div class="line">    Annimal a2 = new Dog();</div><div class="line">    </div><div class="line">    say(a1);</div><div class="line">    say((Dog)a2);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>代码输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">wuwu</div><div class="line">wang</div></pre></td></tr></table></figure></p>
+<p><strong>方法重载是静态分配典型的应用</strong>。重载函数的调用取决于参数的类型和个数，因此，在编译期间的方法调用<code>say(a1);</code>和<code>say((Dog)a2);</code>时，参数的类型取决于参数的<strong>静态类型</strong>， 即Annimal和Dog，因此在编译期间已经为方法的调用绑定了直接应用。</p>
+<p>依赖静态类型来绑定方法的直接引用的反派行为，称为静态分派，<strong>它是在编译阶段完成的</strong></p>
+<h3 id="动态分派"><a href="#动态分派" class="headerlink" title="动态分派"></a>动态分派</h3><p>它和方法的重写相关，可以说就是是多态的概念，相信多态的例子都很熟悉了，变现出来就是方法的调用取决于变量的实际类型，而不是静态类型。这类的方法调用是由<code>invokevirtual</code>指令来执行的。以下是网上摘抄的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">public class DynamicDispatch &#123;  </div><div class="line">    static abstract class Human &#123;  </div><div class="line">        protected abstract void sayHello();  </div><div class="line">    &#125;  </div><div class="line">    static class Man extends Human &#123;  </div><div class="line">        @Override  </div><div class="line">        protected void sayHello() &#123;  </div><div class="line">            System.out.println(&quot;man say hello&quot;);              </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">    static class Woman extends Human &#123;  </div><div class="line">        @Override  </div><div class="line">        protected void sayHello() &#123;  </div><div class="line">            System.out.println(&quot;woman say hello&quot;);  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">      </div><div class="line">    public static void main(String[] args) &#123;  </div><div class="line">        Human man = new Man();  </div><div class="line">        Human woman = new Woman();  </div><div class="line">        man.sayHello();  </div><div class="line">        woman.sayHello();  </div><div class="line">        man = new Woman();  </div><div class="line">        man.sayHello();  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>代码反编译的结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">public static void main(java.lang.String[]);  </div><div class="line">  flags: ACC_PUBLIC, ACC_STATIC  </div><div class="line">  Code:  </div><div class="line">    stack=2, locals=3, args_size=1  </div><div class="line">       0: new           #16                 // class com/xtayfjpk/jvm/chapter8/DynamicDispatch$Man  </div><div class="line">       3: dup  </div><div class="line">       4: invokespecial #18                 // Method com/xtayfjpk/jvm/chapter8/DynamicDispatch$Man.&quot;&lt;init&gt;&quot;:()V  </div><div class="line">       7: astore_1  </div><div class="line">       8: new           #19                 // class com/xtayfjpk/jvm/chapter8/DynamicDispatch$Woman  </div><div class="line">      11: dup  </div><div class="line">      12: invokespecial #21                 // Method com/xtayfjpk/jvm/chapter8/DynamicDispatch$Woman.&quot;&lt;init&gt;&quot;:()V  </div><div class="line">      15: astore_2  </div><div class="line">      16: aload_1  </div><div class="line">      17: invokevirtual #22                 // Method com/xtayfjpk/jvm/chapter8/DynamicDispatch$Human.sayHello:()V  </div><div class="line">      20: aload_2  </div><div class="line">      21: invokevirtual #22                 // Method com/xtayfjpk/jvm/chapter8/DynamicDispatch$Human.sayHello:()V  </div><div class="line">      24: new           #19                 // class com/xtayfjpk/jvm/chapter8/DynamicDispatch$Woman  </div><div class="line">      27: dup  </div><div class="line">      28: invokespecial #21                 // Method com/xtayfjpk/jvm/chapter8/DynamicDispatch$Woman.&quot;&lt;init&gt;&quot;:()V  </div><div class="line">      31: astore_1  </div><div class="line">      32: aload_1  </div><div class="line">      33: invokevirtual #22                 // Method com/xtayfjpk/jvm/chapter8/DynamicDispatch$Human.sayHello:()V  </div><div class="line">      36: return</div></pre></td></tr></table></figure>
+<p>其中，17和21是两次sayHello()方法的调用，对应着不同的实际类型man和woman，它们都对应着<code>invokevirtual #22</code>这个相同的指令，但是执行结果却不同。这是由于方法的实际类型不同导致的。这个22实际是在编译期间确定的。<code>sayHello()</code>这个函数是重写自Human中，每个类都有一个<strong>方法表</strong>，这个方法表有如下特性:</p>
+<ol>
+<li><p>方法表的没一项是一个指针，指向实际的方法区的代码块的内存首地址</p>
+</li>
+<li><p>父类的方法表在前，自己的在后面，由此可看出Object的方法会出现在所有类的最前面</p>
+</li>
+<li><p>子类重写父类的方法，会把方法表中对应方法的指针由指向父类的代码块指向自身的代码块。</p>
+</li>
+</ol>
+<p>由以上我们可以知道，对于重写的方法<code>sayHello()</code>，在父类（Human）和子类（Man和Woman）中的方法表的<strong>偏移量都是相同的</strong>，即22，但里面的指针指向不同代码块。在编译期间，由于静态类型是Human，因此，查找Human方法表中的<code>sayHello()</code>，定位在22，得到了<code>invokevirtual #22</code>这个指令；而在运行期间，根据对象的this指针知道实际的类型，找到实际类型的方法表，索引到22这个位置，由于方法表<code>sayHello()</code>的偏移量都相同，因此22仍是对应<code>sayHello()</code>方法；继而找到指向子类的代码块的指针进行运行。</p>
+<p>以上就是虚拟机执行<code>invokevirtual</code>指令，虚拟机实现多态，动态分派的原理。</p>
+<h3 id="单分派和多分派"><a href="#单分派和多分派" class="headerlink" title="单分派和多分派"></a>单分派和多分派</h3><p>方法的接收者和方法的参数统一称为方法<strong>宗量</strong>。基于宗量，分派可以划分为<strong>单分派</strong>和<strong>多分派</strong>；单分派是根据一个宗量来对目标方法进行选择，多分派则是根据多于一个宗量对目标方法进行选择。</p>
+<p>结论：<strong>Java是静态多分派，动态单分派的语言</strong>。</p>
+<ol>
+<li><p>静态分派中，选择目标方法的依据有两点：一是静态类型；二是方法参数</p>
+</li>
+<li><p>动态分派过程只能接收者的实际类型一个宗量作为目标方法选择依据</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/01/代理模式/" rel="next" title="代理模式">
+                <i class="fa fa-chevron-left"></i> 代理模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="qinzhaokun" />
+          <p class="site-author-name" itemprop="name">qinzhaokun</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/qinzhaokun" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Class文件的编译和加载"><span class="nav-number">1.</span> <span class="nav-text">Class文件的编译和加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法解析"><span class="nav-number">2.</span> <span class="nav-text">方法解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分派"><span class="nav-number">3.</span> <span class="nav-text">分派</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#静态分派"><span class="nav-number">3.1.</span> <span class="nav-text">静态分派</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态分派"><span class="nav-number">3.2.</span> <span class="nav-text">动态分派</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单分派和多分派"><span class="nav-number">3.3.</span> <span class="nav-text">单分派和多分派</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">大脸猫</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吃鱼</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt3gkj5W';
+      var conf = '6157060596fdd3e86c13f21ba008eb74';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("tXNJWqef5cXXkgOuTliYlvYP-gzGzoHsz", "KyQV3wFCnWrvzEpNLVMrhHBY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
