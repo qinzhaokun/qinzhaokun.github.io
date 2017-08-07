@@ -129,7 +129,7 @@ class MyTask implements Runnable{
 
 ### Callable/Future/FutureTask
 
-#### Future
+#### Callable
 Java.util.concurrent下的。 Runable线程的执行是没有返回值的，而Callable允许有返回值。首先来看一下Callable的定义：
 ```
 public interface Callable<V> {
@@ -191,4 +191,48 @@ public class Hello {
 
 #### FutureTask
 
-上面实现多线程的方式虽然功能挺全的，但是比较繁琐，分成了Callable和Future两部分
+上面实现多线程的方式虽然功能挺全的，但是比较繁琐，分成了Callable和Future两部分，FutureTask除了实现了Future接口外还实现了Runnable接口，因此FutureTask也可以直接提交给Executor执行。下面来总结一下FutureTask的特性：
+
+1. 传入Runnable或者Callable给FutureTask
+
+2. 相比于Funture+Callable+ThreadPool的组合，FutureTask具有线程功能，可直接调用`run()`方法，并且**多次run方法，它都只会执行一次Runnable或者Callable任务**
+
+3. 也可提交线程池执行
+
+4. 可通过`cancel()`取消执行
+
+*适用场景*：提交异步任务，主线程执行其他任务，当需要执行结果时，异步获取子线程的执行结果
+
+*应用*：FuntureTask的一个重要应用就是保证线程只会被执行一次，在高并发的情况下，能够有效的保证线程安全的同时，也能很好的保证效率。一个案例就是基于`ConcurrentHashMap`和`FutureTask`保证在高并发的情况下对象被创建一次。一个带key的连接池，当key存在时，即直接返回key对应的对象；当key不存在时，则创建连接。
+
+```
+private ConcurrentHashMap<String,FutureTask<Connection>>connectionPool = new ConcurrentHashMap<String, FutureTask<Connection>>();  
+  
+public Connection getConnection(String key) throws Exception{  
+    FutureTask<Connection>connectionTask=connectionPool.get(key);  
+    if(connectionTask!=null){  
+        return connectionTask.get();  
+    }  
+    else{  
+        Callable<Connection> callable = new Callable<Connection>(){  
+            @Override  
+            public Connection call() throws Exception {  
+                // TODO Auto-generated method stub  
+                return createConnection();  
+            }  
+        };  
+        FutureTask<Connection>newTask = new FutureTask<Connection>(callable);  
+        connectionTask = connectionPool.putIfAbsent(key, newTask);  
+        if(connectionTask==null){  
+            connectionTask = newTask;  
+            connectionTask.run();  
+        }  
+        return connectionTask.get();  
+    }  
+}  
+  
+//创建Connection  
+private Connection createConnection(){  
+    return null;  
+}  
+```
