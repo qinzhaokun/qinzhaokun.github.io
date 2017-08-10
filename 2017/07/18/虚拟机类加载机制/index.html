@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="之前讲解了Java将代码编译成.class文件格式进行存储，class文件描述的各种信息，而这些信息都要最终加载到虚拟机中才能被运行和使用，虚拟机会将class文件到内存，并对数据进行校验，转换解析和初始化，最终形成能被虚拟机直接使用的Java类型。像C++这样的语言，连接阶段是在编译时完成的，而Java则是在程序运行时完成的，这样可提供较高的灵活性，具有动态拓展和动态连接。 类加载的时机类在内存">
+<meta name="description" content="之前讲解了Java将代码编译成.class文件格式进行存储，class文件描述的各种信息，而这些信息都要最终加载到虚拟机中才能被运行和使用，虚拟机会将class文件到内存，并对数据进行校验，转换解析和初始化，最终形成能被虚拟机直接使用的Java类型。像C++这样的语言，连接阶段是在编译时完成的，而Java则是在程序运行时完成的，这样可提供较高的灵活性，具有动态拓展和动态连接。 类加载的时机一个类，">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="虚拟机类加载机制">
 <meta property="og:url" content="http://yoursite.com/2017/07/18/虚拟机类加载机制/index.html">
 <meta property="og:site_name" content="Hello, World">
-<meta property="og:description" content="之前讲解了Java将代码编译成.class文件格式进行存储，class文件描述的各种信息，而这些信息都要最终加载到虚拟机中才能被运行和使用，虚拟机会将class文件到内存，并对数据进行校验，转换解析和初始化，最终形成能被虚拟机直接使用的Java类型。像C++这样的语言，连接阶段是在编译时完成的，而Java则是在程序运行时完成的，这样可提供较高的灵活性，具有动态拓展和动态连接。 类加载的时机类在内存">
-<meta property="og:updated_time" content="2017-07-25T06:22:57.590Z">
+<meta property="og:description" content="之前讲解了Java将代码编译成.class文件格式进行存储，class文件描述的各种信息，而这些信息都要最终加载到虚拟机中才能被运行和使用，虚拟机会将class文件到内存，并对数据进行校验，转换解析和初始化，最终形成能被虚拟机直接使用的Java类型。像C++这样的语言，连接阶段是在编译时完成的，而Java则是在程序运行时完成的，这样可提供较高的灵活性，具有动态拓展和动态连接。 类加载的时机一个类，">
+<meta property="og:updated_time" content="2017-08-03T09:07:11.855Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="虚拟机类加载机制">
-<meta name="twitter:description" content="之前讲解了Java将代码编译成.class文件格式进行存储，class文件描述的各种信息，而这些信息都要最终加载到虚拟机中才能被运行和使用，虚拟机会将class文件到内存，并对数据进行校验，转换解析和初始化，最终形成能被虚拟机直接使用的Java类型。像C++这样的语言，连接阶段是在编译时完成的，而Java则是在程序运行时完成的，这样可提供较高的灵活性，具有动态拓展和动态连接。 类加载的时机类在内存">
+<meta name="twitter:description" content="之前讲解了Java将代码编译成.class文件格式进行存储，class文件描述的各种信息，而这些信息都要最终加载到虚拟机中才能被运行和使用，虚拟机会将class文件到内存，并对数据进行校验，转换解析和初始化，最终形成能被虚拟机直接使用的Java类型。像C++这样的语言，连接阶段是在编译时完成的，而Java则是在程序运行时完成的，这样可提供较高的灵活性，具有动态拓展和动态连接。 类加载的时机一个类，">
 
 
 
@@ -396,7 +396,17 @@
 
       
         <p>之前讲解了Java将代码编译成.class文件格式进行存储，class文件描述的各种信息，而这些信息都要最终加载到虚拟机中才能被运行和使用，虚拟机会将class文件到内存，并对数据进行校验，转换解析和初始化，最终形成能被虚拟机直接使用的Java类型。像C++这样的语言，连接阶段是在编译时完成的，而Java则是在程序运行时完成的，这样可提供较高的灵活性，具有动态拓展和动态连接。</p>
-<h2 id="类加载的时机"><a href="#类加载的时机" class="headerlink" title="类加载的时机"></a>类加载的时机</h2><p>类在内存中的生命周期可分为：加载，验证，准备，解析，初始化，使用，卸载这7个步骤。其中，验证，准备和解析三个部分统称为连接。</p>
+<h2 id="类加载的时机"><a href="#类加载的时机" class="headerlink" title="类加载的时机"></a>类加载的时机</h2><p>一个类，什么时候被JVM加载到内存中？</p>
+<p>答：只有在第一次<em>主动使用</em>时，才会被加载。import不会发生加载。<em>主动使用</em>包括：</p>
+<ol>
+<li><p>使用<code>new</code>关键字创建类的对象</p>
+</li>
+<li><p>使用类的静态成员（调用或赋值）；调用类的静态方法</p>
+</li>
+<li><p>反射机制时，如<code>ClassForName</code></p>
+</li>
+</ol>
+<p>类在内存中的生命周期可分为：加载，验证，准备，解析，初始化，使用，卸载这7个步骤。其中，验证，准备和解析三个部分统称为连接。</p>
 <h3 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h3><p>在加载阶段，虚拟机需要完成三件事：</p>
 <ul>
 <li><p>通过一个类的全限定名来获取定义此类的二进制字节流</p>
@@ -421,7 +431,37 @@
 <p>在实施阶段就可以考虑使用-Xverify:none参数来关闭大部分的类验证措施，以缩短虚拟机类加载的时间。</p>
 <h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>为类的变量分配内存并设置变量的初始值，这些内存都是在方法区的进行分配的，这些变量仅包括类变量（被static修饰的变量），<strong>不包括实例变量</strong>，通常情况下都是赋给对应数据类型的零值。我的理解是这里仅仅是给类变量分配内存空间而已。如<code>public static in abc = 123</code>, abc在方法区中被设置为0. 但是如果是常量变量，例如<code>public static final abc = 123;</code> ，则会立刻赋值给123，这也说明了static final变量必须在定义时初始化。</p>
 <h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><p>将虚拟机中的常量池内的符号引用替换成直接引用，主要针对类或接口，字段，类方法，接口方法四类符号。</p>
-<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>执行类构造器<clinit>，初始化静态变量，静态块中的数据（一个类只会初始化一次），如在准备的阶段赋值的abc，这这个阶段被赋值为123.那么这个clinit方法是什么呢？它是有编译器自动收集类中所有的类变量的赋值动作和静态语句块（static{}块）合并产生的方法，顺序就是定义的顺序，并且保证，父类的clinit优先于子类的执行。并且clinit能够保证多线程同步。</clinit></p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>什么时候需要对类进行初始化？虚拟机规定了有且仅有四种情况必须对类进行初始化。</p>
+<ol>
+<li><p>遇到new、获取静态变量(final常量除外)、为静态变量赋值以及调用静态方法时，如果类没有进行过初始化，则需要先触发其初始化。</p>
+</li>
+<li><p>使用java.lang.reflect包的方法对类进行反射调用的时候(Class.forName(…))，如果类还没有初始化，需要先触发对其的初始化。</p>
+</li>
+</ol>
+<p>3.当初始化一个类的时候，如果发现其父类还没有初始化，则需要先触发对其父类的初始化。</p>
+<p>4.当虚拟机启动时，用户需要指定一个要执行的主类(包含main()方法的类)，虚拟机会先初始化这个类。</p>
+<p>执行类构造器<clinit>，初始化静态变量，静态块中的数据（一个类只会初始化一次），如在准备的阶段赋值的abc，这这个阶段被赋值为123.那么这个clinit方法是什么呢？它是有编译器自动收集类中所有的类变量的赋值动作和静态语句块（static{}块）合并产生的方法，顺序就是定义的顺序，并且保证，父类的clinit优先于子类的执行。并且clinit能够保证多线程同步。</clinit></p>
+<p>这里补充一个概念的比较，<em>类的初始化</em>和<em>对象的实例化</em></p>
+<p>类的初始化只会被执行一次，就是类被加载到虚拟机当中的时候，主要是对类变量（静态变量）赋初始值，<clint>函数的执行，类生命周期的一个阶段。而对象的实例化则是创建对象时发生的，过程会执行很多次<init>构造器的调用。</init></clint></p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>类的生命周期中绝大部分时间都处在被使用中，类的实例在堆中，<strong>类成员变量也在堆中</strong>，static变量，方法代码和方法表等在<strong>方法区</strong>中。每个类在堆中海油唯一的一个<strong>Class对象</strong>，存储着类信息，它作为对象访问方法区的入口如存在。</p>
+<h4 id="Class对象"><a href="#Class对象" class="headerlink" title="Class对象"></a>Class对象</h4><p>每个类，虚拟机都会维护一个<code>java.lang.Class</code>对象，它在编译时保存在.class文件当中。在类加载过程中，<strong>类加载器</strong>中的<code>defineClass</code> 方法自动构造,它被加载到堆中。<strong>它保存着创建类对象的信息，也是对象实例连接方法区的桥梁</strong>。基本类型，数组同样有Class对象</p>
+<p>那么，如何得到一个类的class对象呢？</p>
+<ol>
+<li>对象的<code>getClass()</code>方法</li>
+</ol>
+<p>如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Cat t = new Cat();</div><div class="line">Class clazz = t.getClass();</div></pre></td></tr></table></figure></p>
+<ol>
+<li>Class类的中静态<code>forName()</code>方法</li>
+</ol>
+<p>如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Class clazz = Class.forName(&quot;java.util.List&quot;);</div></pre></td></tr></table></figure>
+<ol>
+<li>类型的class属性</li>
+</ol>
+<p>如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Class clazz = Ojbect.class;</div></pre></td></tr></table></figure>
+<p>有了类的Class对象，可以调用它的一些方法，如: <code>clazz.getName();clazz.newInstance();clazz.getClassLoader()</code>等</p>
+<h3 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h3><p>当某个类不在需要时，在特定情况下会被卸载。特定情况必须是：该类所有的实例都被回收，该类的类加载器不可达。这样，当内存不足是，垃圾回收器会回收对应的Class对象和该类方法区的内存。</p>
 <h2 id="类加载器（ClassLoader）"><a href="#类加载器（ClassLoader）" class="headerlink" title="类加载器（ClassLoader）"></a>类加载器（ClassLoader）</h2><p>通过一个类的全限定名来获取描述此类的二进制字节流。<strong>类加载器</strong>在上述流程中的加载阶段。</p>
 <h3 id="启动类加载器（Bootstrap-ClassLoader）"><a href="#启动类加载器（Bootstrap-ClassLoader）" class="headerlink" title="启动类加载器（Bootstrap ClassLoader）"></a>启动类加载器（Bootstrap ClassLoader）</h3><p>这个类加载器负责将存放在<java_home>\lib目录中的，或者被-Xbootclasspath参数指定的路径的类库加载至虚拟机内存中，由C++编写，无法被Java程序直接引用</java_home></p>
 <h3 id="拓展类加载器（Extension-ClassLoader）"><a href="#拓展类加载器（Extension-ClassLoader）" class="headerlink" title="拓展类加载器（Extension ClassLoader）"></a>拓展类加载器（Extension ClassLoader）</h3><p>ExtClassLoader（sun.misc.Launcher$ExtClassLoader）实现的。它负责将jdk中jre/lib/ext或者由系统变量-Djava.ext.dir指定位置中的类库加载到内存中。开发者可以直接使用标准扩展类加载器</p>
@@ -574,7 +614,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -642,7 +682,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载的时机"><span class="nav-number">1.</span> <span class="nav-text">类加载的时机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加载"><span class="nav-number">1.1.</span> <span class="nav-text">加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证"><span class="nav-number">1.2.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准备"><span class="nav-number">1.3.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解析"><span class="nav-number">1.4.</span> <span class="nav-text">解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化"><span class="nav-number">1.5.</span> <span class="nav-text">初始化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载器（ClassLoader）"><span class="nav-number">2.</span> <span class="nav-text">类加载器（ClassLoader）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启动类加载器（Bootstrap-ClassLoader）"><span class="nav-number">2.1.</span> <span class="nav-text">启动类加载器（Bootstrap ClassLoader）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拓展类加载器（Extension-ClassLoader）"><span class="nav-number">2.2.</span> <span class="nav-text">拓展类加载器（Extension ClassLoader）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用程序类加载器（Application-ClassLoader）"><span class="nav-number">2.3.</span> <span class="nav-text">应用程序类加载器（Application ClassLoader）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双亲委派机制"><span class="nav-number">2.4.</span> <span class="nav-text">双亲委派机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#破坏双亲委派机制"><span class="nav-number">2.5.</span> <span class="nav-text">破坏双亲委派机制</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载的时机"><span class="nav-number">1.</span> <span class="nav-text">类加载的时机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加载"><span class="nav-number">1.1.</span> <span class="nav-text">加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证"><span class="nav-number">1.2.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准备"><span class="nav-number">1.3.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解析"><span class="nav-number">1.4.</span> <span class="nav-text">解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化"><span class="nav-number">1.5.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">1.6.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Class对象"><span class="nav-number">1.6.1.</span> <span class="nav-text">Class对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卸载"><span class="nav-number">1.7.</span> <span class="nav-text">卸载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载器（ClassLoader）"><span class="nav-number">2.</span> <span class="nav-text">类加载器（ClassLoader）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启动类加载器（Bootstrap-ClassLoader）"><span class="nav-number">2.1.</span> <span class="nav-text">启动类加载器（Bootstrap ClassLoader）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拓展类加载器（Extension-ClassLoader）"><span class="nav-number">2.2.</span> <span class="nav-text">拓展类加载器（Extension ClassLoader）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用程序类加载器（Application-ClassLoader）"><span class="nav-number">2.3.</span> <span class="nav-text">应用程序类加载器（Application ClassLoader）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双亲委派机制"><span class="nav-number">2.4.</span> <span class="nav-text">双亲委派机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#破坏双亲委派机制"><span class="nav-number">2.5.</span> <span class="nav-text">破坏双亲委派机制</span></a></li></ol></li></ol></div>
             
 
           </div>

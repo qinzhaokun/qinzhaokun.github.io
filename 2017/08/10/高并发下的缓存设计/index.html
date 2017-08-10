@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="接口和内部类为我们提供了一种将接口和实现分离的更加结构化的方法，而在Java中，可以使用接口(Interface)和抽象类(abstract class)来实现。 抽象类Java提供了一种抽象方法机制，这种方法是不完整的，仅有声明而没有方法体：1abstract void f(); 包含抽象方法的类就是抽象类，一个类只要有抽象方法，就必须被限定为抽象类，否则编译器报错。抽象类不能够创建对象，继承一">
+<meta name="description" content="背景工业界有很多成熟的系统，大多数都是分布式的缓存系统，如redis,memcache,Ehcache等，它们被广泛运用于互联网公司中。缓存系统的一个重要应用就是减小数据库的压力，也可以缓存jsp，静态HTML，图片等资源。 这次说的缓存，并不是大型的分布式缓存系统，也没有类似LRU等过期机制，它仅仅是一个十分简单的HashMap对象。但是，它主要是用来解决高并发下，对象仅仅被创建一次，并且创建对">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="接口">
-<meta property="og:url" content="http://yoursite.com/2017/06/15/抽象类与接口/index.html">
+<meta property="og:title" content="高并发下的缓存设计">
+<meta property="og:url" content="http://yoursite.com/2017/08/10/高并发下的缓存设计/index.html">
 <meta property="og:site_name" content="Hello, World">
-<meta property="og:description" content="接口和内部类为我们提供了一种将接口和实现分离的更加结构化的方法，而在Java中，可以使用接口(Interface)和抽象类(abstract class)来实现。 抽象类Java提供了一种抽象方法机制，这种方法是不完整的，仅有声明而没有方法体：1abstract void f(); 包含抽象方法的类就是抽象类，一个类只要有抽象方法，就必须被限定为抽象类，否则编译器报错。抽象类不能够创建对象，继承一">
-<meta property="og:updated_time" content="2017-06-19T06:08:59.593Z">
+<meta property="og:description" content="背景工业界有很多成熟的系统，大多数都是分布式的缓存系统，如redis,memcache,Ehcache等，它们被广泛运用于互联网公司中。缓存系统的一个重要应用就是减小数据库的压力，也可以缓存jsp，静态HTML，图片等资源。 这次说的缓存，并不是大型的分布式缓存系统，也没有类似LRU等过期机制，它仅仅是一个十分简单的HashMap对象。但是，它主要是用来解决高并发下，对象仅仅被创建一次，并且创建对">
+<meta property="og:updated_time" content="2017-08-10T07:23:42.199Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="接口">
-<meta name="twitter:description" content="接口和内部类为我们提供了一种将接口和实现分离的更加结构化的方法，而在Java中，可以使用接口(Interface)和抽象类(abstract class)来实现。 抽象类Java提供了一种抽象方法机制，这种方法是不完整的，仅有声明而没有方法体：1abstract void f(); 包含抽象方法的类就是抽象类，一个类只要有抽象方法，就必须被限定为抽象类，否则编译器报错。抽象类不能够创建对象，继承一">
+<meta name="twitter:title" content="高并发下的缓存设计">
+<meta name="twitter:description" content="背景工业界有很多成熟的系统，大多数都是分布式的缓存系统，如redis,memcache,Ehcache等，它们被广泛运用于互联网公司中。缓存系统的一个重要应用就是减小数据库的压力，也可以缓存jsp，静态HTML，图片等资源。 这次说的缓存，并不是大型的分布式缓存系统，也没有类似LRU等过期机制，它仅仅是一个十分简单的HashMap对象。但是，它主要是用来解决高并发下，对象仅仅被创建一次，并且创建对">
 
 
 
@@ -131,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/15/抽象类与接口/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/08/10/高并发下的缓存设计/"/>
 
 
 
 
 
-  <title>接口 | Hello, World</title>
+  <title>高并发下的缓存设计 | Hello, World</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/15/抽象类与接口/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/10/高并发下的缓存设计/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qinzhaokun">
@@ -304,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">接口</h1>
+          <h1 class="post-title" itemprop="name headline">高并发下的缓存设计</h1>
         
 
         <div class="post-meta">
@@ -316,8 +316,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-15T20:41:25+08:00">
-                2017-06-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T19:22:25+08:00">
+                2017-08-10
               </time>
             
 
@@ -358,8 +358,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/06/15/抽象类与接口/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/06/15/抽象类与接口/" itemprop="commentsCount"></span>
+                <a href="/2017/08/10/高并发下的缓存设计/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/08/10/高并发下的缓存设计/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -367,7 +367,7 @@
 
           
           
-             <span id="/2017/06/15/抽象类与接口/" class="leancloud_visitors" data-flag-title="接口">
+             <span id="/2017/08/10/高并发下的缓存设计/" class="leancloud_visitors" data-flag-title="高并发下的缓存设计">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -395,59 +395,17 @@
       
 
       
-        <p>接口和内部类为我们提供了一种将接口和实现分离的更加结构化的方法，而在Java中，可以使用接口(Interface)和抽象类(abstract class)来实现。</p>
-<h2 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h2><p>Java提供了一种<strong>抽象方法</strong>机制，这种方法是不完整的，仅有声明而没有方法体：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">abstract void f();</div></pre></td></tr></table></figure></p>
-<p>包含抽象方法的类就是<strong>抽象类</strong>，一个类只要有抽象方法，就必须被限定为抽象类，否则编译器报错。抽象类不能够创建对象，继承一个抽象类，出发实现全部抽象方法，<br>否则，该类仍然是抽象类。抽象类的发明就是为了继承，因此一切违反它继承特性的行为都是不成立的，例如类和方法用final修饰等。</p>
-<ol>
-<li><p>抽象类不能被实例化，实例化的工作应该交由它的子类来完成，它只需要有一个引用即可。</p>
-</li>
-<li><p>抽象方法必须由子类来进行重写。</p>
-</li>
-<li><p>只要包含一个抽象方法的抽象类，该方法必须要定义成抽象类，不管是否还包含有其他方法。</p>
-</li>
-<li><p>抽象类中可以包含具体的方法，当然也可以不包含抽象方法。</p>
-</li>
-<li><p>子类中的抽象方法不能与父类的抽象方法同名。</p>
-</li>
-<li><p>abstract不能与final并列修饰同一个类。</p>
-</li>
-<li><p>abstract 不能与private、static、final或native并列修饰同一个方法。</p>
-</li>
-</ol>
-<p>8 抽象类可以有构造函数，这是因为子类继承该抽象类时，调用构造函数时，需要先调用父类的构造函数。</p>
-<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><p>接口在Java当中是通过关键字interface来实现，接口不是类，所以也不能被实例化，接口是用来建立类与类之间的协议，它的提供的只是一种形式，而没有具体的实现。实现类实现(implements)接口，必须实现接口的全部方法<br>接口是抽象类的延伸，Java不允许多重继承（即不能有多个父类，只能有一个），但可以实现多个接口。在使用接口的过程中，就注意以下几个问题：</p>
-<ol>
-<li><p>接口中不能有构造方法。</p>
-</li>
-<li><p>接口的所有方法自动被声明为public，而且只能为public，如果使用protected、private，会导致编译错误。</p>
-</li>
-<li><p>接口可以定义”成员变量”，而且会自动转为public final static，即常量，而且必须被显式初始化。</p>
-</li>
-<li><p>接口中的所有方法都是抽象方法，不能包含实现的方法，也不能包含静态方法</p>
-</li>
-<li><p>实现接口的非抽象类必须实现接口的所有方法，而抽象类不需要</p>
-</li>
-<li><p>不能使用new来实现化接口，但可以声明一个接口变量，它必须引用一个实现该接口的类的对象，可以使用instanceOf来判断一个类是否实现了某个接口，如if (object instanceOf ClassName){doSth()};<br>在实现多接口的时候一定要注意方法名的重复</p>
-</li>
-<li><p>接口可以多重继承。</p>
-</li>
-</ol>
-<h2 id="接口和抽象类的区别"><a href="#接口和抽象类的区别" class="headerlink" title="接口和抽象类的区别"></a>接口和抽象类的区别</h2><h3 id="语法层次"><a href="#语法层次" class="headerlink" title="语法层次"></a>语法层次</h3><ol>
-<li><p>抽象类使用abstract定义，而接口使用interface定义。</p>
-</li>
-<li><p>抽象类可以有具体的数据成员，而接口只能是public final static的常量。</p>
-</li>
-<li><p>从方法上来说，抽象类中可以有非抽象方法（普通方法），而接口中必须全是抽象方法。</p>
-</li>
-<li><p>子类继承抽象类，单一继承；子类实现接口，可以多重实现</p>
-</li>
-</ol>
-<h3 id="设计层次"><a href="#设计层次" class="headerlink" title="设计层次"></a>设计层次</h3><ol>
-<li><p>抽象类是对类的抽象，它包含数据和方法；而接口是对行为的抽象，仅仅只针对行为</p>
-</li>
-<li><p>跨域不同，抽象类和子类时继承关系，存在is a的关系；而接口不要求子类和基类有相似的关系，是like a的关系，接口仅仅定义一套规则给子类，让子类去实现</p>
-</li>
-</ol>
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>工业界有很多成熟的系统，大多数都是分布式的缓存系统，如<code>redis</code>,<code>memcache</code>,<code>Ehcache</code>等，它们被广泛运用于互联网公司中。缓存系统的一个重要应用就是减小数据库的压力，也可以缓存jsp，静态HTML，图片等资源。</p>
+<p>这次说的缓存，并不是大型的分布式缓存系统，也没有类似LRU等过期机制，它仅仅是一个十分简单的<code>HashMap</code>对象。但是，它主要是用来解决<strong>高并发下，对象仅仅被创建一次，并且创建对象的过程是个耗时操作</strong>。在高并发的情况下，多个线程可能需要同样一个数据，如果它们同时发现这个数据在内存中没有，那么，它们就都会去经过计算，如果这个计算是一个很<strong>耗时</strong>，那么就会很大程度的浪费系统的CPU资源。当然，<code>concurrentHashMap</code>可以最终保证数据的唯一性，但是却没办法解决计算的唯一性。</p>
+<p>因此，对于一个进程内，高并发下执行耗时操作创建同一个对象，对象仅被创建一次。我们使用<code>FutureTask</code>+<code>concurrentHashMap</code>来实现目标功能</p>
+<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><h3 id="计算接口"><a href="#计算接口" class="headerlink" title="计算接口"></a>计算接口</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">package cache;</div><div class="line"></div><div class="line">public interface Computable&lt;A,V&gt; &#123;</div><div class="line">	V compute(A arg) throws InterruptedException;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接收一个A类型的参数，经过计算，输出V类型的数据。</p>
+<h3 id="计算任务"><a href="#计算任务" class="headerlink" title="计算任务"></a>计算任务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">package helloworld;</div><div class="line"></div><div class="line">import cache.Computable;</div><div class="line"></div><div class="line">@SuppressWarnings(&quot;hiding&quot;)</div><div class="line">public class Task&lt;String,Ojbect&gt; implements Computable&lt;String,Ojbect&gt;&#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public Ojbect compute(String arg) throws InterruptedException &#123;</div><div class="line">		System.out.println(&quot;start computer&quot;);</div><div class="line">		int a = 1;</div><div class="line">		for(int i = 0;i &lt; 2000;i++)&#123;</div><div class="line">			for(int j = 0;j &lt; 200;j++)&#123;</div><div class="line">				for(int k = 0;k &lt; 200;k++)&#123;</div><div class="line">					for(int h = 0;h &lt; 2;h++)&#123;</div><div class="line">						a = -a;</div><div class="line">					&#125;</div><div class="line">					</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		return (Ojbect) Integer.valueOf(a);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>实现了<code>Computable</code>接口，实现了计算过程，模拟一个相对耗时的操作</p>
+<h3 id="缓存Map-CacheMap"><a href="#缓存Map-CacheMap" class="headerlink" title="缓存Map(CacheMap)"></a>缓存Map(CacheMap)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line">package cache;</div><div class="line"></div><div class="line">import java.util.Map;</div><div class="line">import java.util.concurrent.Callable;</div><div class="line">import java.util.concurrent.CancellationException;</div><div class="line">import java.util.concurrent.ConcurrentHashMap;</div><div class="line">import java.util.concurrent.ExecutionException;</div><div class="line">import java.util.concurrent.FutureTask;</div><div class="line"></div><div class="line">public class CacheMap&lt;A,V&gt;&#123;</div><div class="line">	private final Map&lt;A,FutureTask&lt;V&gt;&gt; container = new ConcurrentHashMap&lt;A,FutureTask&lt;V&gt;&gt;();</div><div class="line">	</div><div class="line">	</div><div class="line">	public V compute(A key, Computable&lt;A,V&gt; task) throws InterruptedException &#123;</div><div class="line">		FutureTask&lt;V&gt; ret = container.get(key);</div><div class="line">		if(ret == null)&#123;</div><div class="line">			Callable&lt;V&gt; taskWarpper = new Callable&lt;V&gt;()&#123;</div><div class="line">				public V call() throws InterruptedException &#123;</div><div class="line">					return task.compute(key);</div><div class="line">				&#125;</div><div class="line">			&#125;;</div><div class="line">			/*ret = new FutureTask&lt;V&gt;(taskWarpper);</div><div class="line">			container.put(key, ret);</div><div class="line">			ret.run();*/</div><div class="line">			FutureTask&lt;V&gt; ft = new FutureTask&lt;V&gt;(taskWarpper);</div><div class="line">			ret = container.putIfAbsent(key, ft);</div><div class="line">			if(ret == null)&#123;</div><div class="line">				System.out.println(Thread.currentThread().getName() + &quot;: &quot; + key + &quot; start calculate&quot;);</div><div class="line">				ret = ft;</div><div class="line">				ret.run();</div><div class="line">				Thread.sleep(1000);</div><div class="line">				ret.run();</div><div class="line">			&#125;</div><div class="line">			else&#123;</div><div class="line">				System.out.println(Thread.currentThread().getName() + &quot;: &quot; + key + &quot; is already in the container, please waiting....&quot;);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		try&#123;</div><div class="line">			return ret.get();</div><div class="line">		&#125; catch(CancellationException e)&#123;</div><div class="line">			container.remove(key);</div><div class="line">		&#125; catch (ExecutionException e) &#123;</div><div class="line">			throw (InterruptedException)e.getCause(); </div><div class="line">		&#125;</div><div class="line">		return null;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public V start(Computable&lt;A,V&gt; task)&#123;</div><div class="line">		return null;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>CacheMap</code>是缓存数据的结构体，目标是以A类型为key，V类型为value的<code>HashMap</code>。里面封装了一个<code>concurrentHashMap</code>,以A类型为key，以<code>FutureTask&lt;V&gt;</code>为value。</p>
+<p>当在Map里没找到时，表示结果对象还没创建，也可能是另一个线程正在创建。新建一个<code>Callable</code>的任务,并用FutureTask包起来<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Callable&lt;V&gt; taskWarpper = new Callable&lt;V&gt;()&#123;</div><div class="line">	public V call() throws InterruptedException &#123;</div><div class="line">		return task.compute(key);</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">/*ret = new FutureTask&lt;V&gt;(taskWarpper);</div><div class="line">container.put(key, ret);</div><div class="line">ret.run();*/</div><div class="line">FutureTask&lt;V&gt; ft = new FutureTask&lt;V&gt;(taskWarpper);</div></pre></td></tr></table></figure></p>
+<p>尝试将<code>FutureTask&lt;V&gt;</code>放到<code>Map</code>中，如果成功，返回null。由于<code>concurrentHashMap</code>是线程安全的，只有一个能够放进去，其它则会阻塞等待。<code>ret.run()</code>则会创建新的线程去执行计算，其它的会到<code>ret.get()</code>阻塞等待结果。</p>
 
       
     </div>
@@ -490,8 +448,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/13/Java修饰符/" rel="next" title="Java修饰符">
-                <i class="fa fa-chevron-left"></i> Java修饰符
+              <a href="/2017/08/03/Java实现多线程/" rel="next" title="Java实现多线程">
+                <i class="fa fa-chevron-left"></i> Java实现多线程
               </a>
             
           </div>
@@ -499,10 +457,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/16/自动内存管理机制/" rel="prev" title="自动内存管理机制">
-                自动内存管理机制 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -644,7 +598,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象类"><span class="nav-number">1.</span> <span class="nav-text">抽象类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口"><span class="nav-number">2.</span> <span class="nav-text">接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口和抽象类的区别"><span class="nav-number">3.</span> <span class="nav-text">接口和抽象类的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法层次"><span class="nav-number">3.1.</span> <span class="nav-text">语法层次</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设计层次"><span class="nav-number">3.2.</span> <span class="nav-text">设计层次</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码示例"><span class="nav-number">2.</span> <span class="nav-text">代码示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#计算接口"><span class="nav-number">2.1.</span> <span class="nav-text">计算接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算任务"><span class="nav-number">2.2.</span> <span class="nav-text">计算任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存Map-CacheMap"><span class="nav-number">2.3.</span> <span class="nav-text">缓存Map(CacheMap)</span></a></li></ol></li></ol></div>
             
 
           </div>
