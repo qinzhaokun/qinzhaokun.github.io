@@ -1,0 +1,954 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Java的底层通信I/O系统，无论是文件I/O还是网络I/O。这里有两个最基本的概念，分别是BIO(阻塞IO)和NIO（非阻塞IO,又称为NEW IO）。BIO是指当某个线程进行I/O操作时，线程会被阻塞，直到数据被读取完毕或者数据被完全写入，在此期间，该线程无法执行任何操作。 这里有个误区，认为非阻塞就是异步。 一个完整的IO读请求操作包括两个阶段：  查看数据是否就绪；  进行数据拷贝（内核将">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java NIO">
+<meta property="og:url" content="http://yoursite.com/2017/08/14/Java NIO/index.html">
+<meta property="og:site_name" content="Hello, World">
+<meta property="og:description" content="Java的底层通信I/O系统，无论是文件I/O还是网络I/O。这里有两个最基本的概念，分别是BIO(阻塞IO)和NIO（非阻塞IO,又称为NEW IO）。BIO是指当某个线程进行I/O操作时，线程会被阻塞，直到数据被读取完毕或者数据被完全写入，在此期间，该线程无法执行任何操作。 这里有个误区，认为非阻塞就是异步。 一个完整的IO读请求操作包括两个阶段：  查看数据是否就绪；  进行数据拷贝（内核将">
+<meta property="og:updated_time" content="2017-08-15T07:24:34.150Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java NIO">
+<meta name="twitter:description" content="Java的底层通信I/O系统，无论是文件I/O还是网络I/O。这里有两个最基本的概念，分别是BIO(阻塞IO)和NIO（非阻塞IO,又称为NEW IO）。BIO是指当某个线程进行I/O操作时，线程会被阻塞，直到数据被读取完毕或者数据被完全写入，在此期间，该线程无法执行任何操作。 这里有个误区，认为非阻塞就是异步。 一个完整的IO读请求操作包括两个阶段：  查看数据是否就绪；  进行数据拷贝（内核将">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/14/Java NIO/"/>
+
+
+
+
+
+  <title>Java NIO | Hello, World</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello, World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/14/Java NIO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qinzhaokun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello, World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java NIO</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T00:00:00+08:00">
+                2017-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/08/14/Java NIO/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/08/14/Java NIO/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/08/14/Java NIO/" class="leancloud_visitors" data-flag-title="Java NIO">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Java的底层通信I/O系统，无论是文件I/O还是网络I/O。这里有两个最基本的概念，分别是BIO(阻塞IO)和NIO（非阻塞IO,又称为NEW IO）。<em>BIO</em>是指当某个线程进行I/O操作时，线程会被阻塞，直到数据被读取完毕或者数据被完全写入，在此期间，该线程无法执行任何操作。</p>
+<p>这里有个误区，<del>认为非阻塞就是异步</del>。</p>
+<p>一个完整的IO读请求操作包括两个阶段：</p>
+<ol>
+<li><p>查看数据是否就绪；</p>
+</li>
+<li><p>进行数据拷贝（内核将数据拷贝到用户线程）。</p>
+</li>
+</ol>
+<p>那么阻塞（blocking IO）和非阻塞（non-blocking IO）的区别就在于第一个阶段，如果数据没有就绪，在查看数据是否就绪的过程中是一直等待，还是<strong>直接返回一个标志信息</strong>。</p>
+<h2 id="BIO模型"><a href="#BIO模型" class="headerlink" title="BIO模型"></a>BIO模型</h2><p>下面就来分析一下BIO的模型：<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"> import java.io.BufferedReader;</div><div class="line">import java.io.BufferedWriter;</div><div class="line">import java.io.IOException;</div><div class="line">import java.io.InputStreamReader;</div><div class="line">import java.io.OutputStreamWriter;</div><div class="line">import java.net.ServerSocket;</div><div class="line">import java.net.Socket;</div><div class="line">import java.util.concurrent.ExecutorService;</div><div class="line">import java.util.concurrent.Executors;</div><div class="line"></div><div class="line">class SocketIO implements Runnable&#123;</div><div class="line">	private Socket socket;</div><div class="line">	SocketIO(Socket socket)&#123;</div><div class="line">		this.socket = socket;</div><div class="line">	&#125;</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		System.out.println(&quot;new message&quot;);</div><div class="line">		//build dead loop</div><div class="line">		while(!socket.isClosed() &amp;&amp; !Thread.currentThread().isInterrupted())&#123;</div><div class="line">			//stream</div><div class="line">			try &#123;</div><div class="line">				BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));</div><div class="line">				System.out.println(br.readLine());</div><div class="line">				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));</div><div class="line">		         bw.write(&quot;ok\n&quot;);</div><div class="line">		         bw.flush();</div><div class="line">			&#125; catch (IOException e) &#123;</div><div class="line">				// TODO Auto-generated catch block</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class Main &#123;</div><div class="line"></div><div class="line">	public static void main(String [] args)&#123;</div><div class="line">		try &#123;</div><div class="line">			ExecutorService ex = Executors.newFixedThreadPool(15);</div><div class="line">			//绑定8080端口</div><div class="line">			ServerSocket serverSocket = new ServerSocket(8080);</div><div class="line">			while(!Thread.currentThread().isInterrupted())&#123;</div><div class="line">				System.out.println(&quot;start&quot;);</div><div class="line">				Socket socket = serverSocket.accept();</div><div class="line">				ex.submit(new SocketIO(socket));</div><div class="line">			&#125;</div><div class="line">		&#125; catch (IOException e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p> 分析：在主函数<code>main</code>中，建立一个死循环，当执行到<code>Socket socket = serverSocket.accept();</code>,主线程阻塞，等待新的连接，即等待新的网络I/O。当有新的数据发送到本机的8080端口时，主线程得到一个<code>socket</code>，为了不让改连接阻塞其他新的连接，采用线程池，创建新的线程处理该连接。主线程则继续去监听8080端口等待其他新的连接。如果不使用多线程，那么每次服务器只能和单一客户端通信。</p>
+<p> 新的线程负责进行I/O数据的读取与写入，即<code>SocketIO</code>类中的<code>run()</code>方法。，此时，<strong>该线程是阻塞</strong>，它会等到所有I/O操作完成后才能继续执行。</p>
+<p> BIO之所以叫BIO，是因为它在读取或写入I/O数据时，是阻塞的，一定要等到所有的数据读完或写完，CPU才能去执行其他操作，而我们知道I/O操作，如读取本地文件，是内存和硬盘之间的数据传输，而网络上发来的数据，则是网卡和内存之间数据交互，和CPU无关。但此时CPU阻塞着等待内存和硬盘或网卡之间缓慢的I/O操作，<strong>严重浪费了CPU资源</strong>。</p>
+<h2 id="NIO模型"><a href="#NIO模型" class="headerlink" title="NIO模型"></a>NIO模型</h2><p> 单个线程，当调用<code>read()</code>和<code>write()</code>时，线程是要阻塞的，改线程无法执行任何操作。而NIO，则是使得<em>一个线程从某个通道发送请求读取数据，直到数据变成可读之前，该线程可以继续做其他事，当数据可用时，才去读取数据</em>。即加入有100M的数据从网络中发过来，刚刚建立了tcp连接，数据还没发送，此时线程不用阻塞等待100M的数据全部到达内存，而是执行其他操作，当数据100M全部从网络到网卡，在去读取。在NIO的模型中，有3个重要的组件，分别是<strong>缓冲区Buffer</strong>，<strong>通道Channel</strong>和<strong>选择器selector</strong>。</p>
+<h3 id="缓冲区-Buffer"><a href="#缓冲区-Buffer" class="headerlink" title="缓冲区 Buffer"></a>缓冲区 Buffer</h3><p> Buffer是一个容器对象，它在内存中是连续的，其实实质上可以看成是一个数组。在执行I/O操作式时，读取数据时，程序直接从缓冲区中读；写入数据时，程序把数据写到缓冲区中。回忆之前的BIO。它是<strong>面向流（stream）</strong>，读取数据，一个字节一个字节的从流中读取，写入也是。而NIO可以说是<strong>面向块（Block）</strong>的，这里的块就是Buffer。最常用的缓冲区类型是<code>ByteBuffer</code>, 此外，每个基本类型都有一个缓冲区类型。</p>
+<h3 id="通道-Channel"><a href="#通道-Channel" class="headerlink" title="通道 Channel"></a>通道 Channel</h3><p> 上面我们提到BIO是面向流的，而在NIO中，通道可以类比于数据流。缓冲区的数据，可以通过通道传输出去；而外面的数据，则是通过通道存储到缓冲区。Channel 用于在字节缓冲区和位于通道另一侧的实体(通常是一个文件或套接字)之间有效地传输数据。</p>
+<p> 通道可以是单向的，也可以是双向的，而流只能是单向的（InputStream和OutputStream）。</p>
+<p> 通道可以是阻塞的，也可以是非阻塞的。非阻塞模式的通道永远</p>
+<p> 不会让调用的线程休眠。请求的操作要么立即完成,要么返回一个结果表明未进行任何操作。这也是NIO为什么能够实现非阻塞的I/O。</p>
+<h3 id="选择器-Selector"><a href="#选择器-Selector" class="headerlink" title="选择器 Selector"></a>选择器 Selector</h3><p>选择器充当一个监听者的角色，它提供一个注册的功能，通道可以注册到选择器上，这样，选择器就可以管理这些通道，到检测到通道有数据时，执行后续的操作。它是整个NIO的核心。</p>
+<h4 id="选择键（SelectionKey）"><a href="#选择键（SelectionKey）" class="headerlink" title="选择键（SelectionKey）"></a>选择键（SelectionKey）</h4><p>选择键封装了特定通道和特定选择器的关系，它用来表示选择器关心某个通道的特定操作。</p>
+<p>当有任何读写事件发生在通道时，Selector可以感知到，并且我们能从其中得到SelectionKey，近儿找到事件对应的SelectableChannel，从而得到客户端发送的数据。</p>
+<h2 id="简单Reactor模型"><a href="#简单Reactor模型" class="headerlink" title="简单Reactor模型"></a>简单Reactor模型</h2><ol>
+<li><p>向Selector对象注册感兴趣的事件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">//创建Selector对象</div><div class="line">Selector sel = Selector.open();</div><div class="line"></div><div class="line">//创建可选择通道，配置为非阻塞模式</div><div class="line">ServerSocketChannel server = ServerSocketChannel.open();</div><div class="line">server.configureBlocking(false);</div><div class="line"></div><div class="line">//通道监听某个端口</div><div class="line">server.socket().bind(new IntetSocketAddress(8080));</div><div class="line"></div><div class="line">// 向Selector中注册感兴趣的事件,监听ACCEPT事件</div><div class="line">server.register(sel,SelectorKey.OP_ACCEPT);</div></pre></td></tr></table></figure>
+</li>
+<li><p>Sekector开始监听，进入死循环</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">try &#123;   </div><div class="line">        while(true) &#123;   </div><div class="line">            // 该调用会阻塞，直到至少有一个事件发生  </div><div class="line">            selector.select();   </div><div class="line">            Set&lt;SelectionKey&gt; keys = selector.selectedKeys();  </div><div class="line">            Iterator&lt;SelectionKey&gt; iter = keys.iterator();  </div><div class="line">            while (iter.hasNext()) &#123;   </div><div class="line">                SelectionKey key = (SelectionKey) iter.next();   </div><div class="line">                iter.remove();   </div><div class="line">                process(key);   </div><div class="line">            &#125;   </div><div class="line">        &#125;   </div><div class="line">    &#125; catch (IOException e) &#123;   </div><div class="line">        e.printStackTrace();  </div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>或者用以下方式实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">//IO线程主循环:</div><div class="line">class IoThread extends Thread&#123;</div><div class="line">public void run()&#123;</div><div class="line">Channel channel;</div><div class="line">while(channel=Selector.select())&#123;//选择就绪的事件和对应的连接</div><div class="line">   if(channel.event==accept)&#123;</div><div class="line">      registerNewChannelHandler(channel);//如果是新连接，则注册一个新的读写处理器</div><div class="line">   &#125;</div><div class="line">   if(channel.event==write)&#123;</div><div class="line">      getChannelHandler(channel).channelWritable(channel);//如果可以写，则执行写事件</div><div class="line">   &#125;</div><div class="line">   if(channel.event==read)&#123;</div><div class="line">       getChannelHandler(channel).channelReadable(channel);//如果可以读，则执行读事件</div><div class="line">   &#125;</div><div class="line"> &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ol>
+<li>事件发生，去处理对应事件<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">/* </div><div class="line"> * 根据不同的事件做处理 </div><div class="line"> * */  </div><div class="line">protected void process(SelectionKey key) throws IOException&#123;  </div><div class="line">    // 接收请求  </div><div class="line">    if (key.isAcceptable()) &#123;  </div><div class="line">        ServerSocketChannel server = (ServerSocketChannel) key.channel();  </div><div class="line">        SocketChannel channel = server.accept();  </div><div class="line">        channel.configureBlocking(false);  </div><div class="line">        channel.register(selector, SelectionKey.OP_READ);  </div><div class="line">    &#125;  </div><div class="line">    // 读信息  </div><div class="line">    else if (key.isReadable()) &#123;  </div><div class="line">        SocketChannel channel = (SocketChannel) key.channel();   </div><div class="line">        int count = channel.read(buffer);   </div><div class="line">        if (count &gt; 0) &#123;   </div><div class="line">            buffer.flip();   </div><div class="line">            CharBuffer charBuffer = decoder.decode(buffer);   </div><div class="line">            name = charBuffer.toString();   </div><div class="line">            SelectionKey sKey = channel.register(selector, SelectionKey.OP_WRITE);   </div><div class="line">            sKey.attach(name);   </div><div class="line">        &#125; else &#123;   </div><div class="line">            channel.close();   </div><div class="line">        &#125;   </div><div class="line">        buffer.clear();   </div><div class="line">    &#125;  </div><div class="line">    // 写事件  </div><div class="line">    else if (key.isWritable()) &#123;  </div><div class="line">        SocketChannel channel = (SocketChannel) key.channel();   </div><div class="line">        String name = (String) key.attachment();   </div><div class="line"></div><div class="line">        ByteBuffer block = encoder.encode(CharBuffer.wrap(&quot;Hello &quot; + name));   </div><div class="line">        if(block != null)  </div><div class="line">        &#123;  </div><div class="line">            channel.write(block);  </div><div class="line">        &#125;  </div><div class="line">        else  </div><div class="line">        &#123;  </div><div class="line">            channel.close();  </div><div class="line">        &#125;  </div><div class="line"></div><div class="line">     &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>总结：这是最简单的Reactor模式：注册所有感兴趣的事件处理器，单线程轮询选择就绪事件，执行事件处理器。以上的程序没有新建线程，只是用selector线程阻塞的轮训是否有感兴趣的事件，即一个线程监控多个通道，解决了BIO新连接增多导致<strong>线程爆炸</strong>的问题。但是，<strong>读写线程和处理请求都在同一个线程里，无法利用多核CPU的优势</strong>。当请求的处理比较耗时时，会阻塞后续请求的处理，导致后续请求的时延较大，相应很慢。</p>
+<h2 id="多线程Reactor模型"><a href="#多线程Reactor模型" class="headerlink" title="多线程Reactor模型"></a>多线程Reactor模型</h2><p>为了解决上述简单Reactor模型中，一个请求的处理耗时，可能会阻塞后续请求的处理相应的不足，自然想到每个请求的处理采用多线程，从而使得selector线程能够继续去监听下一个请求（感兴趣的事件）。但同样会产生线程过多的问题！不过和BIO相比，这里的工作线程都是会读取准备好的数据，不会阻塞等待字节流发送完毕，因此效率会更高。</p>
+<p>下面来看一下代码示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">//新增多线程处理请求</div><div class="line">class Processor&#123;</div><div class="line">	public static final ExecutorService es = Executors.newFixedThreadPool(15); //只有一个</div><div class="line">	</div><div class="line">	public void process(SelectionKey key)&#123;</div><div class="line">		    service.submit(() -&gt; &#123;</div><div class="line">      			ByteBuffer buffer = ByteBuffer.allocate(1024);</div><div class="line">      			SocketChannel socketChannel = (SocketChannel) selectionKey.channel();</div><div class="line">      			int count = socketChannel.read(buffer);</div><div class="line">      			if (count &lt; 0) &#123;</div><div class="line">        		socketChannel.close();</div><div class="line">        		selectionKey.cancel();</div><div class="line">        		LOGGER.info(&quot;&#123;&#125;\t Read ended&quot;, socketChannel);</div><div class="line">        		return null;</div><div class="line">      		&#125; else if(count == 0) &#123;</div><div class="line">        		return null;</div><div class="line">      &#125;</div><div class="line">      //处理请求，打印数据</div><div class="line">      LOGGER.info(&quot;&#123;&#125;\t Read message &#123;&#125;&quot;, socketChannel, new String(buffer.array()));</div><div class="line">      return null;</div><div class="line">    &#125;);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//在接收请求，收到ACCEPT事件时，在key中attach这个处理类的对象</div><div class="line">SelectionKey readKey = channel.register(selector, SelectionKey.OP_READ);</div><div class="line">readKey.attach(new Processor());</div><div class="line"></div><div class="line">//在读请求数据时，从key中把这个处理对象拿出来</div><div class="line">Processor processor = (Processor) key.attachment();</div><div class="line">processor.process(key);</div></pre></td></tr></table></figure></p>
+<p>注：attach对象及取出该对象是NIO提供的一种操作，但该操作并非Reactor模式的必要操作，本文使用它，只是为了方便演示NIO的接口。</p>
+<p>这样，我们充分利用了多线程的优势，<strong>同时将对新连接的处理和读/写操作的处理放在了不同的线程中，读/写操作不再阻塞对新连接请求的处理</strong>。</p>
+<h2 id="多个Reactor模型"><a href="#多个Reactor模型" class="headerlink" title="多个Reactor模型"></a>多个Reactor模型</h2><p>用多线程处理I/O请求多少觉得会违背NIO的初衷，特别是在上述模型当中，实际上一个请求还是对应一个线程，仅仅只是不需要阻塞I/O。更严重的是，无论是ACCEPT,READ还是WRITE，都是由一个selector还负责监听，而一个连接请求就有个事件需要监听，当请求过多时，压力很大。因此，可以采用多个Reactor模型改进，即一个主selector，多个子Selector。</p>
+<p>下面就用具体的代码演示多Reactor模型：</p>
+<h3 id="Server端-主Reactor"><a href="#Server端-主Reactor" class="headerlink" title="Server端-主Reactor"></a>Server端-主Reactor</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">import java.io.IOException;</div><div class="line">import java.net.InetSocketAddress;</div><div class="line">import java.nio.channels.SelectionKey;</div><div class="line">import java.nio.channels.Selector;</div><div class="line">import java.nio.channels.ServerSocketChannel;</div><div class="line">import java.util.Set;</div><div class="line"></div><div class="line">public class NIOServer &#123;</div><div class="line"></div><div class="line">	public static void main(String[] args) throws IOException &#123;</div><div class="line">		//Main selector</div><div class="line">		Selector selector = Selector.open();</div><div class="line">		</div><div class="line">		ServerSocketChannel ssc = ServerSocketChannel.open();</div><div class="line"></div><div class="line">		ssc.configureBlocking(false);</div><div class="line">		</div><div class="line">		ssc.bind(new InetSocketAddress(8080));</div><div class="line">		</div><div class="line">		//Accept all requires</div><div class="line">		ssc.register(selector, SelectionKey.OP_ACCEPT);</div><div class="line">		</div><div class="line">		int coreNum = Runtime.getRuntime().availableProcessors();</div><div class="line">		</div><div class="line">		Processor [] processors = new Processor[coreNum];</div><div class="line">		for(int i = 0; i &lt; coreNum; i++)&#123;</div><div class="line">			processors[i] = new Processor();</div><div class="line">		&#125;</div><div class="line">		int index = 0;</div><div class="line">		while(!Thread.currentThread().isInterrupted())&#123;</div><div class="line">			selector.select();</div><div class="line">			Set&lt;SelectionKey&gt; keys = selector.selectedKeys();</div><div class="line">			for(SelectionKey key : keys)&#123;</div><div class="line">				processors[index++ % coreNum].register(((ServerSocketChannel)key.channel()).accept(), SelectionKey.OP_READ);</div><div class="line">				if(index == coreNum) index = 0;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Server-子Selector"><a href="#Server-子Selector" class="headerlink" title="Server-子Selector"></a>Server-子Selector</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">import java.io.IOException;</div><div class="line">import java.nio.channels.ClosedChannelException;</div><div class="line">import java.nio.channels.SelectionKey;</div><div class="line">import java.nio.channels.Selector;</div><div class="line">import java.nio.channels.SocketChannel;</div><div class="line">import java.util.Iterator;</div><div class="line">import java.util.Set;</div><div class="line">import java.util.concurrent.ExecutorService;</div><div class="line">import java.util.concurrent.Executors;</div><div class="line"></div><div class="line">public class Processor &#123;</div><div class="line">	private Selector sel;</div><div class="line">	private static final ExecutorService es = Executors.newFixedThreadPool(2 * Runtime.getRuntime().availableProcessors());</div><div class="line">	</div><div class="line">	Processor() throws IOException&#123;</div><div class="line">		this.sel = Selector.open();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public void register(SocketChannel sc, int key) throws ClosedChannelException&#123;</div><div class="line">		sc.register(sel, key);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	private void start() &#123;</div><div class="line">		//提交Callable任务</div><div class="line">		es.submit(() -&gt; &#123;</div><div class="line">			while(!Thread.currentThread().isInterrupted())&#123;  </div><div class="line">		            // 该调用会阻塞，直到至少有一个事件发生  </div><div class="line">		            try &#123;</div><div class="line">						sel.select();</div><div class="line">					&#125; catch (Exception e) &#123;</div><div class="line">						// TODO Auto-generated catch block</div><div class="line">						e.printStackTrace();</div><div class="line">					&#125;   </div><div class="line">		            Set&lt;SelectionKey&gt; keys = sel.selectedKeys();  </div><div class="line">		            Iterator&lt;SelectionKey&gt; iter = keys.iterator();  </div><div class="line">		            while (iter.hasNext()) &#123;   </div><div class="line">		                SelectionKey key = (SelectionKey) iter.next();   </div><div class="line">		                iter.remove();   </div><div class="line">		                //process(key);   </div><div class="line">		            &#125;   </div><div class="line">			&#125;</div><div class="line">		&#125;);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/10/高并发下的缓存设计/" rel="next" title="高并发下的缓存设计">
+                <i class="fa fa-chevron-left"></i> 高并发下的缓存设计
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="qinzhaokun" />
+          <p class="site-author-name" itemprop="name">qinzhaokun</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/qinzhaokun" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#BIO模型"><span class="nav-number">1.</span> <span class="nav-text">BIO模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NIO模型"><span class="nav-number">2.</span> <span class="nav-text">NIO模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缓冲区-Buffer"><span class="nav-number">2.1.</span> <span class="nav-text">缓冲区 Buffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通道-Channel"><span class="nav-number">2.2.</span> <span class="nav-text">通道 Channel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择器-Selector"><span class="nav-number">2.3.</span> <span class="nav-text">选择器 Selector</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#选择键（SelectionKey）"><span class="nav-number">2.3.1.</span> <span class="nav-text">选择键（SelectionKey）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单Reactor模型"><span class="nav-number">3.</span> <span class="nav-text">简单Reactor模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程Reactor模型"><span class="nav-number">4.</span> <span class="nav-text">多线程Reactor模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多个Reactor模型"><span class="nav-number">5.</span> <span class="nav-text">多个Reactor模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Server端-主Reactor"><span class="nav-number">5.1.</span> <span class="nav-text">Server端-主Reactor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Server-子Selector"><span class="nav-number">5.2.</span> <span class="nav-text">Server-子Selector</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">大脸猫</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吃鱼</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt3gkj5W';
+      var conf = '6157060596fdd3e86c13f21ba008eb74';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("tXNJWqef5cXXkgOuTliYlvYP-gzGzoHsz", "KyQV3wFCnWrvzEpNLVMrhHBY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
