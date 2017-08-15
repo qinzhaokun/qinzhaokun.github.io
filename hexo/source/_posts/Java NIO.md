@@ -15,7 +15,7 @@ Java的底层通信I/O系统，无论是文件I/O还是网络I/O。这里有两�
 
 2. 进行数据拷贝（内核将数据拷贝到用户线程）。
 
-那么阻塞（blocking IO）和非阻塞（non-blocking IO）的区别就在于第一个阶段，如果数据没有就绪，在查看数据是否就绪的过程中是一直等待，还是直接返回一个标志信息。
+那么阻塞（blocking IO）和非阻塞（non-blocking IO）的区别就在于第一个阶段，如果数据没有就绪，在查看数据是否就绪的过程中是一直等待，还是**直接返回一个标志信息**。
 
 ## BIO模型
 下面就来分析一下BIO的模型：
@@ -111,6 +111,7 @@ public class Main {
 
 当有任何读写事件发生在通道时，Selector可以感知到，并且我们能从其中得到SelectionKey，近儿找到事件对应的SelectableChannel，从而得到客户端发送的数据。
 
+## 简单Reactor模型
 1. 向Selector对象注册感兴趣的事件
 ```
 //创建Selector对象
@@ -214,5 +215,98 @@ protected void process(SelectionKey key) throws IOException{
 
 ```
 
-总结：这是最简单的Reactor模式：注册所有感兴趣的事件处理器，单线程轮询选择就绪事件，执行事件处理器。
+总结：这是最简单的Reactor模式：注册所有感兴趣的事件处理器，单线程轮询选择就绪事件，执行事件处理器。以上的程序没有新建线程，只是用selector线程阻塞的轮训是否有感兴趣的事件，即一个线程监控多个通道，解决了BIO新连接增多导致**线程爆炸**的问题。但是，**读写线程和处理请求都在同一个线程里，无法利用多核CPU的优势**。当请求的处理比较耗时时，会阻塞后续请求的处理，导致后续请求的时延较大，相应很慢。
 
+## 多线程Reactor模型
+
+为了解决上述简单Reactor模型中，一个请求的处理耗时，可能会阻塞后续请求的处理相应的不足，自然想到每个请求的处理采用多线程，从而使得selector线程能够继续去监听下一个请求（感兴趣的事件）。但同样会产生线程过多的问题！不过和BIO相比，这里的工作线程都是会读取准备好的数据，不会阻塞等待字节流发送完毕，因此效率会更高。
+
+下面来看一下代码示例：
+```
+//新增多线程处理请求
+class Processor{
+	public static final ExecutorService es = Executors.newFixedThreadPool(15); //只有一个
+	
+	public void process(SelectionKey key){
+		    service.submit(() -> {
+      			ByteBuffer buffer = ByteBuffer.allocate(1024);
+      			SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
+      			int count = socketChannel.read(buffer);
+      			if (count < 0) {
+        		socketChannel.close();
+        		selectionKey.cancel();
+        		LOGGER.info("{}\t Read ended", socketChannel);
+        		return null;
+      		} else if(count == 0) {
+        		return null;
+      }
+      //处理请求，打印数据
+      LOGGER.info("{}\t Read message {}", socketChannel, new String(buffer.array()));
+      return null;
+    });
+	}
+}
+
+//在接收请求，收到ACCEPT事件时，在key中attach这个处理类的对象
+SelectionKey readKey = channel.register(selector, SelectionKey.OP_READ);
+readKey.attach(new Processor());
+
+//在读请求数据时，从key中把这个处理对象拿出来
+Processor processor = (Processor) key.attachment();
+processor.process(key);
+```
+
+注：attach对象及取出该对象是NIO提供的一种操作，但该操作并非Reactor模式的必要操作，本文使用它，只是为了方便演示NIO的接口。
+
+这样，我们充分利用了多线程的优势，**同时将对新连接的处理和读/写操作的处理放在了不同的线程中，读/写操作不再阻塞对新连接请求的处理**。
+
+## 多个Reactor模型
+
+用多线程处理I/O请求多少觉得会违背NIO的初衷，特别是在上述模型当中，实际上一个请求还是对应一个线程，仅仅只是不需要阻塞I/O。更严重的是，无论是ACCEPT,READ还是WRITE，都是由一个selector还负责监听，而一个连接请求就有个事件需要监听，当请求过多时，压力很大。因此，可以采用多个Reactor模型改进，即一个主selector，多个子Selector。
+
+下面就用具体的代码演示多Reactor模型：
+
+### Server端-主Reactor
+```
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.util.Set;
+
+public class NIOServer {
+
+	public static void main(String[] args) throws IOException {
+		//Main selector
+		Selector selector = Selector.open();
+		
+		ServerSocketChannel ssc = ServerSocketChannel.open();
+
+		ssc.configureBlocking(false);
+		
+		ssc.bind(new InetSocketAddress(8080));
+		
+		//Accept all requires
+		ssc.register(selector, SelectionKey.OP_ACCEPT);
+		
+		int coreNum = Runtime.getRuntime().availableProcessors();
+		
+		Processor [] processors = new Processor[coreNum];
+		for(int i = 0; i < coreNum; i++){
+			processors[i] = new Processor();
+		}
+		int index = 0;
+		while(!Thread.currentThread().isInterrupted()){
+			selector.select();
+			Set<SelectionKey> keys = selector.selectedKeys();
+			for(SelectionKey key : keys){
+				processors[index++ % coreNum].register(((ServerSocketChannel)key.channel()).accept(), SelectionKey.OP_READ);
+				if(index == coreNum) index = 0;
+			}
+		}
+	}
+
+}
+
+```
