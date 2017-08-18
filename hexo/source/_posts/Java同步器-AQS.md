@@ -35,7 +35,17 @@ protected int tryAcquireShared(int arg) {
 protected boolean tryReleaseShared(int arg) {    
     throw new UnsupportedOperationException();    
 }  
+
 ```
+以上方法都是没有实现的，AQS框架留给子类去实现，它提供了类似aquire(),release()等方法，这些方法只是规定了基本流程，如`aquire()`规定了获取独占锁的步骤，方法里仍然依赖子类的实现：
+```
+    public final void acquire(int arg) {
+        if (!tryAcquire(arg) && acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+            selfInterrupt();
+    }
+```
+重点来了！！，把具体的实现留给子类，父类定义基本算法流程，这是设计模式中典型的**模板模式**，**模板模式**，**模板模式**。AQS中使用了大量的模板模式。
+
 和一些私有方法：
 ```
 final boolean acquireQueued(final Node node, int arg) ：申请队列
@@ -51,7 +61,35 @@ private final boolean parkAndCheckInterrupt() ： park 并判断线程是否中�
 
 ### 独占和共享
 
-AQS定义两种资源共享方式：Exclusive（独占，只有一个线程能执行，如ReentrantLock）和Share（共享，多个线程可同时执行，如Semaphore/CountDownLatch）。 
+AQS定义两种资源共享方式：Exclusive（独占，只有一个线程能执行，如ReentrantLock）和Share（共享，多个线程可同时执行，如Semaphore/CountDownLatch）。对于独占模式，AQS给出了基本的几种操作的流程：
+
++ `acpuire()` 获取锁，失败就阻塞
+
++ `acquireInterruptibly(int arg)` 获取锁，可中断
+
++ `tryAcquireNanos(int arg, long nanosTimeout)` 带有超时的阻塞模式获取锁
+
++ `release()` 释放锁
+
+共享模式也定了几种基本操作：
+
++ `acquireShared(int arg)` 获取锁，失败就阻塞
+
++ `acquireSharedInterruptibly(int arg)` 可中断获取锁
+
++ `tryAcquireSharedNanos(int arg, long nanosTimeout)` 超时模式的获取锁
+
++ `releaseShared(int arg)` 释放共享锁
+
+### 小结
+
+由上可知，作为一个框架，AQS制定了一些基本流程，但具体的实现会不同，因此，它使用了模板模式把一些细节的实现留给子类，它基本包含三个功能：
+
+1. 同步器基本范式、结构
+
+2. 线程的阻塞、唤醒机制
+
+3. 线程阻塞队列的维护
 
 ## 简单工作流程
 
@@ -77,3 +115,5 @@ AQS框架中使用了CAS保证了操作的原子性，**LockSupport.park() 和 L
      }
 ```
 它是调用`unsafe`类来实现的。Unsafe是一个很强大的类，它可以分配内存、释放内存、可以定位对象某字段的位置、可以修改对象的字段值、可以使线程挂起、使线程恢复、可进行硬件级别原子的CAS操作等等。它里面的方法也是native方法，是C++代码实现，在`hotspot\src\share\vm\prims\unsafe.cpp`中。先线程相关的操作park()和unpark()的最终实现都和操作系统相关，比如windows下实现是在os_windows.cpp中。
+
+由上可知，更新同步状态`state`需要使用`CAS`操作，插入节点到队列尾部也需要`CAS`操作，`unsafe.compareAndSwapObject`
