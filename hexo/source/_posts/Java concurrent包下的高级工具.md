@@ -163,3 +163,61 @@ public class Test {
 2. 当该线程是最后一个到达的，唤醒其他所有线程，并继续执行下去
 
 3. 当该线程不是最后一个线程到达时，进入Condition自旋等待。
+
+## Semaphore
+
+在操作系统中，也有Semaphore的概念，它表示资源的可用数量，获取资源，信号量减1，释放资源，信号量加1；当信号量为0时，无法获取资源。Semaphore 通常用于限制可以访问某些资源（物理或逻辑的）的线程数目.
+
+Java中的Semaphore类则是完全实现了一样的功能，允许最多n个线程获取该信号量。
+
+### 代码示例
+```
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+
+public class Test {
+
+	public static void main(String[] args) throws InterruptedException {
+		ExecutorService es= Executors.newFixedThreadPool(10); 
+		Semaphore se = new Semaphore(4);
+		
+		for(int i = 0;i < 20;i++){
+			es.submit(() -> {
+				try {
+					se.acquire();
+					System.out.println(Thread.currentThread().getName() + " arrive!");
+					se.release();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+		}
+		
+		es.shutdown();
+	}
+
+}
+
+```
+### 原理分析
+
+它也是基于AQS框架实现同步的，AQS的同步状态`state`就是信号量的数量，以下是`Semaphore`中的关键方法获取共享锁的实现代码：
+```
+protected int tryAcquireShared(int acquires) {  
+    Thread current = Thread.currentThread();  
+    for (;;) {  
+         Thread first = getFirstQueuedThread();  
+         //如果当前等待队列的第一个线程不是当前线程，那么就返回-1表示当前线程需要等待  
+         if (first != null && first != current)  
+              return -1;  
+         //如果当前队列没有等待者，或者当前线程就是等待队列第一个等待者，那么先取得semaphore还有几个许可证，并且减去当前线程需要的许可证得到剩下的值  
+         int available = getState();  
+         int remaining = available - acquires;  
+         //如果remining<0，那么反馈给AQS当前线程需要等待，如果remaining>0，并且设置availble成功设置成剩余数，那么返回剩余值(>0)，也就告知AQS当前线程拿到许可，可以继续执行。  
+         if (remaining < 0 ||compareAndSetState(available, remaining))  
+             return remaining;  
+ }  
+}  
+```
