@@ -13,7 +13,7 @@ Java1.5中的concurrent包下提供了很多的工具类，本次来讲述这些
 
 1. `new CountDownLatch(10)`，设置需要等待的线程数量，这是设置为10。
 
-2. 'CountDownLatch.await()', 调用该方法的线程立刻阻塞，等待需要等待的线程数量为0后重新变成可运行态。
+2. `CountDownLatch.await()`, 调用该方法的线程立刻阻塞，等待需要等待的线程数量为0后重新变成可运行态。
 
 3. `CountDownLath.countdown()`,使得该CountDownLatch需要等待的线程数量减1。
 
@@ -70,7 +70,28 @@ public class Test {
 ```
 ### 实现原理
 
-它是自定义的**AQS**组件
+它是自定义的**AQS**组件,之前对AQS同步框架已有详细介绍，这里就不在虚岁。有了AQS框架的实现子类`sync`的实例，`CountDownLatch`就变得异常简单，它就是一个简单的共享锁的应用。下面是它三个主要方法的源码：
+```
+//设置最多多少个线程共享一把锁
+public CountDownLatch(int count){
+	if(count < 0) throw new IllegalArgumentExceptoin("count < 0");
+	this.sync = new Sync(count);
+}
+
+//释放共享锁
+public void countDown() {
+	sync.releaseShared(1);
+}
+
+//获取共享锁
+public void await() throws InterruptedException {
+	sync.accquireSharedInterruptibly(1);
+}
+
+
+```
+
+由上可知，`CountDownLatch`整个过程就是设置共享锁的数量，然后不断释放锁的过程。
 
 ## CyclicBarrier
 
