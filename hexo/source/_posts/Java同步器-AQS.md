@@ -129,3 +129,68 @@ AQS框架中使用了CAS保证了操作的原子性，**LockSupport.park() 和 L
 由上可知，更新同步状态`state`需要使用`CAS`操作，插入节点到队列尾部也需要`CAS`操作，`unsafe.compareAndSwapObject`
 
 由于它的功能比较强大，代码中不能够new出这个对象。只有jvm授信的代码才能够使用，但是却能通过反射的方式获取。
+
+## ReentrantLock
+
+ReentrantLock是`concurrent`包下提供的基本的锁机制，其中，它的一个重要的成员变量就是`FairSync`,它是AQS的具体实现类。下面，我们对它源码进行具体的分析，来了解AQS框架提供的同步机制。
+
+### lock()
+lock()是里面最基本的方法，表示当前线程尝试获取锁，使用CAS操作，如果成功，则设置owner为当前线程，否则执行`acquire(1)`
+```
+final void lock() {
+            if (compareAndSetState(0, 1))
+                setExclusiveOwnerThread(Thread.currentThread());
+            else
+                acquire(1);
+}
+```
+
+### acquire()
+更新不了state状态，原因可能是lock已经被其他线程占用了，此时使用tryAcquire再次尝试，如果失败，则需要加本线程加入到CLD队列当中
+```
+public final void acquire(int arg) {
+        if (!tryAcquire(arg) &&
+            acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+            selfInterrupt();
+}
+```
+
+### tryAccquire()
+这个方法是一个通用的方法，包括第一次获取锁和被唤醒后再次申请锁都需要执行该方法
+```
+//公平获取锁  
+protected final boolean tryAcquire(int acquires) {  
+    final Thread current = Thread.currentThread();  
+    int c = getState();  
+    //如果当前重进入数为0,说明有机会取得锁  
+    if (c == 0) {  
+        //如果是第一个等待者，并且设置重进入数成功，那么当前线程获得锁  
+        if (isFirst(current) &&  
+            compareAndSetState(0, acquires)) {  
+            setExclusiveOwnerThread(current);  
+            return true;  
+     }  
+ }  
+    //如果当前线程本身就持有锁，那么叠加重进入数，并且继续获得锁  
+    else if (current == getExclusiveOwnerThread()) {  
+        int nextc = c + acquires;  
+        if (nextc < 0)  
+            throw new Error("Maximum lock count exceeded");  
+        setState(nextc);  
+        return true;  
+ }  
+     //以上条件都不满足，那么线程进入等待队列。  
+     return false;  
+}  
+```
+
+### 阻塞线程
+
+使用的是`LockSupport.park`,如下：
+```
+private final boolean parkAndCheckInterrupt() {
+        LockSupport.park(this);
+        return Thread.interrupted();
+    }
+```
+
