@@ -5,7 +5,7 @@ tags: Java
 categories: Java
 ---
 
-同步器AQS，全称是AbstractQueuedSynchronizer。框架是构建concurrent包下很多工具类的基础，其中包括，Lock,CountDownLatch, CycliBarrier等都需要依赖AQS。 同步中的ReentrantLock中都是依靠AQS实现同步的（它有Lock实例，而Lock实例持有Sync实现例，这个Sync就是继承自AbstractQueuedSynchronizer）。AQS只是一个抽象类，提供了接口，没有任何实现，具体保证同步的代码由其子类实现，如公平锁` FairSync` 和非公平锁`NonfairSyn`。
+同步器AQS，全称是AbstractQueuedSynchronizer。框架是构建concurrent包下很多工具类的基础，其中包括，Lock,CountDownLatch, CycliBarrier等都需要依赖AQS。 同步中的ReentrantLock中都是依靠AQS实现同步的（它有Lock实例，而Lock实例持有Sync实现例，这个Sync就是继承自AbstractQueuedSynchronizer）。AQS只是一个抽象类，提供了接口，定义了一些操作的基本流程，如获取锁，释放锁的流程，而具体的实现，保证同步的代码由其子类实现，如公平锁` FairSync` 和非公平锁`NonfairSyn`。
 
 它为不同场景提供了实现锁及同步机制的基本框架，为同步状态的原子性管理、线程的阻塞、线程的解除阻塞及排队管理提供了一种通用的机制。
 
@@ -17,7 +17,17 @@ AQS的数据成员主要有两个：
 
 1. state，同步状态，有`volatile`语义。32位的整型数据，对他的操作保证了**原子性**。
 
-2. CHL Node的 FIFO的队列。它将线程封装到了Node里面，并封装了**阻塞线程和解除阻塞的操作**。这个队列的本质是双向链表。Node的插入和移除都是要保证原子性的，使用的是`CAS`来操作。
+2. CHL Node的 FIFO的队列。它将线程封装到了Node里面，并封装了**阻塞线程和解除阻塞的操作**。这个队列的本质是双向链表。Node的插入和移除都是要保证原子性的，使用的是`CAS`来操作。这个Node还封装了线程的状态，用字段`waitStatus`表示，有几种状态：
+
++ CANCELLED：因为超时或者中断，结点会被设置为取消状态，被取消状态的结点不应该去竞争锁，只能保持取消状态不变，不能转换为其他状态。处于这种状态的结点会被踢出队列，被GC回收； 
+
++ SIGNAL：表示这个结点的继任结点被阻塞了，到时需要通知它； 
+
++ CONDITION：表示这个结点在条件队列中，因为等待某个条件而被阻塞； 
+
++ PROPAGATE：使用在共享模式头结点有可能牌处于这种状态，表示锁的下一次获取可以无条件传播； 
+
++ 0：None of the above，新结点会处于这种状态。
 
 ### 成员函数
 
@@ -114,6 +124,8 @@ AQS框架中使用了CAS保证了操作的原子性，**LockSupport.park() 和 L
         return unsafe.compareAndSwapInt(this, stateOffset, expect, update);
      }
 ```
-它是调用`unsafe`类来实现的。Unsafe是一个很强大的类，它可以分配内存、释放内存、可以定位对象某字段的位置、可以修改对象的字段值、可以使线程挂起、使线程恢复、可进行硬件级别原子的CAS操作等等。它里面的方法也是native方法，是C++代码实现，在`hotspot\src\share\vm\prims\unsafe.cpp`中。先线程相关的操作park()和unpark()的最终实现都和操作系统相关，比如windows下实现是在os_windows.cpp中。
+它是调用`unsafe`类来实现的。sun.misc.Unsafe是一个很强大的类，它可以分配内存、释放内存、可以定位对象某字段的位置、可以修改对象的字段值、可以使线程挂起、使线程恢复、可进行硬件级别原子的CAS操作等等。它里面的方法也是native方法，是C++代码实现，在`hotspot\src\share\vm\prims\unsafe.cpp`中。先线程相关的操作park()和unpark()的最终实现都和操作系统相关，比如windows下实现是在os_windows.cpp中。
 
 由上可知，更新同步状态`state`需要使用`CAS`操作，插入节点到队列尾部也需要`CAS`操作，`unsafe.compareAndSwapObject`
+
+由于它的功能比较强大，代码中不能够new出这个对象。只有jvm授信的代码才能够使用，但是却能通过反射的方式获取。
