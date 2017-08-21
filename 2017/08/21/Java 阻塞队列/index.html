@@ -1,0 +1,949 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="BlockingQueue是一个高性能的容器，它被用来线程之间共享数据，它是典型的生产者和消费者的实现。它支持两个附加的操作：读数据时等待队列变成非空；写数据时等待队列变成可写。JDK7提供了阻塞队列，它们分别是：  ArrayBlockingQueue 由数组组成的有界阻塞队列，必须指定队列的大小，遵循FIFO原则  LinkedBlockingQueue 由链表结构组成的有界阻塞队列，可改变大">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 阻塞队列">
+<meta property="og:url" content="http://yoursite.com/2017/08/21/Java 阻塞队列/index.html">
+<meta property="og:site_name" content="Hello, World">
+<meta property="og:description" content="BlockingQueue是一个高性能的容器，它被用来线程之间共享数据，它是典型的生产者和消费者的实现。它支持两个附加的操作：读数据时等待队列变成非空；写数据时等待队列变成可写。JDK7提供了阻塞队列，它们分别是：  ArrayBlockingQueue 由数组组成的有界阻塞队列，必须指定队列的大小，遵循FIFO原则  LinkedBlockingQueue 由链表结构组成的有界阻塞队列，可改变大">
+<meta property="og:updated_time" content="2017-08-21T06:23:40.412Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java 阻塞队列">
+<meta name="twitter:description" content="BlockingQueue是一个高性能的容器，它被用来线程之间共享数据，它是典型的生产者和消费者的实现。它支持两个附加的操作：读数据时等待队列变成非空；写数据时等待队列变成可写。JDK7提供了阻塞队列，它们分别是：  ArrayBlockingQueue 由数组组成的有界阻塞队列，必须指定队列的大小，遵循FIFO原则  LinkedBlockingQueue 由链表结构组成的有界阻塞队列，可改变大">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/21/Java 阻塞队列/"/>
+
+
+
+
+
+  <title>Java 阻塞队列 | Hello, World</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello, World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/21/Java 阻塞队列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qinzhaokun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello, World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java 阻塞队列</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-21T00:00:00+08:00">
+                2017-08-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/08/21/Java 阻塞队列/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/08/21/Java 阻塞队列/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/08/21/Java 阻塞队列/" class="leancloud_visitors" data-flag-title="Java 阻塞队列">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>BlockingQueue是一个高性能的容器，它被用来线程之间共享数据，它是典型的生产者和消费者的实现。它支持两个附加的操作：读数据时等待队列变成非空；写数据时等待队列变成可写。JDK7提供了阻塞队列，它们分别是：</p>
+<ul>
+<li><p>ArrayBlockingQueue 由数组组成的有界阻塞队列，必须指定队列的大小，遵循FIFO原则</p>
+</li>
+<li><p>LinkedBlockingQueue 由链表结构组成的有界阻塞队列，可改变大小的阻塞队列，遵循FIFO原则</p>
+</li>
+<li><p>PriorityBlockingQueue 支持优先级排序的无界阻塞阻塞队列，不是FIFO，而是有优先级的</p>
+</li>
+<li><p>DelayQueue 一个使用优先级队列实现的无界阻塞队列</p>
+</li>
+<li><p>SynchronousQueue：一个不存储元素的阻塞队列。每一插入必须等待另一个线程移除。</p>
+</li>
+</ul>
+<p>+LinkedTransferQueue：一个由链表结构组成的无界阻塞队列。</p>
+<p>+LinkedBlockingDeque：一个由链表结构组成的双向阻塞队列。</p>
+<p>它定义了一种方法：</p>
+<ul>
+<li><p><code>add(o)</code>,向队列插入一个元素，如果该操作无法立即执行，则<strong>抛出异常</strong></p>
+</li>
+<li><p><code>offer(o)</code>,向队列插入一个元素，如果该操作无法立即执行，<strong>返回一个特定的值</strong>，ture/false</p>
+</li>
+<li><p><code>put(o)</code>, 向队列插入一个元素，如果该操作无法立即执行，<strong>线程阻塞直到执行完毕后返回</strong></p>
+</li>
+<li><p><code>remove(o)</code>,删除队列一个元素，如果该操作无法立即执行，则<strong>抛出一个异常</strong></p>
+</li>
+<li><p><code>poll(o)</code>, 删除队列一个元素，如果该操作无法立即执行，则<strong>返回一个特性的值</strong>，true/false</p>
+</li>
+<li><p><code>take(o)</code>, 删除队列一个元素，如果该操作无法立即执行，<strong>线程阻塞直到执行完毕后返回</strong></p>
+</li>
+</ul>
+<p>注意，由于是队列操作，所以移除操作在非队首时，效率不高，建议不要这么做。</p>
+<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><p>下面使用<code>ArrayBlockingQueue</code>演示简单的生产者和消费者模型：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line">import java.util.Random;</div><div class="line">import java.util.concurrent.ArrayBlockingQueue;</div><div class="line">import java.util.concurrent.BlockingQueue;</div><div class="line">import java.util.concurrent.BrokenBarrierException;</div><div class="line">import java.util.concurrent.CountDownLatch;</div><div class="line">import java.util.concurrent.CyclicBarrier;</div><div class="line">import java.util.concurrent.ExecutorService;</div><div class="line">import java.util.concurrent.Executors;</div><div class="line">import java.util.concurrent.Semaphore;</div><div class="line"></div><div class="line"></div><div class="line">class Producer implements Runnable&#123;</div><div class="line">	private BlockingQueue bq;</div><div class="line">	</div><div class="line">	Producer(BlockingQueue bq)&#123;</div><div class="line">		this.bq = bq;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		while(!Thread.currentThread().isInterrupted())&#123;</div><div class="line">			try &#123;</div><div class="line">				Integer t = new Random().nextInt(100);</div><div class="line">				bq.put(t);</div><div class="line">				System.out.println(&quot;put a &quot; + t + &quot; by &quot; + Thread.currentThread().getName());</div><div class="line">				Thread.sleep(1000);</div><div class="line">			&#125; catch (InterruptedException e) &#123;</div><div class="line">				// TODO Auto-generated catch block</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;</div><div class="line"></div><div class="line">class Customer implements Runnable&#123;</div><div class="line">	private BlockingQueue bq;</div><div class="line">	</div><div class="line">	Customer(BlockingQueue bq)&#123;</div><div class="line">		this.bq = bq;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		while(!Thread.currentThread().isInterrupted())&#123;</div><div class="line">			try &#123;</div><div class="line">				Integer t = (Integer)bq.take();</div><div class="line">				System.out.println(&quot;get a &quot; + t + &quot; by &quot; + Thread.currentThread().getName());</div><div class="line">				Thread.sleep(1000);</div><div class="line">			&#125; catch (InterruptedException e) &#123;</div><div class="line">				// TODO Auto-generated catch block</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class Test &#123;</div><div class="line"></div><div class="line">	public static void main(String[] args) throws InterruptedException &#123;</div><div class="line">		ExecutorService es= Executors.newFixedThreadPool(10); </div><div class="line"></div><div class="line">		BlockingQueue bq = new ArrayBlockingQueue(4);</div><div class="line">		for(int i = 0; i &lt; 5;i++)&#123;</div><div class="line">			es.submit(new Producer(bq));</div><div class="line">			es.submit(new Customer(bq));</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		es.shutdown();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="ArrayBlockingQueue原理分析"><a href="#ArrayBlockingQueue原理分析" class="headerlink" title="ArrayBlockingQueue原理分析"></a>ArrayBlockingQueue原理分析</h2><p>阻塞队列的原理很简单，就是使用了ReentrantLock+Condition来实现线程的同步互斥，每次只有一个线程能够操作目标数组/链表;其他线程则阻塞等待Conditionde singal，下面是其关键的三个函数：</p>
+<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public class ArrayBlockingQueue&lt;E&gt; extends AbstractQueue&lt;E&gt;</div><div class="line">        implements BlockingQueue&lt;E&gt;, java.io.Serializable &#123;</div><div class="line"></div><div class="line">    private static final long serialVersionUID = -817911632652898426L;</div><div class="line">    /** The queued items */</div><div class="line">    final Object[] items;</div><div class="line">    /** items index for next take, poll, peek or remove */</div><div class="line">    int takeIndex;</div><div class="line">    /** items index for next put, offer, or add */</div><div class="line">    int putIndex;</div><div class="line">    /** Number of elements in the queue */</div><div class="line">    int count;</div><div class="line">    final ReentrantLock lock;</div><div class="line">    /** Condition for waiting takes */</div><div class="line">    private final Condition notEmpty;</div><div class="line">    /** Condition for waiting puts */</div><div class="line">    private final Condition notFull;</div><div class="line"> ...省略</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<h3 id="put函数"><a href="#put函数" class="headerlink" title="put函数"></a>put函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public void put(E e) throws InterruptedException &#123;</div><div class="line">        if (e == null) throw new NullPointerException();</div><div class="line">        final ReentrantLock lock = this.lock;</div><div class="line">        lock.lockInterruptibly();</div><div class="line">        try &#123;</div><div class="line">            while (count == items.length)</div><div class="line">                notFull.await();</div><div class="line">            enqueue(e);</div><div class="line">        &#125; finally &#123;</div><div class="line">            lock.unlock();</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="enqueue函数"><a href="#enqueue函数" class="headerlink" title="enqueue函数"></a>enqueue函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">     * Inserts element at current put position, advances, and signals.</div><div class="line">     * Call only when holding lock.</div><div class="line">     */</div><div class="line">    private void enqueue(E x) &#123;</div><div class="line">        // assert lock.getHoldCount() == 1;</div><div class="line">        // assert items[putIndex] == null;</div><div class="line">        final Object[] items = this.items;</div><div class="line">        items[putIndex] = x;</div><div class="line">        if (++putIndex == items.length) putIndex = 0;</div><div class="line">        count++;</div><div class="line">        notEmpty.signal();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="take函数"><a href="#take函数" class="headerlink" title="take函数"></a>take函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public E take() throws InterruptedException &#123;</div><div class="line">        final ReentrantLock lock = this.lock;</div><div class="line">        lock.lockInterruptibly();</div><div class="line">        try &#123;</div><div class="line">            while (count == 0)</div><div class="line">                notEmpty.await();</div><div class="line">            return dequeue();</div><div class="line">        &#125; finally &#123;</div><div class="line">            lock.unlock();</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="dequeue函数"><a href="#dequeue函数" class="headerlink" title="dequeue函数"></a>dequeue函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">private E dequeue() &#123;</div><div class="line">        // assert lock.getHoldCount() == 1;</div><div class="line">        // assert items[takeIndex] != null;</div><div class="line">        final Object[] items = this.items;</div><div class="line">        @SuppressWarnings(&quot;unchecked&quot;)</div><div class="line">        E x = (E) items[takeIndex];</div><div class="line">        items[takeIndex] = null;</div><div class="line">        if (++takeIndex == items.length) takeIndex = 0;</div><div class="line">        count--;</div><div class="line">        if (itrs != null)</div><div class="line">            itrs.elementDequeued();</div><div class="line">        notFull.signal();</div><div class="line">        return x;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>由上可知，基于数组的阻塞队列的实现其实很简单，主要利用了可重入锁保证互斥的操作目标数组，当数组full的时候阻塞写线程await，并等待读进程的唤醒signal;同样的，当数组为空时，阻塞读线程，并等待写线程的唤醒。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/21/Java 动态代理/" rel="next" title="Java ��̬����">
+                <i class="fa fa-chevron-left"></i> Java ��̬����
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="qinzhaokun" />
+          <p class="site-author-name" itemprop="name">qinzhaokun</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/qinzhaokun" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#代码示例"><span class="nav-number">1.</span> <span class="nav-text">代码示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ArrayBlockingQueue原理分析"><span class="nav-number">2.</span> <span class="nav-text">ArrayBlockingQueue原理分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构造函数"><span class="nav-number">2.1.</span> <span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#put函数"><span class="nav-number">2.2.</span> <span class="nav-text">put函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#enqueue函数"><span class="nav-number">2.3.</span> <span class="nav-text">enqueue函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#take函数"><span class="nav-number">2.4.</span> <span class="nav-text">take函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dequeue函数"><span class="nav-number">2.5.</span> <span class="nav-text">dequeue函数</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">大脸猫</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吃鱼</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt3gkj5W';
+      var conf = '6157060596fdd3e86c13f21ba008eb74';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("tXNJWqef5cXXkgOuTliYlvYP-gzGzoHsz", "KyQV3wFCnWrvzEpNLVMrhHBY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
