@@ -1,25 +1,25 @@
 ---
-title: Java ¶¯Ì¬´úÀí
+title: Java åŠ¨æ€ä»£ç†
 date: 2017-08-21
 tags: Java
 categories: Java
 ---
 
-*¶¯Ì¬´úÀí*ÊÇJavaÓïÑÔÒ»¸ö·Ç³£ÖØÒªµÄÌØÐÔ£¬Ò²ÊÇJavaÏà±ÈÆäËûÓïÑÔÒ»¸öÖØÒªµÄÓÅÊÆ£¬ÏÂÃæ¾ÍÀ´Ñ§Ï°Ò»ÏÂ¶¯Ì¬´úÀí¡£
+*åŠ¨æ€ä»£ç†*æ˜¯Javaè¯­è¨€ä¸€ä¸ªéžå¸¸é‡è¦çš„ç‰¹æ€§ï¼Œä¹Ÿæ˜¯Javaç›¸æ¯”å…¶ä»–è¯­è¨€ä¸€ä¸ªé‡è¦çš„ä¼˜åŠ¿ï¼Œä¸‹é¢å°±æ¥å­¦ä¹ ä¸€ä¸‹åŠ¨æ€ä»£ç†ã€‚
 
-## ¾²Ì¬´úÀí
+## é™æ€ä»£ç†
 
-Ê×ÏÈ£¬Òª´Ó¾²Ì¬´úÀí¿ªÊ¼½²Æð¡£ÔÚÉè¼ÆÄ£Ê½ÖÐ£¬¾ÍÓÐ[´úÀíÄ£Ê½](https://qinzhaokun.github.io/2017/08/01/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/)Õâ¸ö¸ÅÄî¡£×Ü½áÒ»ÏÂ£¬´úÀíÄ£Ê½ÄÜÓÐÓÃÒ»¸öÀà´úÀíÁíÒ»¸öÀà£¬Ê¹µÃµ÷ÓÃÕßºÍ±»µ÷ÓÃÕßµÄ·ÖÀë£¬½µµÍÏµÍ³ñîºÏ¶È£¬Í¬Ê±£¬ÆÁ±Î±»µ÷ÓÃÕßÒ»Ð©¹¦ÄÜ£¬´ïµ½¶Ôµ÷ÓÃÕßÈ¨ÏÞ¿ØÖÆµÄ¹¦ÄÜ¡£´ËÍâ£¬»¹ÓÐÒ»¸ö·Ç³£ÖØÒªµÄ¹¦ÄÜ£¬¾ÍÊÇ**²»ÐÞ¸Ä´úÂëµÄÇé¿öÏÂ£¬¶Ô·½·¨½øÐÐÔöÇ¿**¡£
+é¦–å…ˆï¼Œè¦ä»Žé™æ€ä»£ç†å¼€å§‹è®²èµ·ã€‚åœ¨è®¾è®¡æ¨¡å¼ä¸­ï¼Œå°±æœ‰[ä»£ç†æ¨¡å¼](https://qinzhaokun.github.io/2017/08/01/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/)è¿™ä¸ªæ¦‚å¿µã€‚æ€»ç»“ä¸€ä¸‹ï¼Œä»£ç†æ¨¡å¼èƒ½æœ‰ç”¨ä¸€ä¸ªç±»ä»£ç†å¦ä¸€ä¸ªç±»ï¼Œä½¿å¾—è°ƒç”¨è€…å’Œè¢«è°ƒç”¨è€…çš„åˆ†ç¦»ï¼Œé™ä½Žç³»ç»Ÿè€¦åˆåº¦ï¼ŒåŒæ—¶ï¼Œå±è”½è¢«è°ƒç”¨è€…ä¸€äº›åŠŸèƒ½ï¼Œè¾¾åˆ°å¯¹è°ƒç”¨è€…æƒé™æŽ§åˆ¶çš„åŠŸèƒ½ã€‚æ­¤å¤–ï¼Œè¿˜æœ‰ä¸€ä¸ªéžå¸¸é‡è¦çš„åŠŸèƒ½ï¼Œå°±æ˜¯**ä¸ä¿®æ”¹ä»£ç çš„æƒ…å†µä¸‹ï¼Œå¯¹æ–¹æ³•è¿›è¡Œå¢žå¼º**ã€‚
  
-µ«ÊÇ£¬ÔÚÊ¹ÓÃ¾²Ì¬´úÀíÊ±£¬¶ÔÓÚÒ»¸ö±»´úÀí¶ÔÏóµÄÒ»¸ö·½·¨£¬ÎÒÃÇÍùÍùÒªÖØÐÂÐ´Ò»¸öÐÂµÄ·½·¨È¥´úÀíËü£¬µ±·½·¨²»¶ÏÔö¶à£¬ÎÒÃÇ¾ÍÒª²»¶ÏµÄÖØÐ´ÐÂµÄ·½·¨£¬ÊýÁ¿ÊÇÔ­À´µÄÁ½±¶£¬Ôì³É´úÂëÁ¿Ö±ÏßÉÏÉý¡£ÓÉ´ËÒý³ö**¶¯Ì¬´úÀí**£¬ÔÚ³ÌÐòÔËÐÐÊ±¶¯Ì¬Éú³ÉÐÂµÄ·½·¨£¬¸Ã·½·¨ÄÜ¹»´úÀíÄ¿±ê¶ÔÏóµÄÄ¿±ê·½·¨¡£
+ä½†æ˜¯ï¼Œåœ¨ä½¿ç”¨é™æ€ä»£ç†æ—¶ï¼Œå¯¹äºŽä¸€ä¸ªè¢«ä»£ç†å¯¹è±¡çš„ä¸€ä¸ªæ–¹æ³•ï¼Œæˆ‘ä»¬å¾€å¾€è¦é‡æ–°å†™ä¸€ä¸ªæ–°çš„æ–¹æ³•åŽ»ä»£ç†å®ƒï¼Œå½“æ–¹æ³•ä¸æ–­å¢žå¤šï¼Œæˆ‘ä»¬å°±è¦ä¸æ–­çš„é‡å†™æ–°çš„æ–¹æ³•ï¼Œæ•°é‡æ˜¯åŽŸæ¥çš„ä¸¤å€ï¼Œé€ æˆä»£ç é‡ç›´çº¿ä¸Šå‡ã€‚ç”±æ­¤å¼•å‡º**åŠ¨æ€ä»£ç†**ï¼Œåœ¨ç¨‹åºè¿è¡Œæ—¶åŠ¨æ€ç”Ÿæˆæ–°çš„æ–¹æ³•ï¼Œè¯¥æ–¹æ³•èƒ½å¤Ÿä»£ç†ç›®æ ‡å¯¹è±¡çš„ç›®æ ‡æ–¹æ³•ã€‚
 
-## ¶¯Ì¬´úÀí
+## åŠ¨æ€ä»£ç†
 
-¶¯Ì¬´úÀíµÄ¸ÅÄîÉÏÃæÒÑ¾­ËµÁË±È½ÏÇå³þÁË£¬Ö»Òª¼Ç×¡£ºËüµÄÄ¿µÄÊÇ¼õÉÙÁËÒòÎª´úÀíÔì³É·½·¨ÊýÁ¿µÄÔö¶à£¬Ê¹ÓÃÒ»ÖÖ*¹Ø¼ü¼¼Êõ*£¬ÔÚÔËÐÐÊ±¶¯Ì¬Éú³É·½·¨¼´¿É¡£ÏÂÃæ¾Í¾ßÌå¿´¿´¶¯Ì¬´úÀíÕâÖÖ¼¼ÊõÊÇÈçºÎÊµÏÖµÄ¡£
+åŠ¨æ€ä»£ç†çš„æ¦‚å¿µä¸Šé¢å·²ç»è¯´äº†æ¯”è¾ƒæ¸…æ¥šäº†ï¼Œåªè¦è®°ä½ï¼šå®ƒçš„ç›®çš„æ˜¯å‡å°‘äº†å› ä¸ºä»£ç†é€ æˆæ–¹æ³•æ•°é‡çš„å¢žå¤šï¼Œä½¿ç”¨ä¸€ç§*å…³é”®æŠ€æœ¯*ï¼Œåœ¨è¿è¡Œæ—¶åŠ¨æ€ç”Ÿæˆæ–¹æ³•å³å¯ã€‚ä¸‹é¢å°±å…·ä½“çœ‹çœ‹åŠ¨æ€ä»£ç†è¿™ç§æŠ€æœ¯æ˜¯å¦‚ä½•å®žçŽ°çš„ã€‚
 
-### invocationHander½Ó¿Ú
+### invocationHanderæŽ¥å£
 
-ÔÚ¾²Ì¬´úÀíÖÐ£¬ÓÐ´úÀíÀàºÍ±»´úÀíÀàÁ½¸ö½ÇÉ«£¬¶ø¶¯Ì¬´úÀíÖÐ£¬ÒýÈëÁËÖÐ½éÀà£¬ËüÒªÇóÊµÏÖinvocationHandler,½Ó¿ÚµÄ¶¨ÒåÈçÏÂ£º
+åœ¨é™æ€ä»£ç†ä¸­ï¼Œæœ‰ä»£ç†ç±»å’Œè¢«ä»£ç†ç±»ä¸¤ä¸ªè§’è‰²ï¼Œè€ŒåŠ¨æ€ä»£ç†ä¸­ï¼Œå¼•å…¥äº†ä¸­ä»‹ç±»ï¼Œå®ƒè¦æ±‚å®žçŽ°invocationHandler,æŽ¥å£çš„å®šä¹‰å¦‚ä¸‹ï¼š
 ```
 public interface InvocationHandler { 
   
@@ -28,9 +28,9 @@ Object invoke(Object proxy, Method method, Object[] args);
 }
 ```
 
-ÆäÖÐ£¬`invoke`ÊÇÒ»¸ö¹Ø¼üµÄ·½·¨£¬´ÓËüµÄ²ÎÊý¶¨Òå¿ÉÖª£¬Ëü½ÓÊÕÈý¸ö²ÎÊý£¬·Ö±ðÊÇ´úÀí¶ÔÏó£¬·½·¨ºÍ·½·¨²ÎÊý¡£**µ±ÎÒÃÇµ÷ÓÃ´úÀí¶ÔÏóµÄÄ³¸ö·½·¨Ê±£¬»á×ª¶ø½øÈëinvoke·½·¨**¡£**µ±ÎÒÃÇµ÷ÓÃ´úÀí¶ÔÏóµÄÄ³¸ö·½·¨Ê±£¬»á×ª¶ø½øÈëinvoke·½·¨**¡£
+å…¶ä¸­ï¼Œ`invoke`æ˜¯ä¸€ä¸ªå…³é”®çš„æ–¹æ³•ï¼Œä»Žå®ƒçš„å‚æ•°å®šä¹‰å¯çŸ¥ï¼Œå®ƒæŽ¥æ”¶ä¸‰ä¸ªå‚æ•°ï¼Œåˆ†åˆ«æ˜¯ä»£ç†å¯¹è±¡ï¼Œæ–¹æ³•å’Œæ–¹æ³•å‚æ•°ã€‚**å½“æˆ‘ä»¬è°ƒç”¨ä»£ç†å¯¹è±¡çš„æŸä¸ªæ–¹æ³•æ—¶ï¼Œä¼šè½¬è€Œè¿›å…¥invokeæ–¹æ³•**ã€‚**å½“æˆ‘ä»¬è°ƒç”¨ä»£ç†å¯¹è±¡çš„æŸä¸ªæ–¹æ³•æ—¶ï¼Œä¼šè½¬è€Œè¿›å…¥invokeæ–¹æ³•**ã€‚
 
-ÏÂÃæÎÒÃÇ¶¨ÒåÒ»¸ö±»´úÀíÀà`Cat`
+ä¸‹é¢æˆ‘ä»¬å®šä¹‰ä¸€ä¸ªè¢«ä»£ç†ç±»`Cat` 
 
 ```
 public class Cat implemtents Eat{
@@ -44,11 +44,11 @@ public class Cat implemtents Eat{
 }
 ```
 
-ÖÐ½éÀàÐèÒªÊµÏÖÖ¸¶¨½Ó¿Ú£º
+ä¸­ä»‹ç±»éœ€è¦å®žçŽ°æŒ‡å®šæŽ¥å£ï¼š
 ```
 public class DynamicProxy implements InvocationHandler { 
   
-	private Object obj; //objÎªÎ¯ÍÐÀà¶ÔÏó; 
+	private Object obj; //objä¸ºå§”æ‰˜ç±»å¯¹è±¡; 
   
 	public DynamicProxy(Object obj) { 
   
@@ -72,30 +72,30 @@ public class DynamicProxy implements InvocationHandler {
 } 
 ```
 
-ÖÐ½éÀà³ÖÓÐÒ»¸ö±»´úÀíÀàµÄ¶ÔÏó£¬²¢ÇÒÔÚ¹Ø¼üµÄ`invoke`·½·¨ÖÐ£¬µ÷ÓÃÕæÕýµÄ´úÀí·½·¨methodÇ°ºó£¬¶Ô·½·¨½øÐÐÁËÔöÇ¿¡£ÖÐ½éÀàÓë±»´úÀíÀà¹¹³ÉÁË¾²Ì¬´úÀí¹ØÏµ£¬¶¯Ì¬´úÀí¹ØÏµÓÉÁ½×é¾²Ì¬´úÀí¹ØÏµ×é³É£¬Õâ¾ÍÊÇ¶¯Ì¬´úÀíµÄÔ­Àí¡£
+ä¸­ä»‹ç±»æŒæœ‰ä¸€ä¸ªè¢«ä»£ç†ç±»çš„å¯¹è±¡ï¼Œå¹¶ä¸”åœ¨å…³é”®çš„`invoke`æ–¹æ³•ä¸­ï¼Œè°ƒç”¨çœŸæ­£çš„ä»£ç†æ–¹æ³•methodå‰åŽï¼Œå¯¹æ–¹æ³•è¿›è¡Œäº†å¢žå¼ºã€‚ä¸­ä»‹ç±»ä¸Žè¢«ä»£ç†ç±»æž„æˆäº†é™æ€ä»£ç†å…³ç³»ï¼ŒåŠ¨æ€ä»£ç†å…³ç³»ç”±ä¸¤ç»„é™æ€ä»£ç†å…³ç³»ç»„æˆï¼Œè¿™å°±æ˜¯åŠ¨æ€ä»£ç†çš„åŽŸç†ã€‚
 
-½Ó×Å¾ÍÊÇ×îÖØÒªµÄ²¿·Ö£¬ÌåÏÖºÎÎ½¶¯Ì¬¡£
+æŽ¥ç€å°±æ˜¯æœ€é‡è¦çš„éƒ¨åˆ†ï¼Œä½“çŽ°ä½•è°“åŠ¨æ€ã€‚
 
-¶¯Ì¬Éú³É´úÀíÀà
+åŠ¨æ€ç”Ÿæˆä»£ç†ç±»
 
 ```
 public class Main { 
   
 	public static void main(String[] args) { 
   
-	//´´½¨ÖÐ½éÀàÊµÀý 
+	//åˆ›å»ºä¸­ä»‹ç±»å®žä¾‹ 
   
 	DynamicProxy inter = new DynamicProxy(new Cat()); 
   
-	//¼ÓÉÏÕâ¾ä½«»á²úÉúÒ»¸ö$Proxy0.classÎÄ¼þ£¬Õâ¸öÎÄ¼þ¼´Îª¶¯Ì¬Éú³ÉµÄ´úÀíÀàÎÄ¼þ 
+	//åŠ ä¸Šè¿™å¥å°†ä¼šäº§ç”Ÿä¸€ä¸ª$Proxy0.classæ–‡ä»¶ï¼Œè¿™ä¸ªæ–‡ä»¶å³ä¸ºåŠ¨æ€ç”Ÿæˆçš„ä»£ç†ç±»æ–‡ä»¶ 
   
 	System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles","true"); 
   
-	//»ñÈ¡´úÀíÀàÊµÀýsell 
+	//èŽ·å–ä»£ç†ç±»å®žä¾‹sell 
   
 	Eat catEat = (Eat)(Proxy.newProxyInstance(Eat.class.getClassLoader(), new Class[] {Eat.class}, inter)); 
   
-	//Í¨¹ý´úÀíÀà¶ÔÏóµ÷ÓÃ´úÀíÀà·½·¨£¬Êµ¼ÊÉÏ»á×ªµ½invoke·½·¨µ÷ÓÃ 
+	//é€šè¿‡ä»£ç†ç±»å¯¹è±¡è°ƒç”¨ä»£ç†ç±»æ–¹æ³•ï¼Œå®žé™…ä¸Šä¼šè½¬åˆ°invokeæ–¹æ³•è°ƒç”¨ 
   
 	catEat.eat(); 
   
@@ -106,20 +106,20 @@ public class Main {
 } 
 ```
 
-´´½¨ÖÐ½éÀàÊµÀýºó£¬Ê¹ÓÃProxyÀàµÄ¾²Ì¬·½·¨`newProxyInstance`·½·¨´´½¨´úÀíÀà£¬¸Ã·½·¨µÄ²ÎÊýÒ²ºÜÖØÒª£¬ÓÐÈý¸ö£º
+åˆ›å»ºä¸­ä»‹ç±»å®žä¾‹åŽï¼Œä½¿ç”¨Proxyç±»çš„é™æ€æ–¹æ³•`newProxyInstance`æ–¹æ³•åˆ›å»ºä»£ç†ç±»ï¼Œè¯¥æ–¹æ³•çš„å‚æ•°ä¹Ÿå¾ˆé‡è¦ï¼Œæœ‰ä¸‰ä¸ªï¼š
 ```
 public static Object newProxyInstance(ClassLoader loader, Class<?>[] interfaces, InvocationHandler h) throws IllegalArgumentException
 ```
 
-·Ö±ðÊÇ´úÀíÀàÀà¼ÓÔØÆ÷£¬´úÀíÀàÊµÏÖµÄ½Ó¿ÚºÍÖÐ½éÀàµÄÊµÀý¡£
+åˆ†åˆ«æ˜¯ä»£ç†ç±»ç±»åŠ è½½å™¨ï¼Œä»£ç†ç±»å®žçŽ°çš„æŽ¥å£å’Œä¸­ä»‹ç±»çš„å®žä¾‹ã€‚
 
-## ÊµÏÖÔ­Àí
+## å®žçŽ°åŽŸç†
 
-Õâ²¿·ÖÒ»¶¨ÊÇ×îÄÑµÄ£¬JDKÌá¹©ÁËÒ»¸ö¶¯Ì¬Éú³ÉÀàµÄ·½·¨£¬²¢ÇÒËüÍêÈ«ÓÐÄÜÁ¦Éú³ÉÕâÑùµÄ·½·¨¡£Õû¸ö»úÖÆµÄÊµÏÖ¹Ø¼ü¾ÍÔÚ`newProxyInstance`Õâ£¬Ô´ÂëÃ»ÓÐ×ÐÏ¸ÔÄ¶Á£¬±Ï¾¹¶Á²»¶®£¬¿´ÁËÍøÉÏ²©¿ÍµÄ×Ü½á£¬Ô­ÀíÆäÊµ²»ÄÑ¡£ËüÖ÷ÒªÓÐÈý¸ö²½Öè£¬1. Éú³É´úÀíÀà£»2. µÃµ½´úÀíÀàµÄ¹¹Ôì·½·¨£»3. µ÷ÓÃ¹¹Ôì·½·¨Éú³É´úÀí¶ÔÏó·µ»Ø¡£¼òµ¥ä¯ÀÀÁËÒ»ÏÂ£¬ÔÚÉú³É´úÀíÀàÖÐ£¬Ê¹ÓÃÁËconcurrentMapÊµÏÖÀàµÄ»º´æ£¬Ê¹ÓÃÁËCASÊµÏÖÁËÏß³Ì°²È«µÈ£¬×îÖÕÉú³ÉÀàµÄ×Ö½ÚÂë¡£
+è¿™éƒ¨åˆ†ä¸€å®šæ˜¯æœ€éš¾çš„ï¼ŒJDKæä¾›äº†ä¸€ä¸ªåŠ¨æ€ç”Ÿæˆç±»çš„æ–¹æ³•ï¼Œå¹¶ä¸”å®ƒå®Œå…¨æœ‰èƒ½åŠ›ç”Ÿæˆè¿™æ ·çš„æ–¹æ³•ã€‚æ•´ä¸ªæœºåˆ¶çš„å®žçŽ°å…³é”®å°±åœ¨`newProxyInstance`è¿™ï¼Œæºç æ²¡æœ‰ä»”ç»†é˜…è¯»ï¼Œæ¯•ç«Ÿè¯»ä¸æ‡‚ï¼Œçœ‹äº†ç½‘ä¸Šåšå®¢çš„æ€»ç»“ï¼ŒåŽŸç†å…¶å®žä¸éš¾ã€‚å®ƒä¸»è¦æœ‰ä¸‰ä¸ªæ­¥éª¤ï¼Œ1. ç”Ÿæˆä»£ç†ç±»ï¼›2. å¾—åˆ°ä»£ç†ç±»çš„æž„é€ æ–¹æ³•ï¼›3. è°ƒç”¨æž„é€ æ–¹æ³•ç”Ÿæˆä»£ç†å¯¹è±¡è¿”å›žã€‚ç®€å•æµè§ˆäº†ä¸€ä¸‹ï¼Œåœ¨ç”Ÿæˆä»£ç†ç±»ä¸­ï¼Œä½¿ç”¨äº†concurrentMapå®žçŽ°ç±»çš„ç¼“å­˜ï¼Œä½¿ç”¨äº†CASå®žçŽ°äº†çº¿ç¨‹å®‰å…¨ç­‰ï¼Œæœ€ç»ˆç”Ÿæˆç±»çš„å­—èŠ‚ç ã€‚
 
-µÃµ½´úÀí¶ÔÏóºó£¬µ÷ÓÃÖ¸¶¨·½·¨£¬ÊÇÔõÑùÒ»¸öµ÷ÓÃ¹ý³ÌÄØ£¿
+å¾—åˆ°ä»£ç†å¯¹è±¡åŽï¼Œè°ƒç”¨æŒ‡å®šæ–¹æ³•ï¼Œæ˜¯æ€Žæ ·ä¸€ä¸ªè°ƒç”¨è¿‡ç¨‹å‘¢ï¼Ÿ
 
-ÒÔÏÂÊÇÍøÉÏÓÐÈË·´±àÒë¶¯Ì¬Éú³ÉµÄ´úÀíÀàµÃµ½´úÂë£º
+ä»¥ä¸‹æ˜¯ç½‘ä¸Šæœ‰äººåç¼–è¯‘åŠ¨æ€ç”Ÿæˆçš„ä»£ç†ç±»å¾—åˆ°ä»£ç ï¼š
 
 ```
 final class $Proxy0 extends Proxy implements pro {
@@ -155,7 +155,7 @@ final class $Proxy0 extends Proxy implements pro {
 
         public final void text() throws  {
             try {
-                //Êµ¼Ê¾ÍÊÇµ÷ÓÃÖÐ½éÀàµÄinvoke·½·¨ 
+                //å®žé™…å°±æ˜¯è°ƒç”¨ä¸­ä»‹ç±»çš„invokeæ–¹æ³• 
                 super.h.invoke(this, m3, (Object[])null);
             } catch (RuntimeException | Error var2) {
                 throw var2;
@@ -176,7 +176,7 @@ final class $Proxy0 extends Proxy implements pro {
 
         static {
             try {
-                //ÕâÀïÃ¿¸ö·½·¨¶ÔÏó ºÍÀàµÄÊµ¼Ê·½·¨°ó¶¨
+                //è¿™é‡Œæ¯ä¸ªæ–¹æ³•å¯¹è±¡ å’Œç±»çš„å®žé™…æ–¹æ³•ç»‘å®š
                 m1 = Class.forName("java.lang.Object").getMethod("equals", new Class[]{Class.forName("java.lang.Object")});
                 m2 = Class.forName("java.lang.Object").getMethod("toString", new Class[0]);
                 m3 = Class.forName("spring.commons.api.study.CreateModel.pro").getMethod("text", new Class[0]);
@@ -190,22 +190,22 @@ final class $Proxy0 extends Proxy implements pro {
     }
 ```
 
-ÆäÖÐ£¬´úÀíÀàÖÐ`text()`º¯ÊýµÄµ÷ÓÃ£¬×îÖÕÊÇÖÐ½éÀàµÄ`invoke`º¯Êý£¬¶ø·½·¨m3ÊÇ½Ó¿Ú·½·¨£¬¼´ÉÏÃæ´úÂëµÄEat½Ó¿ÚµÄ·½·¨¡£
+å…¶ä¸­ï¼Œä»£ç†ç±»ä¸­`text()`å‡½æ•°çš„è°ƒç”¨ï¼Œæœ€ç»ˆæ˜¯ä¸­ä»‹ç±»çš„`invoke`å‡½æ•°ï¼Œè€Œæ–¹æ³•m3æ˜¯æŽ¥å£æ–¹æ³•ï¼Œå³ä¸Šé¢ä»£ç çš„EatæŽ¥å£çš„æ–¹æ³•ã€‚
 
-ÒÔÉÏ´úÂë×î¹Ø¼üµÄ¾ÍÊÇ£º
+ä»¥ä¸Šä»£ç æœ€å…³é”®çš„å°±æ˜¯ï¼š
 
 ```
 super.h.invoke(this, m3, (Object[])null);
 ```
 
-ÎÒµÄÀí½âÊÇ£¬µ±Ö´ÐÐ´úÀí¶ÔÏóµÄeat·½·¨Ê±£¬¸Ã·½·¨»áµ÷ÓÃ¸¸ÀàµÄhÊµÀýµÄinvoke·½·¨£¬¶ø¸¸ÀàÊÇProxy¹«¹²Àà£¬¶øhÊÇÒ»¸ö`InvocationHandler`µÄÖ¸Õë£¬ËüÖ¸ÏòÁË`DynamicProxy`ÊµÀý£¬½ü¶øµ÷ÓÃÁËÎÒÃÇ×Ô¼ºÔÚ`DynamicProxy`ÖÐ±àÐ´µÄ`invoke`·½·¨¡£¶ø´«½øÈ¥µÄÈý¸ö²ÎÊý£¬µÚÒ»¸öÊÇ´úÀíÀà±¾ÉíthisÖ¸Õë£¬¸öÈËÈÏÎªÃ»ÓÃ£»µÚ¶þÊÇ±»´úÀíÀàÊµÏÖµÄ½Ó¿Ú·½·¨£»µÚÈý¸öÊÇ²ÎÊýÁÐ±í¡£Ëü¸æËßÁËÎÒÃÇ`DynamicProxy`µÄinvoke£¬¸Ãµ÷ÓÃÊ²Ã´·½·¨£¬²ÎÊýÊÇÊ²Ã´£¿¶øÔÚÎÒÃÇ×Ô¼º±àÐ´µÄ`DynamicProxy`µÄ`invoke`·½·¨ÖÐ£¬ÓÐÕâÑùÒ»¾ä¹Ø¼üµ÷ÓÃ
+æˆ‘çš„ç†è§£æ˜¯ï¼Œå½“æ‰§è¡Œä»£ç†å¯¹è±¡çš„eatæ–¹æ³•æ—¶ï¼Œè¯¥æ–¹æ³•ä¼šè°ƒç”¨çˆ¶ç±»çš„hå®žä¾‹çš„invokeæ–¹æ³•ï¼Œè€Œçˆ¶ç±»æ˜¯Proxyå…¬å…±ç±»ï¼Œè€Œhæ˜¯ä¸€ä¸ª`InvocationHandler`çš„æŒ‡é’ˆï¼Œå®ƒæŒ‡å‘äº†`DynamicProxy`å®žä¾‹ï¼Œè¿‘è€Œè°ƒç”¨äº†æˆ‘ä»¬è‡ªå·±åœ¨`DynamicProxy`ä¸­ç¼–å†™çš„`invoke`æ–¹æ³•ã€‚è€Œä¼ è¿›åŽ»çš„ä¸‰ä¸ªå‚æ•°ï¼Œç¬¬ä¸€ä¸ªæ˜¯ä»£ç†ç±»æœ¬èº«thisæŒ‡é’ˆï¼Œä¸ªäººè®¤ä¸ºæ²¡ç”¨ï¼›ç¬¬äºŒæ˜¯è¢«ä»£ç†ç±»å®žçŽ°çš„æŽ¥å£æ–¹æ³•ï¼›ç¬¬ä¸‰ä¸ªæ˜¯å‚æ•°åˆ—è¡¨ã€‚å®ƒå‘Šè¯‰äº†æˆ‘ä»¬`DynamicProxy`çš„invokeï¼Œè¯¥è°ƒç”¨ä»€ä¹ˆæ–¹æ³•ï¼Œå‚æ•°æ˜¯ä»€ä¹ˆï¼Ÿè€Œåœ¨æˆ‘ä»¬è‡ªå·±ç¼–å†™çš„`DynamicProxy`çš„`invoke`æ–¹æ³•ä¸­ï¼Œæœ‰è¿™æ ·ä¸€å¥å…³é”®è°ƒç”¨
 
 ```
 Object result = method.invoke(obj, args);
 ```
 
-´Ë´¦¾ÍÊÇÓÃÁË*·´Éä*»úÖÆ£¬objÊÇ±»´úÀíÀà£¬¶ømethodÊÇ´úÀíÀà´´½¨À´µÄ½Ó¿Ú·½·¨£¬ÕâÑùÎÒÃÇ¾ÍÄÜµ÷ÓÃ±»´úÀíÀàµÄmethod·½·¨¡£µ±È»Ç°ÌáÊÇ±»´úÀíÀàÒªÊµÏÖ¸Ã½Ó¿Ú·½·¨¡£
+æ­¤å¤„å°±æ˜¯ç”¨äº†*åå°„*æœºåˆ¶ï¼Œobjæ˜¯è¢«ä»£ç†ç±»ï¼Œè€Œmethodæ˜¯ä»£ç†ç±»åˆ›å»ºæ¥çš„æŽ¥å£æ–¹æ³•ï¼Œè¿™æ ·æˆ‘ä»¬å°±èƒ½è°ƒç”¨è¢«ä»£ç†ç±»çš„methodæ–¹æ³•ã€‚å½“ç„¶å‰ææ˜¯è¢«ä»£ç†ç±»è¦å®žçŽ°è¯¥æŽ¥å£æ–¹æ³•ã€‚
 
-### ×Ü½á
+### æ€»ç»“
 
-Í¨¹ý¶¯Ì¬Éú³É´úÀíÀà£¬´úÀíÀà¼Ì³Ð×ÖProxy£¬¶øÔÚProxyÖÐ£¬ÓÐÒ»¸öhµÄ³ÉÔ±±äÁ¿Ö¸ÏòÁË`DynamicProxy`ÊµÀý¡£µ±ÎÒÃÇÒªµ÷ÓÃ´úÀíÀàµÄ·½·¨Ê±£¬Í¨¹ý`super.h.invoke(this,method,Object[] args)`¸æËß`DynamicProxy`ÖÐµÄinvokeÒªµ÷ÓÃ±»´úÀíÀàµÄÄÄ¸ö·½·¨£¬·½·¨µÄ²ÎÊýÊÇÊ²Ã´£¿¶ø×îÖÕÓÉ`DynamicProxy`È¥Ê¹ÓÃ·´Éä½øÐÐÕæÕýµÄµ÷ÓÃ£¬Í¬Ê±ÔÚÇ°ºó×Ô¶¨Òå·½·¨ÔöÇ¿²Ù×÷¡£
+é€šè¿‡åŠ¨æ€ç”Ÿæˆä»£ç†ç±»ï¼Œä»£ç†ç±»ç»§æ‰¿å­—Proxyï¼Œè€Œåœ¨Proxyä¸­ï¼Œæœ‰ä¸€ä¸ªhçš„æˆå‘˜å˜é‡æŒ‡å‘äº†`DynamicProxy`å®žä¾‹ã€‚å½“æˆ‘ä»¬è¦è°ƒç”¨ä»£ç†ç±»çš„æ–¹æ³•æ—¶ï¼Œé€šè¿‡`super.h.invoke(this,method,Object[] args)`å‘Šè¯‰`DynamicProxy`ä¸­çš„invokeè¦è°ƒç”¨è¢«ä»£ç†ç±»çš„å“ªä¸ªæ–¹æ³•ï¼Œæ–¹æ³•çš„å‚æ•°æ˜¯ä»€ä¹ˆï¼Ÿè€Œæœ€ç»ˆç”±`DynamicProxy`åŽ»ä½¿ç”¨åå°„è¿›è¡ŒçœŸæ­£çš„è°ƒç”¨ï¼ŒåŒæ—¶åœ¨å‰åŽè‡ªå®šä¹‰æ–¹æ³•å¢žå¼ºæ“ä½œã€‚
