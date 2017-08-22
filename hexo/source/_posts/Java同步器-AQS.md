@@ -1,5 +1,5 @@
 ---
-title: Java同步器-AQS.md
+title: Java同步器-AQS
 date: 2017-08-17
 tags: Java
 categories: Java
