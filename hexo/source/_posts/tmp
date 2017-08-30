@@ -1,0 +1,280 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.util.Iterator;
+import java.util.Set;
+
+public class RPCServer {
+	
+	
+	public static void main(String[] args) throws IOException {
+		
+		Selector mainSelector = Selector.open();
+		
+		ServerSocketChannel ssc = ServerSocketChannel.open();
+		
+		ssc.configureBlocking(false);
+		
+		ssc.bind(new InetSocketAddress(8080));
+		
+		ssc.register(mainSelector, SelectionKey.OP_ACCEPT);
+		
+		int coreNum = Runtime.getRuntime().availableProcessors();
+		
+		Processor [] processor = new Processor[coreNum];
+		
+		for(int i = 0; i < coreNum; i++){
+			processor[i] = new Processor();
+		}
+		
+		int index = 0;
+		while(!Thread.currentThread().isInterrupted()){
+			mainSelector.select();
+			Set<SelectionKey> keys = mainSelector.selectedKeys();
+			Iterator<SelectionKey> iter = keys.iterator();
+			while(iter.hasNext()){
+				SelectionKey key = iter.next();
+				if(key.isAcceptable()){
+					SocketChannel socketChannel = ((ServerSocketChannel)key.channel()).accept();
+					socketChannel.configureBlocking(false);
+					processor[index++ % coreNum].register(socketChannel, SelectionKey.OP_READ);
+					processor[(index-1) % coreNum].wakeup();
+				}
+				
+				iter.remove();
+				//
+				if(index == coreNum){
+					index = 0;
+				}
+			}
+		}
+		
+	}
+
+}
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
+import java.nio.channels.ClosedChannelException;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.SocketChannel;
+import java.nio.channels.spi.SelectorProvider;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import netdata.RpcRequest;
+
+public class Processor {
+	private Selector selector;
+	
+	private ByteBuffer buffer;
+	private static final Map<String, Class<?>> serverMethods = new HashMap();
+
+	
+	private static final ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+	
+	Processor() throws IOException{
+		selector = SelectorProvider.provider().openSelector();
+		serverMethods.put("serviceInterface.HelloWorld", LiMing.class);
+		buffer = ByteBuffer.allocate(1024);
+		start();
+	}
+	
+	public void register(SocketChannel sc, int key) throws ClosedChannelException{
+		sc.register(selector, key);
+	}
+	public void wakeup() {
+		this.selector.wakeup();
+    }
+	
+	private void start(){
+		es.submit(() -> {
+			while(!Thread.currentThread().isInterrupted()){
+				try {
+			        if (selector.select(500) <= 0) {
+			            continue;
+			          }
+					//System.out.println("get three " + Thread.currentThread().getName());
+					Set<SelectionKey> keys = selector.selectedKeys();
+					Iterator<SelectionKey> iter = keys.iterator();
+					while(iter.hasNext()){
+						SelectionKey key = iter.next();
+						iter.remove();
+						if (key.isReadable()) {
+							SocketChannel sc = (SocketChannel)key.channel();
+							RpcRequest req = read(sc);
+							if(req != null){
+								Object obj = invoke(req);
+								System.out.println(obj);
+								sc.write(ByteBuffer.wrap(obj.toString().getBytes()));
+						
+							}
+							
+						}
+					}
+				} catch (Exception e) {
+
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	private RpcRequest read(SocketChannel channel) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+        int count = channel.read(buffer);   
+        RpcRequest req = null;
+        if (count > 0) {   
+            buffer.flip(); 
+            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(buffer.array()));
+            //String message = new String(buffer.array());
+            //req = new RpcRequest(message); 
+            req = (RpcRequest)ois.readObject();
+        } else {   
+            channel.close();   
+        }   
+        buffer.clear(); 
+        return req;
+	}
+	
+	private Object invoke(RpcRequest req) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException{
+		Class<?> service = serverMethods.get(req.getClassName());
+		
+		Method method = service.getMethod(req.getMethodName(), req.getParamTypes());
+		
+		Object ret = method.invoke(service.newInstance(), req.getParams());
+	
+		return ret;
+	}
+}
+
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+import netdata.RpcRequest;
+import serviceInterface.HelloWorld;
+//import ;
+public class DynamicProxy implements InvocationHandler{
+
+/*	@Override
+	public Object invoke(Object object, Method method, Object[] params) throws Throwable {
+		Socket socket = new Socket("127.0.0.1", 8080);
+		socket.setSoTimeout(60000);
+       
+        PrintWriter printWriter =new PrintWriter(socket.getOutputStream(),true);
+        
+        
+        String message = "1;"+HelloWorld.class.getName()+";"+method.getName()+";";
+        for(int i = 0; i < params.length; i++){
+        	message += params[i].getClass().getName();
+        	if(i != params.length - 1){
+        		message += ",";
+        	}
+        }
+        message += ";";
+        for(int i = 0; i < params.length; i++){
+        	message += params[i].toString();
+        	if(i != params.length - 1){
+        		message += ",";
+        	}
+        }
+        printWriter.println(message);
+        // 刷新输出流，使Server马上收到该字符串
+        printWriter.flush();
+
+
+        BufferedReader bufferedReader =new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+        String result = bufferedReader.readLine();
+
+        Class<?> c = method.getReturnType();
+        Object ret = c.getConstructor(result.getClass()).newInstance(result);
+
+       
+        printWriter.close();
+        
+		return ret;
+	}
+*/
+	
+	@Override
+	public Object invoke(Object object, Method method, Object[] params) throws Throwable {
+		Socket socket = new Socket("127.0.0.1", 8080);
+		//socket.setSoTimeout(60000);
+        /** 发送客户端准备传输的信息 */
+        ObjectOutputStream printWriter =new ObjectOutputStream(socket.getOutputStream());
+        // 将输入读入的字符串输出到Server
+        //BufferedReader sysBuff =new BufferedReader(new InputStreamReader(System.in));
+        String message = "1;"+HelloWorld.class.getName()+";"+method.getName()+";";
+        for(int i = 0; i < params.length; i++){
+        	message += params[i].getClass().getName();
+        	if(i != params.length - 1){
+        		message += ",";
+        	}
+        }
+        message += ";";
+        for(int i = 0; i < params.length; i++){
+        	message += params[i].toString();
+        	if(i != params.length - 1){
+        		message += ",";
+        	}
+        }
+        
+        System.out.println(message);
+        
+        RpcRequest req = new RpcRequest(message);
+        printWriter.writeObject(req);
+        // 刷新输出流，使Server马上收到该字符串
+        printWriter.flush();
+
+
+        BufferedReader bufferedReader =new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+        String result = bufferedReader.readLine();
+
+        Class<?> c = method.getReturnType();
+        Object ret = c.getConstructor(result.getClass()).newInstance(result);
+
+        /** 关闭Socket*/
+        printWriter.close();
+        
+		return ret;
+	}
+	
+	public static HelloWorld getProxy(){
+
+		return (HelloWorld)Proxy.newProxyInstance(HelloWorld.class.getClassLoader(), new Class[]{HelloWorld.class}, new DynamicProxy());
+	}
+	
+	
+
+}
+
+
