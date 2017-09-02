@@ -1,0 +1,955 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="对一个对象进行序列化，是java中一个非常重要应用，它是将对象持久化的重要手段，并且在对象的网络传输中也发挥中重要的作用。一般，对象的生命周期不会比长，如果在JVM运行结束后，需要将对象保存下来，就必须将其持久化。存入数据库是一个比较好的持久化方式，但是需要在数据库中建表，而将其序列化保存到磁盘或传输到远端网络则更方便些。对象的序列化不会存储类的静态变量 基本用法序列化的基本用法比较简单，主要依赖">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 序列化">
+<meta property="og:url" content="http://yoursite.com/2017/08/28/Java 序列化/index.html">
+<meta property="og:site_name" content="Hello, World">
+<meta property="og:description" content="对一个对象进行序列化，是java中一个非常重要应用，它是将对象持久化的重要手段，并且在对象的网络传输中也发挥中重要的作用。一般，对象的生命周期不会比长，如果在JVM运行结束后，需要将对象保存下来，就必须将其持久化。存入数据库是一个比较好的持久化方式，但是需要在数据库中建表，而将其序列化保存到磁盘或传输到远端网络则更方便些。对象的序列化不会存储类的静态变量 基本用法序列化的基本用法比较简单，主要依赖">
+<meta property="og:updated_time" content="2017-09-02T06:43:55.044Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java 序列化">
+<meta name="twitter:description" content="对一个对象进行序列化，是java中一个非常重要应用，它是将对象持久化的重要手段，并且在对象的网络传输中也发挥中重要的作用。一般，对象的生命周期不会比长，如果在JVM运行结束后，需要将对象保存下来，就必须将其持久化。存入数据库是一个比较好的持久化方式，但是需要在数据库中建表，而将其序列化保存到磁盘或传输到远端网络则更方便些。对象的序列化不会存储类的静态变量 基本用法序列化的基本用法比较简单，主要依赖">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/28/Java 序列化/"/>
+
+
+
+
+
+  <title>Java 序列化 | Hello, World</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello, World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/28/Java 序列化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qinzhaokun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello, World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java 序列化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-28T00:00:00+08:00">
+                2017-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/08/28/Java 序列化/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/08/28/Java 序列化/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/08/28/Java 序列化/" class="leancloud_visitors" data-flag-title="Java 序列化">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>对一个对象进行序列化，是java中一个非常重要应用，它是将对象持久化的重要手段，并且在对象的网络传输中也发挥中重要的作用。一般，<strong>对象的生命周期不会比长</strong>，如果在JVM运行结束后，需要将对象保存下来，就必须将其持久化。存入数据库是一个比较好的持久化方式，但是需要在数据库中建表，而将其序列化保存到磁盘或传输到远端网络则更方便些。<strong>对象的序列化不会存储类的静态变量</strong></p>
+<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><p>序列化的基本用法比较简单，主要依赖以下几个步骤：</p>
+<ol>
+<li><p>对象的类必须实现<code>java.io.Serializable</code>接口，表示它能被序列化，这仅仅是一个标记接口</p>
+</li>
+<li><p>通过<code>ObjectOutputStream</code>和<code>ObjectInputStream</code>对对象进行序列化和反序列化，调用其<code>writeObject</code>和<code>readOject</code>方法</p>
+</li>
+<li><p>序列化ID, <code>private static final long serialVersionUID</code></p>
+</li>
+<li><p>无法序列化类的静态变量</p>
+</li>
+<li><p>如果父类的成员也需要被序列化，则父类也实现现<code>java.io.Serializable</code>接口；如果父类实现了序列化的接口，子类自动继承了序列化的功能</p>
+</li>
+<li><p>关键字<code>Transient</code>可以阻止变量被序列化；在反序列化中，被该关键字修饰的变量被赋为0或null</p>
+</li>
+</ol>
+<p>疑问：对于私有成员变量，如果没有显示的设置getter和setter，它同样能够被序列化和反序列化，这是，私有数据变量就会泄漏。这样做看似也是合理的，因为在类的声明时，既然已经定义了实现<code>Serializable</code>，就不应该把相对敏感和隐私的数据放在这个对象里。</p>
+<h3 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">class User implements Seiralizable&#123;</div><div class="line">  private String name;</div><div class="line">  private int age;</div><div class="line">  </div><div class="line">  public String getName()&#123;</div><div class="line">    return name;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  public void setName(String name)&#123;</div><div class="line">    this.name = name;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  public Int getAge()&#123;</div><div class="line">    return age;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  public void setAge(int age)&#123;</div><div class="line">    this.age = age;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class Test&#123;</div><div class="line">  public static void main(string [] args)&#123;</div><div class="line">    User user = new User();</div><div class="line">    user.setName(&quot;Jack&quot;);</div><div class="line">    user.setAge(19);</div><div class="line">    </div><div class="line">     ObjectOutputStream oos = null;</div><div class="line">        try &#123;</div><div class="line">            oos = new ObjectOutputStream(new FileOutputStream(&quot;tempFile&quot;));</div><div class="line">            oos.writeObject(user);</div><div class="line">        &#125; catch (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; </div><div class="line"></div><div class="line">        //Read Obj from File</div><div class="line">     File file = new File(&quot;tempFile&quot;);</div><div class="line">     ObjectInputStream ois = null;</div><div class="line">        try &#123;</div><div class="line">            ois = new ObjectInputStream(new FileInputStream(file));</div><div class="line">            User newUser = (User) ois.readObject();</div><div class="line">            System.out.println(newUser);</div><div class="line">        &#125; catch (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; catch (ClassNotFoundException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; </div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="自定义序列化方式"><a href="#自定义序列化方式" class="headerlink" title="自定义序列化方式"></a>自定义序列化方式</h2><p>如上的基本用法，使用的是Java默认的序列化方式，调用是 ObjectOutputStream 的 defaultWriteObject 方法以及 ObjectInputStream 的 defaultReadObject 方法，对于一般的POJO，也是没有问题的，省时省力，但是如果对对于需要特殊处理的字段，拥有不同其他变量的序列化方式，则需要自定义<code>writeObject</code>和<code>readObject</code></p>
+<p>什么时候需要自定义序列化方式的的？下面总结了一下几种情况：</p>
+<ol>
+<li><p>成员变量一定要序列化，且需要加密处理</p>
+</li>
+<li><p>存储优化，只想保存成员变量的部分数据，而不是全部数据，典型的是成员变量时一个数组，有很多null元素，如ArrayList</p>
+</li>
+<li><p>成员变量是一个类的对象，该对象没有实现序列化接口</p>
+</li>
+</ol>
+<blockquote>
+<p>在序列化过程中，如果被序列化的类中定义了writeObject 和 readObject 方法，虚拟机会试图调用对象类里的 writeObject 和 readObject 方法，进行用户自定义的序列化和反序列化。</p>
+</blockquote>
+<p>以下，我们使用ArrayList来讲解其序列化的过程：</p>
+<h3 id="ArrayList类定义"><a href="#ArrayList类定义" class="headerlink" title="ArrayList类定义"></a>ArrayList类定义</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt;</div><div class="line">        implements List&lt;E&gt;, RandomAccess, Cloneable, java.io.Serializable</div><div class="line">&#123;</div><div class="line">    private static final long serialVersionUID = 8683452581122892189L;</div><div class="line">    transient Object[] elementData; // non-private to simplify nested class access</div><div class="line">    private int size;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>elementData是被<code>transient</code>关键字修饰，表示不被序列化。这个说法极其不准确，<strong>它只能表示不被Java默认序列化的方式序列化</strong></p>
+<h3 id="ArrayList的writeObject"><a href="#ArrayList的writeObject" class="headerlink" title="ArrayList的writeObject"></a>ArrayList的writeObject</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">private void writeObject(java.io.ObjectOutputStream s)</div><div class="line">        throws java.io.IOException&#123;</div><div class="line">        // Write out element count, and any hidden stuff</div><div class="line">        int expectedModCount = modCount;</div><div class="line">        s.defaultWriteObject();</div><div class="line"></div><div class="line">        // Write out size as capacity for behavioural compatibility with clone()</div><div class="line">        s.writeInt(size);</div><div class="line"></div><div class="line">        // Write out all elements in the proper order.</div><div class="line">        for (int i=0; i&lt;size; i++) &#123;</div><div class="line">            s.writeObject(elementData[i]);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (modCount != expectedModCount) &#123;</div><div class="line">            throw new ConcurrentModificationException();</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>ArrayList自定义了序列化的方式，传入了<code>java.io.ObjectOutputStream s</code>变量，首先它使用了<code>defaultWriteObject()</code>对其进行序列化，除了elementData之外，都已经被序列化了；之后，它针对被tranisent修饰的变量单独序列化。这样的原因是elementData是个数组，在很多情况下不是满元素的，可能一个32长度的数组只有前几个是有数组的，其余的都是null，<strong>出节约空间的考虑</strong>，仅仅只需要序列化一个<em>size</em>和size个元素即可。</p>
+<h3 id="ArrayList的readObject"><a href="#ArrayList的readObject" class="headerlink" title="ArrayList的readObject"></a>ArrayList的readObject</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">private void readObject(java.io.ObjectInputStream s)</div><div class="line">        throws java.io.IOException, ClassNotFoundException &#123;</div><div class="line">        elementData = EMPTY_ELEMENTDATA;</div><div class="line"></div><div class="line">        // Read in size, and any hidden stuff</div><div class="line">        s.defaultReadObject();</div><div class="line"></div><div class="line">        // Read in capacity</div><div class="line">        s.readInt(); // ignored</div><div class="line"></div><div class="line">        if (size &gt; 0) &#123;</div><div class="line">            // be like clone(), allocate array based upon size not capacity</div><div class="line">            ensureCapacityInternal(size);</div><div class="line"></div><div class="line">            Object[] a = elementData;</div><div class="line">            // Read in all elements in the proper order.</div><div class="line">            for (int i=0; i&lt;size; i++) &#123;</div><div class="line">                a[i] = s.readObject();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="反射调用"><a href="#反射调用" class="headerlink" title="反射调用"></a>反射调用</h3><p>没错，序列化和反序列化也使用了反射机制，当调用ObjectOutputStream的writeObject时，会调用：<br>writeObject —&gt; writeObject0 —&gt;writeOrdinaryObject—&gt;writeSerialData—&gt;invokeWriteObject</p>
+<p>最终到达<code>void invokeWriteObject(Object obj, ObjectOutputStream out)</code>,在该函数中会使用反射调用对应的writeObject<br>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">writeObjectMethod.invoke(obj, new Object[]&#123; out &#125;);</div></pre></td></tr></table></figure></p>
+<h2 id="Externalizable序列化"><a href="#Externalizable序列化" class="headerlink" title="Externalizable序列化"></a>Externalizable序列化</h2><p><code>Externalizable</code>是另一种序列化的方式，严格来说，它叫<em>外部化</em>。它继承自<code>Serializable</code>, 不同的是，它需要完全自定义序列化的方式，即它需要用户覆写<code>void writeExternal(ObjectOutput out)</code>和<code>public void readExternal(ObjectInput in)</code>。同时，当读取对象时，会调用被序列化类的无参构造器去创建一个新的对象，然后再将被保存对象的字段的值分别填充到新对象中。因此，实现<code>Externalizable</code>接口的类必须要<strong>提供一个无参的构造器，且它的访问权限为public</strong>。</p>
+<h2 id="Serializable-VS-Externalizable"><a href="#Serializable-VS-Externalizable" class="headerlink" title="Serializable VS Externalizable"></a>Serializable VS Externalizable</h2><p>序列化（Serializable）构建起来比较方便，它使用内建API，存储类的所有相关信息，如类的信息，属性和这些属性的类型等都会被存储，因此存储空间大，速度相对慢；相反，外部化（Externalizable）构建比较麻烦，它要求序列化和反序列化完全由自己来实现，要自己实现如何存储信息，哪些信息需要存储，自动存储的基本信息较少，带来的好处就是存储空间占用小，速度相对快。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/22/Java 反射机制/" rel="next" title="Java 反射机制">
+                <i class="fa fa-chevron-left"></i> Java 反射机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/29/Thrift 原理分析/" rel="prev" title="Thrift 原理分析">
+                Thrift 原理分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="qinzhaokun" />
+          <p class="site-author-name" itemprop="name">qinzhaokun</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/qinzhaokun" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本用法"><span class="nav-number">1.</span> <span class="nav-text">基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码示例"><span class="nav-number">1.1.</span> <span class="nav-text">代码示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义序列化方式"><span class="nav-number">2.</span> <span class="nav-text">自定义序列化方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ArrayList类定义"><span class="nav-number">2.1.</span> <span class="nav-text">ArrayList类定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ArrayList的writeObject"><span class="nav-number">2.2.</span> <span class="nav-text">ArrayList的writeObject</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ArrayList的readObject"><span class="nav-number">2.3.</span> <span class="nav-text">ArrayList的readObject</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反射调用"><span class="nav-number">2.4.</span> <span class="nav-text">反射调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Externalizable序列化"><span class="nav-number">3.</span> <span class="nav-text">Externalizable序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Serializable-VS-Externalizable"><span class="nav-number">4.</span> <span class="nav-text">Serializable VS Externalizable</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">大脸猫</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吃鱼</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt3gkj5W';
+      var conf = '6157060596fdd3e86c13f21ba008eb74';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("tXNJWqef5cXXkgOuTliYlvYP-gzGzoHsz", "KyQV3wFCnWrvzEpNLVMrhHBY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
