@@ -1,0 +1,1006 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="�����������������������������ġ�������һϵ�еĶ����������ۺ���һ������һ�������Ĺ�����Ԫ����Щ��������ȫ�����ɣ�������һ��ʧ�ܵĻ�����ô�����ͻ��ع����ʼ��״̬���·�ʲô��û������һ���� ACID���� ԭ���ԣ�Atomicity����������һ��ԭ�Ӳ�">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring ��������">
+<meta property="og:url" content="http://yoursite.com/2017/07/19/spring事务管理/index.html">
+<meta property="og:site_name" content="Hello, World">
+<meta property="og:description" content="�����������������������������ġ�������һϵ�еĶ����������ۺ���һ������һ�������Ĺ�����Ԫ����Щ��������ȫ�����ɣ�������һ��ʧ�ܵĻ�����ô�����ͻ��ع����ʼ��״̬���·�ʲô��û������һ���� ACID���� ԭ���ԣ�Atomicity����������һ��ԭ�Ӳ�">
+<meta property="og:updated_time" content="2017-09-03T01:46:05.401Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring ��������">
+<meta name="twitter:description" content="�����������������������������ġ�������һϵ�еĶ����������ۺ���һ������һ�������Ĺ�����Ԫ����Щ��������ȫ�����ɣ�������һ��ʧ�ܵĻ�����ô�����ͻ��ع����ʼ��״̬���·�ʲô��û������һ���� ACID���� ԭ���ԣ�Atomicity����������һ��ԭ�Ӳ�">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/19/spring事务管理/"/>
+
+
+
+
+
+  <title>Spring �������� | Hello, World</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello, World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/19/spring事务管理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qinzhaokun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello, World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring ��������</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-19T18:54:25+08:00">
+                2017-07-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/07/19/spring事务管理/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/07/19/spring事务管理/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/07/19/spring事务管理/" class="leancloud_visitors" data-flag-title="Spring ��������">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="����"><a href="#����" class="headerlink" title="����"></a>����</h2><p>�������������������������ġ�������һϵ�еĶ����������ۺ���һ������һ�������Ĺ�����Ԫ����Щ��������ȫ�����ɣ�������һ��ʧ�ܵĻ�����ô�����ͻ��ع����ʼ��״̬���·�ʲô��û������һ����</p>
+<h3 id="ACID����"><a href="#ACID����" class="headerlink" title="ACID����"></a>ACID����</h3><ul>
+<li><p>ԭ���ԣ�Atomicity����������һ��ԭ�Ӳ�������һϵ�ж������ɡ�������ԭ����ȷ������Ҫôȫ�����ɣ�Ҫô��ȫ�������á�</p>
+</li>
+<li><p>һ���ԣ�Consistency����һ���������ɣ����ܳɹ�����ʧ�ܣ���ϵͳ����ȷ��������ģ��ҵ������һ�µ�״̬���������ǲ������ɲ���ʧ�ܡ�����ʵ�е����ݲ�Ӧ�ñ��ƻ���</p>
+</li>
+<li><p>�����ԣ�Isolation��������������������ͬʱ������ͬ�����ݣ�����ÿ��������Ӧ���������������뿪������ֹ�����𻵡�</p>
+</li>
+<li><p>�־��ԣ�Durability����һ���������ɣ����۷���ʲôϵͳ���������Ľ�������Ӧ���ܵ�Ӱ�죬�������ܴ��κ�ϵͳ�����лָ�������ͨ�������£������Ľ�����д���־û��洢���С�</p>
+</li>
+</ul>
+<h2 id="spring������������"><a href="#spring������������" class="headerlink" title="spring������������"></a>spring������������</h2><p>Spring����ֱ�ӹ������񣬶����ṩ�˶������������������ǽ�����������ְ��ί�и�Hibernate����JTA�ȳ־û��������ṩ������ƽ̨���ܵ�������ʵ��</p>
+<p>Spring�����������Ľӿ���<code>org.springframework.transaction.PlatformTransactionManager</code>��ͨ�������ӿڣ�SpringΪ����ƽ̨��JDBC��Hibernate�ȶ��ṩ�˶�Ӧ�����������������Ǿ�����ʵ�־��Ǹ���ƽ̨�Լ��������ˡ�</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Public interface PlatformTransactionManager()...&#123;  </div><div class="line">    // ��TransactionDefinition�õ�TransactionStatus����</div><div class="line">    TransactionStatus getTransaction(TransactionDefinition definition) throws TransactionException; </div><div class="line">    // �ύ</div><div class="line">    Void commit(TransactionStatus status) throws TransactionException;  </div><div class="line">    // �ع�</div><div class="line">    Void rollback(TransactionStatus status) throws TransactionException;  </div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="JDBC����"><a href="#JDBC����" class="headerlink" title="JDBC����"></a>JDBC����</h3><p>����Ӧ�ó�����ֱ��ʹ��JDBC�����г־û���DataSourceTransactionManager��Ϊ�㴦�������߽硣Ϊ��ʹ��DataSourceTransactionManager������Ҫʹ�����µ�XML����װ�䵽Ӧ�ó����������Ķ����У�<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;</div><div class="line">    &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot; /&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure></p>
+<p>ʵ���ϣ�DataSourceTransactionManager��ͨ������Java.sql.Connection���������񣬶�������ͨ��DataSource��ȡ���ġ�ͨ���������ӵ�commit()�������ύ������ͬ��������ʧ����ͨ������rollback()�������лع���</p>
+<h3 id="Hibernate����"><a href="#Hibernate����" class="headerlink" title="Hibernate����"></a>Hibernate����</h3><p>����Ӧ�ó����ĳ־û���ͨ��Hibernateʵϰ�ģ���ô����Ҫʹ��HibernateTransactionManager������Hibernate3����Ҫ��Spring�����Ķ������������µ�<bean>����<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.orm.hibernate3.HibernateTransactionManager&quot;&gt;</div><div class="line">    &lt;property name=&quot;sessionFactory&quot; ref=&quot;sessionFactory&quot; /&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure></bean></p>
+<p>sessionFactory������Ҫװ��һ��Hibernate��session������HibernateTransactionManager��ʵ��ϸ������������������ְ��ί�и�org.hibernate.Transaction���󣬶������Ǵ�Hibernate Session�л�ȡ���ġ��������ɹ�����ʱ��HibernateTransactionManager��������Transaction������commit()��������֮����������rollback()����</p>
+<h3 id="Java�־u�API������JPA��"><a href="#Java�־u�API������JPA��" class="headerlink" title="Java�־û�API������JPA��"></a>Java�־û�API������JPA��</h3><p>Hibernate������һֱ����ʵ�ϵ�Java�־û���׼����������Java�־û�API��Ϊ������Java�־û���׼�������ҵ���Ұ���������ƻ�ʹ��JPA�Ļ���������Ҫʹ��Spring��JpaTransactionManager����������������Ҫ��Spring����������JpaTransactionManager��<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.orm.jpa.JpaTransactionManager&quot;&gt;</div><div class="line">    &lt;property name=&quot;sessionFactory&quot; ref=&quot;sessionFactory&quot; /&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure></p>
+<p>JpaTransactionManagerֻ��Ҫװ��һ��JPAʵ������������javax.persistence.EntityManagerFactory�ӿڵ�����ʵ�֣���JpaTransactionManager�����ɹ�����������JPA EntityManager����������������</p>
+<h3 id="�����L�������"><a href="#�����L�������" class="headerlink" title="�����Ļ�������"></a>�����Ļ�������</h3><p>���������ǳ�������һЩ�������ã�������������������Ӧ�õ������ϡ��������԰�����5�����棺</p>
+<ul>
+<li><p>������Ϊ</p>
+</li>
+<li><p>��������</p>
+</li>
+<li><p>�ع�����</p>
+</li>
+<li><p>������ʱ</p>
+</li>
+<li><p>�Ƿ��ɶ�</p>
+</li>
+</ul>
+<p>TransactionDefinition������һЩ��������������<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public interface TransactionDefinition &#123;</div><div class="line">    int getPropagationBehavior(); // ���������Ĵ�����Ϊ</div><div class="line">    int getIsolationLevel(); // ���������ĸ��뼶������������������������������һ���������Կ����������ڵ���Щ����</div><div class="line">    int getTimeout();  // �������������ڶ�����������</div><div class="line">    boolean isReadOnly(); // �����Ƿ�ֻ���������������ܹ�������������ֵ�����Ż���ȷ��������ֻ����</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="������Ϊ"><a href="#������Ϊ" class="headerlink" title="������Ϊ"></a>������Ϊ</h4><p>�����ĵ�һ�������Ǵ�����Ϊ��propagation behavior���������񷽷�����һ�����񷽷�����ʱ������ָ������Ӧ�����δ��������磺�������ܼ������������������У�Ҳ���ܿ���һ�������񣬲����Լ������������С�Spring���������ִ�����Ϊ:</p>
+<ul>
+<li><p>PROPAGATION_REQUIRED    ��ʾ��ǰ�������������������С�������ǰ�������ڣ����������ڸ����������С����򣬻�����һ���µ�����</p>
+</li>
+<li><p>PROPAGATION_SUPPORTS    ��ʾ��ǰ��������Ҫ���������ģ������������ڵ�ǰ�����Ļ�����ô�÷���������������������</p>
+</li>
+<li><p>PROPAGATION_MANDATORY    ��ʾ�÷������������������У�������ǰ���񲻴��ڣ������׳�һ���쳣</p>
+</li>
+<li><p>PROPAGATION_REQUIRED_NEW    ��ʾ��ǰ�����������������Լ��������С�һ���µ����񽫱��������������ڵ�ǰ�������ڸ÷���ִ���ڼ䣬��ǰ�����ᱻ����������ʹ��JTATransactionManager�Ļ�������Ҫ����TransactionManager</p>
+</li>
+<li><p>PROPAGATION_NOT_SUPPORTED    ��ʾ�÷�����Ӧ�������������С��������ڵ�ǰ�������ڸ÷��������ڼ䣬��ǰ���񽫱�����������ʹ��JTATransactionManager�Ļ�������Ҫ����TransactionManager</p>
+</li>
+<li><p>PROPAGATION_NEVER    ��ʾ��ǰ������Ӧ�������������������С�������ǰ����һ�����������У������׳��쳣</p>
+</li>
+<li><p>PROPAGATION_NESTED    ��ʾ������ǰ�Ѿ�����һ����������ô�÷���������Ƕ�����������С�Ƕ�׵��������Զ����ڵ�ǰ�������е������ύ���ع���������ǰ���񲻴��ڣ���ô����Ϊ��PROPAGATION_REQUIREDһ����ע�������̶����ִ�����Ϊ��֧�������������ġ����Բο���Դ���������ĵ���ȷ�������Ƿ�֧��Ƕ������</p>
+</li>
+</ul>
+<h4 id="���뼶��"><a href="#���뼶��" class="headerlink" title="���뼶��"></a>���뼶��</h4><p>�����ĵڶ���ά�Ⱦ��Ǹ��뼶����isolation level�������뼶��������һ������������������������Ӱ���ĳ̶ȡ�</p>
+<p>�ڵ��͵�Ӧ�ó����У��������񲢷����У�������������ͬ�����������ɸ��Ե����񡣲�����Ȼ�Ǳ����ģ������ܻᵼ��һ�µ����⡣</p>
+<ul>
+<li><p>������Dirty reads����������������һ��������ȡ����һ��������д����δ�ύ������ʱ��������д���Ժ󱻻ع��ˣ���ô��һ��������ȡ�����ݾ�����Ч�ġ�</p>
+</li>
+<li><p>�����ظ�����Nonrepeatable read�����������ظ���������һ������ִ����ͬ�Ĳ�ѯ���λ��������ϣ�����ÿ�ζ��õ���ͬ������ʱ����ͨ������Ϊ��һ���������������β�ѯ�ڼ������˸��¡�</p>
+</li>
+<li><p>�ö���Phantom read�������ö��벻���ظ������ơ���������һ��������T1����ȡ�˼������ݣ�������һ������������T2��������һЩ����ʱ���������Ĳ�ѯ�У���һ��������T1���ͻᷢ�ֶ���һЩԭ�������ڵļ�¼��</p>
+</li>
+</ul>
+<p><strong>�����ظ������ö�������</strong>: �����ظ������ص����޸�, �ö����ص�������������ɾ��</p>
+<p>�����ĸ��뼶�����������֣�</p>
+<ul>
+<li><p>ISOLATION_DEFAULT    ʹ�ú������ݿ�Ĭ�ϵĸ��뼶��</p>
+</li>
+<li><p>ISOLATION_READ_UNCOMMITTED    ���͵ĸ��뼶����������ȡ��δ�ύ�����ݱ��������ܻᵼ���������ö��򲻿��ظ���</p>
+</li>
+<li><p>ISOLATION_READ_COMMITTED    ������ȡ���������Ѿ��ύ�����ݣ�������ֹ���������ǻö��򲻿��ظ������п��ܷ���</p>
+</li>
+<li><p>ISOLATION_REPEATABLE_READ    ��ͬһ�ֶεĶ��ζ�ȡ��������һ�µģ����������Ǳ����������Լ����޸ģ�������ֹ�����Ͳ����ظ��������ö����п��ܷ���</p>
+</li>
+<li><p>ISOLATION_SERIALIZABLE    ���ߵĸ��뼶������ȫ����ACID�ĸ��뼶����ȷ����ֹ�����������ظ����Լ��ö���Ҳ���������������뼶������Ϊ��ͨ����ͨ����ȫ�����������ص����ݿ�����ʵ�ֵ�</p>
+</li>
+</ul>
+<h4 id="ֻ��"><a href="#ֻ��" class="headerlink" title="ֻ��"></a>ֻ��</h4><p>�����ĵ��������������Ƿ�Ϊֻ����������������ֻ�Ժ��˵����ݿ����иò��������ݿ���������������ֻ������������һЩ�ض����Ż���ͨ������������Ϊֻ�������Ϳ��Ը����ݿ�һ�����ᣬ����Ӧ������Ϊ���ʵ��Ż���ʩ</p>
+<h4 id="������ʱ"><a href="#������ʱ" class="headerlink" title="������ʱ"></a>������ʱ</h4><p>Ϊ��ʹӦ�ó����ܺõ����У�������������̫����ʱ�䡣��Ϊ���������漰�Ժ������ݿ������������Գ�ʱ���������᲻��Ҫ��ռ�����ݿ���Դ��������ʱ����������һ����ʱ�������ض�ʱ������������û��ִ�����ϣ���ô�ͻ��Զ��ع���������һֱ�ȴ�������</p>
+<h4 id="�ع�����"><a href="#�ع�����" class="headerlink" title="�ع�����"></a>�ع�����</h4><p>���������ε�����һ��������һ����������Щ������������Щ�쳣�ᵼ�������ع�����Щ���ᡣĬ�������£�����ֻ�������������쳣ʱ�Ż��ع������������������쳣ʱ�����ع�����һ��Ϊ��EJB�Ļع���Ϊ��һ�µģ�<br>�������������������������ض��ļ������쳣ʱ�������������쳣�����ع���ͬ�����㻹�����������������ض����쳣���ع�����ʹ��Щ�쳣���������쳣��</p>
+<h3 id="����ʽ����"><a href="#����ʽ����" class="headerlink" title="����ʽ����"></a>����ʽ����</h3><p>Spring�ṩ�˶Ա���ʽ����������ʽ������֧�֣�����ʽ���������û��ڴ����о�ȷ���������ı߽磬������ʽ���񣨻���AOP���������û��������������������н���</p>
+<p>Spring�ṩ���ַ�ʽ�ı���ʽ�����������ֱ��ǣ�ʹ��TransactionTemplate��ֱ��ʹ��PlatformTransactionManager</p>
+<h4 id="ʹ��TransactionTemplate"><a href="#ʹ��TransactionTemplate" class="headerlink" title="ʹ��TransactionTemplate"></a>ʹ��TransactionTemplate</h4><p>����TransactionTemplate�Ͳ�������Springģ�壬��<strong>JdbcTempalte</strong>��<strong>HibernateTemplate</strong>��һ���ķ�������ʹ�ûص���������Ӧ�ó����Ӵ���ȡ�ú��ͷ���Դ�н��ѳ�������ͬ����ģ�壬TransactionTemplate���̰߳�ȫ��<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">TransactionTemplate tt = new TransactionTemplate(); // �½�һ��TransactionTemplate</div><div class="line">Object result = tt.execute(</div><div class="line">    new TransactionCallback()&#123;  </div><div class="line">        public Object doTransaction(TransactionStatus status)&#123;  </div><div class="line">            updateOperation();  </div><div class="line">            return resultOfUpdateOperation();  </div><div class="line">        &#125;  </div><div class="line">&#125;); // ִ��execute����������������</div></pre></td></tr></table></figure></p>
+<h4 id="ʹ��PlatformTransactionManager"><a href="#ʹ��PlatformTransactionManager" class="headerlink" title="ʹ��PlatformTransactionManager"></a>ʹ��PlatformTransactionManager</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager(); //����һ��ĳ������ƽ̨��TransactionManager����JDBC��Hibernate</div><div class="line">dataSourceTransactionManager.setDataSource(this.getJdbcTemplate().getDataSource()); // ��������Դ</div><div class="line">DefaultTransactionDefinition transDef = new DefaultTransactionDefinition(); // ������������</div><div class="line">transDef.setPropagationBehavior(DefaultTransactionDefinition.PROPAGATION_REQUIRED); // ���ô�����Ϊ����</div><div class="line">TransactionStatus status = dataSourceTransactionManager.getTransaction(transDef); // ��������״̬</div><div class="line">try &#123;</div><div class="line">    // ���ݿ�����</div><div class="line">    dataSourceTransactionManager.commit(status);// �ύ</div><div class="line">&#125; catch (Exception e) &#123;</div><div class="line">    dataSourceTransactionManager.rollback(status);// �ع�</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="����ʽ����-1"><a href="#����ʽ����-1" class="headerlink" title="����ʽ����"></a>����ʽ����</h3><p>���ǻ���AOPʵ�ֵġ�</p>
+<p>���ݴ������ƵĲ�ͬ���ܽ�������Spring���������÷�ʽ�������ļ����£�</p>
+<h4 id="y��Bean����һ������"><a href="#y��Bean����һ������" class="headerlink" title="ÿ��Bean����һ������"></a>ÿ��Bean����һ������</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</div><div class="line">    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</div><div class="line">    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;</div><div class="line">    xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;</div><div class="line">    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans</div><div class="line">           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd</div><div class="line">           http://www.springframework.org/schema/context</div><div class="line">           http://www.springframework.org/schema/context/spring-context-2.5.xsd</div><div class="line">           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd&quot;&gt;</div><div class="line"></div><div class="line">    &lt;bean id=&quot;sessionFactory&quot; </div><div class="line">            class=&quot;org.springframework.orm.hibernate3.LocalSessionFactoryBean&quot;&gt; </div><div class="line">        &lt;property name=&quot;configLocation&quot; value=&quot;classpath:hibernate.cfg.xml&quot; /&gt; </div><div class="line">        &lt;property name=&quot;configurationClass&quot; value=&quot;org.hibernate.cfg.AnnotationConfiguration&quot; /&gt;</div><div class="line">    &lt;/bean&gt; </div><div class="line"></div><div class="line">    &lt;!-- ��������������������ʽ�������� --&gt; </div><div class="line">    &lt;bean id=&quot;transactionManager&quot;</div><div class="line">        class=&quot;org.springframework.orm.hibernate3.HibernateTransactionManager&quot;&gt;</div><div class="line">        &lt;property name=&quot;sessionFactory&quot; ref=&quot;sessionFactory&quot; /&gt;</div><div class="line">    &lt;/bean&gt;</div><div class="line"></div><div class="line">    &lt;!-- ����DAO --&gt;</div><div class="line">    &lt;bean id=&quot;userDaoTarget&quot; class=&quot;com.bluesky.spring.dao.UserDaoImpl&quot;&gt;</div><div class="line">        &lt;property name=&quot;sessionFactory&quot; ref=&quot;sessionFactory&quot; /&gt;</div><div class="line">    &lt;/bean&gt;</div><div class="line"></div><div class="line">    &lt;bean id=&quot;userDao&quot; </div><div class="line">        class=&quot;org.springframework.transaction.interceptor.TransactionProxyFactoryBean&quot;&gt; </div><div class="line">           &lt;!-- �������������� --&gt; </div><div class="line">           &lt;property name=&quot;transactionManager&quot; ref=&quot;transactionManager&quot; /&gt;    </div><div class="line">        &lt;property name=&quot;target&quot; ref=&quot;userDaoTarget&quot; /&gt; </div><div class="line">         &lt;property name=&quot;proxyInterfaces&quot; value=&quot;com.bluesky.spring.dao.GeneratorDao&quot; /&gt;</div><div class="line">        &lt;!-- ������������ --&gt; </div><div class="line">        &lt;property name=&quot;transactionAttributes&quot;&gt; </div><div class="line">            &lt;props&gt; </div><div class="line">                &lt;prop key=&quot;*&quot;&gt;PROPAGATION_REQUIRED&lt;/prop&gt;</div><div class="line">            &lt;/props&gt; </div><div class="line">        &lt;/property&gt; </div><div class="line">    &lt;/bean&gt; </div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure>
+<h4 id="����Bean����һ����������"><a href="#����Bean����һ����������" class="headerlink" title="����Bean����һ����������"></a>����Bean����һ����������</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</div><div class="line">    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</div><div class="line">    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;</div><div class="line">    xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;</div><div class="line">    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans</div><div class="line">           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd</div><div class="line">           http://www.springframework.org/schema/context</div><div class="line">           http://www.springframework.org/schema/context/spring-context-2.5.xsd</div><div class="line">           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd&quot;&gt;</div><div class="line"></div><div class="line">    &lt;bean id=&quot;sessionFactory&quot; </div><div class="line">            class=&quot;org.springframework.orm.hibernate3.LocalSessionFactoryBean&quot;&gt; </div><div class="line">        &lt;property name=&quot;configLocation&quot; value=&quot;classpath:hibernate.cfg.xml&quot; /&gt; </div><div class="line">        &lt;property name=&quot;configurationClass&quot; value=&quot;org.hibernate.cfg.AnnotationConfiguration&quot; /&gt;</div><div class="line">    &lt;/bean&gt; </div><div class="line"></div><div class="line">    &lt;!-- ��������������������ʽ�������� --&gt; </div><div class="line">    &lt;bean id=&quot;transactionManager&quot;</div><div class="line">        class=&quot;org.springframework.orm.hibernate3.HibernateTransactionManager&quot;&gt;</div><div class="line">        &lt;property name=&quot;sessionFactory&quot; ref=&quot;sessionFactory&quot; /&gt;</div><div class="line">    &lt;/bean&gt;</div><div class="line"></div><div class="line">    &lt;bean id=&quot;transactionBase&quot; </div><div class="line">            class=&quot;org.springframework.transaction.interceptor.TransactionProxyFactoryBean&quot; </div><div class="line">            lazy-init=&quot;true&quot; abstract=&quot;true&quot;&gt; </div><div class="line">        &lt;!-- �������������� --&gt; </div><div class="line">        &lt;property name=&quot;transactionManager&quot; ref=&quot;transactionManager&quot; /&gt; </div><div class="line">        &lt;!-- ������������ --&gt; </div><div class="line">        &lt;property name=&quot;transactionAttributes&quot;&gt; </div><div class="line">            &lt;props&gt; </div><div class="line">                &lt;prop key=&quot;*&quot;&gt;PROPAGATION_REQUIRED&lt;/prop&gt; </div><div class="line">            &lt;/props&gt; </div><div class="line">        &lt;/property&gt; </div><div class="line">    &lt;/bean&gt;   </div><div class="line"></div><div class="line">    &lt;!-- ����DAO --&gt;</div><div class="line">    &lt;bean id=&quot;userDaoTarget&quot; class=&quot;com.bluesky.spring.dao.UserDaoImpl&quot;&gt;</div><div class="line">        &lt;property name=&quot;sessionFactory&quot; ref=&quot;sessionFactory&quot; /&gt;</div><div class="line">    &lt;/bean&gt;</div><div class="line"></div><div class="line">    &lt;bean id=&quot;userDao&quot; parent=&quot;transactionBase&quot; &gt; </div><div class="line">        &lt;property name=&quot;target&quot; ref=&quot;userDaoTarget&quot; /&gt;  </div><div class="line">    &lt;/bean&gt;</div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure>
+<p>####ʹ��������<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</div><div class="line">    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</div><div class="line">    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;</div><div class="line">    xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;</div><div class="line">    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans</div><div class="line">           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd</div><div class="line">           http://www.springframework.org/schema/context</div><div class="line">           http://www.springframework.org/schema/context/spring-context-2.5.xsd</div><div class="line">           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd&quot;&gt;</div><div class="line"></div><div class="line">    &lt;bean id=&quot;sessionFactory&quot; </div><div class="line">            class=&quot;org.springframework.orm.hibernate3.LocalSessionFactoryBean&quot;&gt; </div><div class="line">        &lt;property name=&quot;configLocation&quot; value=&quot;classpath:hibernate.cfg.xml&quot; /&gt; </div><div class="line">        &lt;property name=&quot;configurationClass&quot; value=&quot;org.hibernate.cfg.AnnotationConfiguration&quot; /&gt;</div><div class="line">    &lt;/bean&gt; </div><div class="line"></div><div class="line">    &lt;!-- ��������������������ʽ�������� --&gt; </div><div class="line">    &lt;bean id=&quot;transactionManager&quot;</div><div class="line">        class=&quot;org.springframework.orm.hibernate3.HibernateTransactionManager&quot;&gt;</div><div class="line">        &lt;property name=&quot;sessionFactory&quot; ref=&quot;sessionFactory&quot; /&gt;</div><div class="line">    &lt;/bean&gt; </div><div class="line"></div><div class="line">    &lt;bean id=&quot;transactionInterceptor&quot; </div><div class="line">        class=&quot;org.springframework.transaction.interceptor.TransactionInterceptor&quot;&gt; </div><div class="line">        &lt;property name=&quot;transactionManager&quot; ref=&quot;transactionManager&quot; /&gt; </div><div class="line">        &lt;!-- ������������ --&gt; </div><div class="line">        &lt;property name=&quot;transactionAttributes&quot;&gt; </div><div class="line">            &lt;props&gt; </div><div class="line">                &lt;prop key=&quot;*&quot;&gt;PROPAGATION_REQUIRED&lt;/prop&gt; </div><div class="line">            &lt;/props&gt; </div><div class="line">        &lt;/property&gt; </div><div class="line">    &lt;/bean&gt;</div><div class="line"></div><div class="line">    &lt;bean class=&quot;org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator&quot;&gt; </div><div class="line">        &lt;property name=&quot;beanNames&quot;&gt; </div><div class="line">            &lt;list&gt; </div><div class="line">                &lt;value&gt;*Dao&lt;/value&gt;</div><div class="line">            &lt;/list&gt; </div><div class="line">        &lt;/property&gt; </div><div class="line">        &lt;property name=&quot;interceptorNames&quot;&gt; </div><div class="line">            &lt;list&gt; </div><div class="line">                &lt;value&gt;transactionInterceptor&lt;/value&gt; </div><div class="line">            &lt;/list&gt; </div><div class="line">        &lt;/property&gt; </div><div class="line">    &lt;/bean&gt; </div><div class="line"></div><div class="line">    &lt;!-- ����DAO --&gt;</div><div class="line">    &lt;bean id=&quot;userDao&quot; class=&quot;com.bluesky.spring.dao.UserDaoImpl&quot;&gt;</div><div class="line">        &lt;property name=&quot;sessionFactory&quot; ref=&quot;sessionFactory&quot; /&gt;</div><div class="line">    &lt;/bean&gt;</div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure></p>
+<h4 id="ʹ��tx��k���o�������"><a href="#ʹ��tx��k���o�������" class="headerlink" title="ʹ��tx��ǩ���õ�������"></a>ʹ��tx��ǩ���õ�������</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</div><div class="line">    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</div><div class="line">    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;</div><div class="line">    xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;</div><div class="line">    xmlns:tx=&quot;http://www.springframework.org/schema/tx&quot;</div><div class="line">    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans</div><div class="line">           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd</div><div class="line">           http://www.springframework.org/schema/context</div><div class="line">           http://www.springframework.org/schema/context/spring-context-2.5.xsd</div><div class="line">           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd</div><div class="line">           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd&quot;&gt;</div><div class="line"></div><div class="line">    &lt;context:annotation-config /&gt;</div><div class="line">    &lt;context:component-scan base-package=&quot;com.bluesky&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;bean id=&quot;sessionFactory&quot; </div><div class="line">            class=&quot;org.springframework.orm.hibernate3.LocalSessionFactoryBean&quot;&gt; </div><div class="line">        &lt;property name=&quot;configLocation&quot; value=&quot;classpath:hibernate.cfg.xml&quot; /&gt; </div><div class="line">        &lt;property name=&quot;configurationClass&quot; value=&quot;org.hibernate.cfg.AnnotationConfiguration&quot; /&gt;</div><div class="line">    &lt;/bean&gt; </div><div class="line"></div><div class="line">    &lt;!-- ��������������������ʽ�������� --&gt; </div><div class="line">    &lt;bean id=&quot;transactionManager&quot;</div><div class="line">        class=&quot;org.springframework.orm.hibernate3.HibernateTransactionManager&quot;&gt;</div><div class="line">        &lt;property name=&quot;sessionFactory&quot; ref=&quot;sessionFactory&quot; /&gt;</div><div class="line">    &lt;/bean&gt;</div><div class="line"></div><div class="line">    &lt;tx:advice id=&quot;txAdvice&quot; transaction-manager=&quot;transactionManager&quot;&gt;</div><div class="line">        &lt;tx:attributes&gt;</div><div class="line">            &lt;tx:method name=&quot;*&quot; propagation=&quot;REQUIRED&quot; /&gt;</div><div class="line">        &lt;/tx:attributes&gt;</div><div class="line">    &lt;/tx:advice&gt;</div><div class="line"></div><div class="line">    &lt;aop:config&gt;</div><div class="line">        &lt;aop:pointcut id=&quot;interceptorPointCuts&quot;</div><div class="line">            expression=&quot;execution(* com.bluesky.spring.dao.*.*(..))&quot; /&gt;</div><div class="line">        &lt;aop:advisor advice-ref=&quot;txAdvice&quot;</div><div class="line">            pointcut-ref=&quot;interceptorPointCuts&quot; /&gt;       </div><div class="line">    &lt;/aop:config&gt;     </div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure>
+<h4 id="oע��"><a href="#oע��" class="headerlink" title="ȫע��"></a>ȫע��</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</div><div class="line">    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</div><div class="line">    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;</div><div class="line">    xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;</div><div class="line">    xmlns:tx=&quot;http://www.springframework.org/schema/tx&quot;</div><div class="line">    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans</div><div class="line">           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd</div><div class="line">           http://www.springframework.org/schema/context</div><div class="line">           http://www.springframework.org/schema/context/spring-context-2.5.xsd</div><div class="line">           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd</div><div class="line">           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd&quot;&gt;</div><div class="line"></div><div class="line">    &lt;context:annotation-config /&gt;</div><div class="line">    &lt;context:component-scan base-package=&quot;com.bluesky&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;tx:annotation-driven transaction-manager=&quot;transactionManager&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;bean id=&quot;sessionFactory&quot; </div><div class="line">            class=&quot;org.springframework.orm.hibernate3.LocalSessionFactoryBean&quot;&gt; </div><div class="line">        &lt;property name=&quot;configLocation&quot; value=&quot;classpath:hibernate.cfg.xml&quot; /&gt; </div><div class="line">        &lt;property name=&quot;configurationClass&quot; value=&quot;org.hibernate.cfg.AnnotationConfiguration&quot; /&gt;</div><div class="line">    &lt;/bean&gt; </div><div class="line"></div><div class="line">    &lt;!-- ��������������������ʽ�������� --&gt; </div><div class="line">    &lt;bean id=&quot;transactionManager&quot;</div><div class="line">        class=&quot;org.springframework.orm.hibernate3.HibernateTransactionManager&quot;&gt;</div><div class="line">        &lt;property name=&quot;sessionFactory&quot; ref=&quot;sessionFactory&quot; /&gt;</div><div class="line">    &lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure>
+<p>��ʱ��DAO��������@Transactionalע��</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">package com.bluesky.spring.dao;</div><div class="line"></div><div class="line">import java.util.List;</div><div class="line"></div><div class="line">import org.hibernate.SessionFactory;</div><div class="line">import org.springframework.beans.factory.annotation.Autowired;</div><div class="line">import org.springframework.orm.hibernate3.support.HibernateDaoSupport;</div><div class="line">import org.springframework.stereotype.Component;</div><div class="line"></div><div class="line">import com.bluesky.spring.domain.User;</div><div class="line"></div><div class="line">@Transactional</div><div class="line">@Component(&quot;userDao&quot;)</div><div class="line">public class UserDaoImpl extends HibernateDaoSupport implements UserDao &#123;</div><div class="line"></div><div class="line">    public List&lt;User&gt; listUsers() &#123;</div><div class="line">        return this.getSession().createQuery(&quot;from User&quot;).list();</div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>������ʹ��ȫע��ʱ����һ��������ͬʱ��ָ�������������ԣ�<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 1.��������ע��</div><div class="line"> * ʹ��propagation ָ�������Ĵ�����Ϊ������ǰ�����񷽷�������һ�����񷽷�����ʱ����ʹ��������</div><div class="line"> * Ĭ��ȡֵΪREQUIRED����ʹ�õ��÷���������</div><div class="line"> * REQUIRES_NEW��ʹ���Լ������񣬵��õ����񷽷������񱻹�����</div><div class="line"> *</div><div class="line"> * 2.ʹ��isolation ָ�������ĸ��뼶������õ�ȡֵΪREAD_COMMITTED</div><div class="line"> * 3.Ĭ�������� Spring ������ʽ���������е�����ʱ�쳣���лع���Ҳ����ͨ����Ӧ�����Խ������á�ͨ�������£�Ĭ��ֵ���ɡ�</div><div class="line"> * 4.ʹ��readOnly ָ�������Ƿ�Ϊֻ���� ��ʾ��������ֻ��ȡ���ݵ����������ݣ��������԰������ݿ������Ż���������������һ��ֻ��ȡ���ݿ�ֵ�÷�����Ӧ����readOnly=true</div><div class="line"> * 5.ʹ��timeOut ָ��ǿ�ƻع�֮ǰ��������ռ�õ�ʱ�䡣</div><div class="line"> */</div><div class="line">@Transactional(propagation=Propagation.REQUIRES_NEW,</div><div class="line">        isolation=Isolation.READ_COMMITTED,</div><div class="line">        noRollbackFor=&#123;UserAccountException.class&#125;,</div><div class="line">        readOnly=true, timeout=3)</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/19/虚拟机字节码执行引擎/" rel="next" title="虚拟机字节码执行引擎">
+                <i class="fa fa-chevron-left"></i> 虚拟机字节码执行引擎
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/19/kafka原理和框架/" rel="prev" title="Kafkaԭ���Ϳ���">
+                Kafkaԭ���Ϳ��� <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="qinzhaokun" />
+          <p class="site-author-name" itemprop="name">qinzhaokun</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/qinzhaokun" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#����"><span class="nav-number">1.</span> <span class="nav-text">����</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ACID����"><span class="nav-number">1.1.</span> <span class="nav-text">ACID����</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spring������������"><span class="nav-number">2.</span> <span class="nav-text">spring������������</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JDBC����"><span class="nav-number">2.1.</span> <span class="nav-text">JDBC����</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hibernate����"><span class="nav-number">2.2.</span> <span class="nav-text">Hibernate����</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java�־u�API������JPA��"><span class="nav-number">2.3.</span> <span class="nav-text">Java�־û�API������JPA��</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#�����L�������"><span class="nav-number">2.4.</span> <span class="nav-text">�����Ļ�������</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#������Ϊ"><span class="nav-number">2.4.1.</span> <span class="nav-text">������Ϊ</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#���뼶��"><span class="nav-number">2.4.2.</span> <span class="nav-text">���뼶��</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ֻ��"><span class="nav-number">2.4.3.</span> <span class="nav-text">ֻ��</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#������ʱ"><span class="nav-number">2.4.4.</span> <span class="nav-text">������ʱ</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#�ع�����"><span class="nav-number">2.4.5.</span> <span class="nav-text">�ع�����</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#����ʽ����"><span class="nav-number">2.5.</span> <span class="nav-text">����ʽ����</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ʹ��TransactionTemplate"><span class="nav-number">2.5.1.</span> <span class="nav-text">ʹ��TransactionTemplate</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ʹ��PlatformTransactionManager"><span class="nav-number">2.5.2.</span> <span class="nav-text">ʹ��PlatformTransactionManager</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#����ʽ����-1"><span class="nav-number">2.6.</span> <span class="nav-text">����ʽ����</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#y��Bean����һ������"><span class="nav-number">2.6.1.</span> <span class="nav-text">ÿ��Bean����һ������</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#����Bean����һ����������"><span class="nav-number">2.6.2.</span> <span class="nav-text">����Bean����һ����������</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ʹ��tx��k���o�������"><span class="nav-number">2.6.3.</span> <span class="nav-text">ʹ��tx��ǩ���õ�������</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#oע��"><span class="nav-number">2.6.4.</span> <span class="nav-text">ȫע��</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">大脸猫</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吃鱼</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt3gkj5W';
+      var conf = '6157060596fdd3e86c13f21ba008eb74';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("tXNJWqef5cXXkgOuTliYlvYP-gzGzoHsz", "KyQV3wFCnWrvzEpNLVMrhHBY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
