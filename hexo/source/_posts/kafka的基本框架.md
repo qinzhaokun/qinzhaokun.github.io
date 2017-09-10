@@ -1,6 +1,6 @@
 ---
-title: Kafka原理和框架
-date: 2017-07-19 18:54:25
+title: Kafka基本框架
+date: 2017-09-10 18:54:25
 tags: Kafka
 categories: Kafka
 ---
@@ -16,15 +16,15 @@ Kafka是一个消息系统，原本开发自LinkedIn，用作LinkedIn的活动�
 活动流数据是几乎所有站点在对其网站使用情况做报表时都要用到的数据中最常规的部分。活动数据包括页面访问量（Page View）、被查看内容方面的信息以及搜索情况等内容。这种数据通常的处理方式是先把各种活动以日志的形式写入某种文件，然后周期性地对这些文件进行统计分析。运营数据指的是服务器的性能数据（CPU、IO使用率、请求时间、服务日志等等数据)。运营数据的统计方法种类繁多。
 
 ## 简介
-
-Kafka是一种分布式的，基于发布/订阅的消息系统。主要设计目标如下：
+Kafka是一种分布式的，基于发布/订阅的消息系统。作为一个分布式的消息系统，其主要设计目标如下：
 
 + 以时间复杂度为O(1)的方式提供消息持久化能力，即使对TB级以上数据也能保证常数时间复杂度的访问性能。
 
 + 高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒100K条以上消息的传输。支持Kafka Server间的消息分区，及分布式消费，同时保证每个Partition内的消息顺序传输。同时支持离线数据处理和实时数据处理。
+
 + Scale out：支持在线水平扩展。
 
-为何使用消息系统
+为何使用消息系统?
 
 ### 解耦
 
@@ -69,12 +69,53 @@ Kafka是一种分布式的，基于发布/订阅的消息系统。主要设计�
 
 + Consumer，消息消费者，向Kafka broker读取消息的客户端。
 
-+ onsumer Group，每个Consumer属于一个特定的Consumer Group（可为每个Consumer指定group name，若不指定group name则属于默认的group）
++ Consumer, Group，每个Consumer属于一个特定的Consumer Group（可为每个Consumer指定group name，若不指定group name则属于默认的group）
+
++ replica, partition 的副本，保障 partition 的高可用(HA)。
+
++ leader, replica 中的一个角色， producer 和 consumer 只跟 leader 交互。
+
++ follower, replica 中的一个角色，从 leader 中复制数据。
+
++ controller, kafka 集群中的其中一个服务器，用来进行 leader election 以及 各种 failover。
+
++ zookeeper, kafka 通过 zookeeper 来存储集群的 meta 信息。
+
+### zookeeper
+
+首先从zookeeper说起，kafka的集群只有broker，broker里只有partitions，里面就存储着各种消息(log数据)，没有存储**meta data**，如属于哪个topic，leader是谁等，而这些信息，都存放在zookeeper集群中，相当与hdfs的namenode一样。
+
+![](/images/kafka_01.png)
+
+在zookeeper集群中，kafka创建了许多znode，其中包括comsumer_group的offest，每个broker的ip和端口，每个partition信息等，因此，broker只是淡村的存储数据，而各种协调工作，以及meta data都存在zookeeper中。
 
 ### 拓扑结构
 
-一个典型的Kafka集群中包含若干Producer（可以是web前端产生的Page View，或者是服务器日志，系统CPU、Memory等），若干broker（Kafka支持水平扩展，一般broker数量越多，集群吞吐率越高），若干Consumer Group，以及一个Zookeeper集群。Kafka通过Zookeeper管理集群配置，选举leader，以及在Consumer Group发生变化时进行rebalance。Producer使用push模式将消息发布到broker，Consumer使用pull模式从broker订阅并消费消息。
+![](/images/kafka_02.jpg)
+
+### Producer
+
+一个典型的Kafka集群中包含若干Producer（可以是web前端产生的Page View，或者是服务器日志，系统CPU、Memory等），他们负责发送消息给kafka集群。Producer采用**Push**的形式推送消息，至于和哪个broker通信，存储在那个partition里，则先要与zookeeper进行协调，由它来告知。
 
 ### Topic & Partition
 
-Topic在逻辑上可以被认为是一个queue，每条消费都必须指定它的Topic，可以简单理解为必须指明把这条消息放进哪个queue里。为了使得Kafka的吞吐率可以线性提高，物理上把Topic分成一个或多个Partition，每个Partition在物理上对应一个文件夹，该文件夹下存储这个Partition的所有消息和索引文件。若创建topic1和topic2两个topic，且分别有13个和19个分区，则整个集群上会相应会生成共32个文件夹（本文所用集群共8个节点，此处topic1和topic2 replication-factor均为1），如下图所示。
+Topic在逻辑上可以被认为是一个queue，每条消费都必须指定它的Topic，可以简单理解为必须指明把这条消息放进哪个queue里。为了使得Kafka的吞吐率可以线性提高，物理上把Topic分成一个或多个Partition，每个Partition在物理上对应一个文件夹，该文件夹下存储这个Partition的所有消息和索引文件.
+
+### Broker
+
+若干broker（Kafka支持水平扩展，一般broker数量越多，集群吞吐率越高）。一般一个Broker就是一台服务器，用于存储消息的，partition就在broker里。
+
+### Consumer
+
+Consumer是消息的消费者，多个不同的Consumer构成Consumer Group。consumer想要消费消息，采用主动**pull**的方式，同样的，它也要先于zookeeper进行协调，并且，zookeeper会维护consumer的消费对应的topic的offest，保证不会重复消费相同的消息。
+
+### Zookeeper
+
+首先从zookeeper说起，kafka的集群只有broker，broker里只有partitions，里面就存储着各种消息(log数据)，没有存储**meta data**，如属于哪个topic，leader是谁等，而这些信息，都存放在zookeeper集群中，相当与hdfs的namenode一样。
+
+![](/images/kafka_01.png)
+
+在zookeeper集群中，kafka创建了许多znode，其中包括comsumer_group的offest，每个broker的ip和端口，每个partition信息等，因此，broker只是淡村的存储数据，而各种协调工作，以及meta data都存在zookeeper中。
+
+
+
