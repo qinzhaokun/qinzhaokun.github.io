@@ -60,4 +60,8 @@ CRC校验码:    4 bytes
 
 文件夹下有一个索引文件，和若干个.kafka文件。
 
+## Consumer订阅消息
 
+消费者要比生产者复杂得多。由于kafka不会为消费者维护offset，因此，要么自己（Consumer）维护offset，要么交给Zookeeper维护。此外还有Consumer Group的概念，一个Consumer Group有多个Consumer，一条消息只会被其中的一个Consumer消费。一般的，Consumer的数量不要大于Partition的数量，这是因为一个Partition只能被一个Consumer消费，Consumer多了就会有的轮空
+
+对于Consumer，kafka提供了两种API对其进行消费，分别是High Level API 和 Low Level API。前者是Kafka消费数据的高层抽象，消费者客户端代码不需要管理offset的提交，并且采用了消费组的自动负载均衡功能，确保消费者的增减不会影响消息的消费；而后者通常针对特殊的消费逻辑（比如客消费者只想要消费某些特定的Partition），低级API的客户端代码需要自己实现一些和Kafka服务端相关的底层逻辑，比如选择Partition的Leader，处理Leader的故障转移等。
