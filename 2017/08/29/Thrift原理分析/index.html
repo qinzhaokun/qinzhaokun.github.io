@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java," />
+  <meta name="keywords" content="分布式服务框架," />
 
 
 
@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="执行引擎是虚拟机最核心的组成部分之一。 运行时栈结构栈帧是用于支持虚拟机进行方法调用和方法执行的数据结构，它属于虚拟机运行时数据区的虚拟机栈的栈元素，它存储了方法的局部变量表，操作数栈，动态链接和方法返回值等信息。每个方法的调用开始到执行结束，对应着栈帧的入栈和出栈。栈帧的大小是编译时确定的，并且写入到了方法表中的Code属性之中，一个栈帧需要的内存不会受到运行时变量数据的影响 局部变量表它是一组">
-<meta name="keywords" content="Java">
+<meta name="description" content="由浅入深，我们先定义一个基本的接口文件，最最基本的：userService.thrift 12345678910namespace java com.xxx.userservicestruct User&amp;#123;  1: i64 id,  2: string name,  3: i32 age&amp;#125;service UserService&amp;#123;  User getUserById(1:">
+<meta name="keywords" content="分布式服务框架">
 <meta property="og:type" content="article">
-<meta property="og:title" content="虚拟机字节码执行引擎">
-<meta property="og:url" content="http://yoursite.com/2017/07/19/虚拟机字节码执行引擎/index.html">
+<meta property="og:title" content="Thrift 原理分析">
+<meta property="og:url" content="http://yoursite.com/2017/08/29/Thrift原理分析/index.html">
 <meta property="og:site_name" content="Hello, World">
-<meta property="og:description" content="执行引擎是虚拟机最核心的组成部分之一。 运行时栈结构栈帧是用于支持虚拟机进行方法调用和方法执行的数据结构，它属于虚拟机运行时数据区的虚拟机栈的栈元素，它存储了方法的局部变量表，操作数栈，动态链接和方法返回值等信息。每个方法的调用开始到执行结束，对应着栈帧的入栈和出栈。栈帧的大小是编译时确定的，并且写入到了方法表中的Code属性之中，一个栈帧需要的内存不会受到运行时变量数据的影响 局部变量表它是一组">
-<meta property="og:updated_time" content="2017-07-25T06:22:57.577Z">
+<meta property="og:description" content="由浅入深，我们先定义一个基本的接口文件，最最基本的：userService.thrift 12345678910namespace java com.xxx.userservicestruct User&amp;#123;  1: i64 id,  2: string name,  3: i32 age&amp;#125;service UserService&amp;#123;  User getUserById(1:">
+<meta property="og:updated_time" content="2017-09-02T06:43:55.053Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="虚拟机字节码执行引擎">
-<meta name="twitter:description" content="执行引擎是虚拟机最核心的组成部分之一。 运行时栈结构栈帧是用于支持虚拟机进行方法调用和方法执行的数据结构，它属于虚拟机运行时数据区的虚拟机栈的栈元素，它存储了方法的局部变量表，操作数栈，动态链接和方法返回值等信息。每个方法的调用开始到执行结束，对应着栈帧的入栈和出栈。栈帧的大小是编译时确定的，并且写入到了方法表中的Code属性之中，一个栈帧需要的内存不会受到运行时变量数据的影响 局部变量表它是一组">
+<meta name="twitter:title" content="Thrift 原理分析">
+<meta name="twitter:description" content="由浅入深，我们先定义一个基本的接口文件，最最基本的：userService.thrift 12345678910namespace java com.xxx.userservicestruct User&amp;#123;  1: i64 id,  2: string name,  3: i32 age&amp;#125;service UserService&amp;#123;  User getUserById(1:">
 
 
 
@@ -131,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/19/虚拟机字节码执行引擎/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/08/29/Thrift原理分析/"/>
 
 
 
 
 
-  <title>虚拟机字节码执行引擎 | Hello, World</title>
+  <title>Thrift 原理分析 | Hello, World</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/19/虚拟机字节码执行引擎/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/29/Thrift原理分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qinzhaokun">
@@ -304,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">虚拟机字节码执行引擎</h1>
+          <h1 class="post-title" itemprop="name headline">Thrift 原理分析</h1>
         
 
         <div class="post-meta">
@@ -316,8 +316,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-19T00:00:00+08:00">
-                2017-07-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-29T00:00:00+08:00">
+                2017-08-29
               </time>
             
 
@@ -339,8 +339,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/分布式服务框架/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式服务框架</span>
                   </a>
                 </span>
 
@@ -358,8 +358,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/07/19/虚拟机字节码执行引擎/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/07/19/虚拟机字节码执行引擎/" itemprop="commentsCount"></span>
+                <a href="/2017/08/29/Thrift原理分析/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/08/29/Thrift原理分析/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -367,7 +367,7 @@
 
           
           
-             <span id="/2017/07/19/虚拟机字节码执行引擎/" class="leancloud_visitors" data-flag-title="虚拟机字节码执行引擎">
+             <span id="/2017/08/29/Thrift原理分析/" class="leancloud_visitors" data-flag-title="Thrift 原理分析">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -395,14 +395,16 @@
       
 
       
-        <p>执行引擎是虚拟机最核心的组成部分之一。</p>
-<h2 id="运行时栈结构"><a href="#运行时栈结构" class="headerlink" title="运行时栈结构"></a>运行时栈结构</h2><p><strong>栈帧</strong>是用于支持虚拟机进行方法调用和方法执行的数据结构，它属于虚拟机运行时数据区的虚拟机栈的栈元素，它存储了方法的局部变量表，操作数栈，动态链接和方法返回值等信息。每个方法的调用开始到执行结束，对应着栈帧的入栈和出栈。栈帧的大小是编译时确定的，并且写入到了方法表中的Code属性之中，一个栈帧需要的内存不会受到运行时变量数据的影响</p>
-<h3 id="局部变量表"><a href="#局部变量表" class="headerlink" title="局部变量表"></a>局部变量表</h3><p>它是一组变量值存储空间，用于存放方法参数和方法内定义的局部变量，在Java代码编译成Class文件时，局部变量表的大小就在方法的Code属性的max_locals数据项确定了。它的最小容量单位是变量槽（Slot），虚拟机规范中没有明确指定它的大小，但是它应该能存放一个boolean,byte,char,short,int,float,reference或returnAddress类型的数据，slot一般会是32位。对于64位的数据long和double，虚拟机会以高位在前的方式分配连续的两个slot空间。</p>
-<p>看到这里的时有个疑问，同样是64位，double却比long表示的数大。这是因为double牺牲了精度，扩大了范围，long可以表示从LONG.MIN_VALUE到LONG.MAX_VALUE任意一个整数，19位数；double由于有exp位，只能表示16位一下的精确整数，当数字大于16位时，精度有所损失。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">double a = LONG.MAX_VALUE-100L;</div><div class="line">double b = LONG.MAX_VALUE-101L;</div><div class="line">System.out.println(a == b);</div></pre></td></tr></table></figure></p>
-<p>由于局部变量表是线程私有的，因此分开读写两个slot虽然会破坏原子性，但是不会代码数据安全的问题。虚拟机使用索引定位的方式使用局部变量表索引值从0到最大的slot数。对于实例方法，<strong>第0号索引默认是对象实例的索引，可通过this指针来方法</strong>，之后按照顺序，先参数表，后是方法体内的局部变量。对于方法体的局部变量所占用的slot是可以重用的，当字节码PC计数器的值超出了某个变量的作用域，这个变量的slot就可以交给其他变量使用，这样可以节约栈空间，更重要的是它会影响垃圾回收，看下面的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public static void main(String [] args)&#123;</div><div class="line">  &#123;</div><div class="line">    byte[] p = new byte[64*1024*1024];</div><div class="line">  &#125;</div><div class="line">  System.gc();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>这样的话<code>System.gc()</code>不会执行垃圾回收，这是因为p虽然不被使用了，但是没有其他的局部变量复用该slot，局部变量表中该slot保存的认识p指向64M的byte的引用。</p>
-<h3 id="操作数栈"><a href="#操作数栈" class="headerlink" title="操作数栈"></a>操作数栈</h3><p>它是一个后入先出的栈，最大深度在编译时确定，被写在Code属性中的max_stacks的数据项中，数据可以是任意的Java数据类型。会有各种字节指令想操作数栈中写入和提取内容，也就是入栈和出栈的操作。</p>
-<h3 id="动态连接"><a href="#动态连接" class="headerlink" title="动态连接"></a>动态连接</h3><p>每个栈帧都包含一个指向运行时常量池中该栈帧所属方法的引用，可以支持方法调用过程中的动态连接。Class文件中常量池中存在很多符号引用，有些符号引用会在类加载阶段转化成直接引用，叫静态解析；另外一些会在运行期间转化成直接引用，称为动态连接</p>
+        <p>由浅入深，我们先定义一个基本的接口文件，最最基本的：userService.thrift</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">namespace java com.xxx.userservice</div><div class="line">struct User&#123;</div><div class="line">  1: i64 id,</div><div class="line">  2: string name,</div><div class="line">  3: i32 age</div><div class="line">&#125;</div><div class="line"></div><div class="line">service UserService&#123;</div><div class="line">  User getUserById(1:i64 id)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Tbase接口"><a href="#Tbase接口" class="headerlink" title="Tbase接口"></a><code>Tbase</code>接口</h2><p><code>struct</code>只支持简单的数据类型，不支持复杂的Java类，这也是为了兼容更多的语言而做出的妥协。由struct生成的对象<code>User</code>实现了”Serializable”接口和”TBase”接口。这两个接口都是和序列化，反序列化相关的。<code>Serializable</code>是支持Java原生的序列化；而<code>Tbase</code>则是支持thrift本身的序列化和反序列化。它的两个核心方法是：<code>write</code>和 <code>read</code>. 在struct中的定义的时候发现有个序列号，这个就是按顺序来序列化字段，保证顺序序号<strong>不能重复,但是可以不需要从”1”开始</strong></p>
+<p><code>Tbase</code>实现序列化的方式比Java原生序列化方式更适合在网络传输，它不会携带class类型，性能更高，这也是为什么要用序号严格保证顺序</p>
+<h2 id="Client静态类"><a href="#Client静态类" class="headerlink" title="Client静态类"></a>Client静态类</h2><p>UserService.Client类是编译器自动生成的，它被看做一个代理类，它实现了被代理类UserService的所有方法，并且，它是负责与server交互的，主要是<strong>在socket连接中发送请求和相应请求</strong>。 以下是Client关键源码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">//参见:TServiceClient  </div><div class="line">//API方法调用时,发送请求数据流  </div><div class="line">protected void sendBase(String methodName, TBase args) throws TException &#123;  </div><div class="line">    oprot_.writeMessageBegin(new TMessage(methodName, TMessageType.CALL, ++seqid_));//首先写入&quot;方法名称&quot;和&quot;seqid_&quot;  </div><div class="line">    args.write(oprot_);//序列化参数  </div><div class="line">    oprot_.writeMessageEnd();  </div><div class="line">    oprot_.getTransport().flush();  </div><div class="line">&#125;  </div><div class="line">  </div><div class="line">protected void receiveBase(TBase result, String methodName) throws TException &#123;  </div><div class="line">    TMessage msg = iprot_.readMessageBegin();//如果执行有异常  </div><div class="line">    if (msg.type == TMessageType.EXCEPTION) &#123;  </div><div class="line">      TApplicationException x = TApplicationException.read(iprot_);  </div><div class="line">      iprot_.readMessageEnd();  </div><div class="line">      throw x;  </div><div class="line">    &#125;//检测seqid是否一致  </div><div class="line">    if (msg.seqid != seqid_) &#123;  </div><div class="line">      throw new TApplicationException(TApplicationException.BAD_SEQUENCE_ID, methodName + &quot; failed: out of sequence response&quot;);  </div><div class="line">    &#125;  </div><div class="line">    result.read(iprot_);//反序列化  </div><div class="line">    iprot_.readMessageEnd();  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>代码比较简单，值得注意的是其维护了seqid来标记一次请求，回复时也会携带该请求。</p>
+<h2 id="Processor类"><a href="#Processor类" class="headerlink" title="Processor类"></a>Processor类</h2><p>该类也是UserService的内部类，主要是给服务器端使用的，它是服务器端的代理类. 附上源码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">//参考: TBaseProcessor.java  </div><div class="line">@Override  </div><div class="line">public boolean process(TProtocol in, TProtocol out) throws TException &#123;  </div><div class="line">    TMessage msg = in.readMessageBegin();  </div><div class="line">    ProcessFunction fn = processMap.get(msg.name);//根据方法名,查找&quot;内部类&quot;  </div><div class="line">    if (fn == null) &#123;  </div><div class="line">      TProtocolUtil.skip(in, TType.STRUCT);  </div><div class="line">      in.readMessageEnd();  </div><div class="line">      TApplicationException x = new TApplicationException(TApplicationException.UNKNOWN_METHOD, &quot;Invalid method name: &apos;&quot;+msg.name+&quot;&apos;&quot;);  </div><div class="line">      out.writeMessageBegin(new TMessage(msg.name, TMessageType.EXCEPTION, msg.seqid));  </div><div class="line">      x.write(out);//序列化响应结果,直接输出  </div><div class="line">      out.writeMessageEnd();  </div><div class="line">      out.getTransport().flush();  </div><div class="line">      return true;  </div><div class="line">    &#125;  </div><div class="line">    fn.process(msg.seqid, in, out, iface);  </div><div class="line">    return true;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可以看出，processor读入方法名后，通过保存在一个processMap中的信息查找到真正的方法，可以看出，以方法名作为key值，也表明发thrift不支持重载。</p>
+<p>thrift没有使用反射机制去调用对应方法，而是为每个方法生成一个内部类来处理，这样增大了代码量，却减小了性能方面的开销，另一方面用户也可自行修改生成的方法类代码。但是个人认为，这样做仍然是为了实现不同语言的统一，毕竟只有java有反射机制<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public static class getById&lt;I extends Iface&gt; extends org.apache.thrift.ProcessFunction&lt;I, getById_args&gt; &#123;  </div><div class="line">  public getById() &#123;  </div><div class="line">    super(&quot;getById&quot;);//其中getById为标识符  </div><div class="line">  &#125;  </div><div class="line">  </div><div class="line">  public getById_args getEmptyArgsInstance() &#123;  </div><div class="line">    return new getById_args();  </div><div class="line">  &#125;  </div><div class="line">  </div><div class="line">  protected boolean isOneway() &#123;  </div><div class="line">    return false;  </div><div class="line">  &#125;  </div><div class="line">  //实际处理方法  </div><div class="line">  public getById_result getResult(I iface, getById_args args) throws org.apache.thrift.TException &#123;  </div><div class="line">    getById_result result = new getById_result();  </div><div class="line">    result.success = iface.getById(args.id);//直接调用实例的具体方法，硬编码  </div><div class="line">    return result;  </div><div class="line">  &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这段代码的关键就是I iface，这个是实现类的实例，那么它是怎么被传进来的呢？<br><a href="http://www.cnblogs.com/wxd0108/p/7026522.html" target="_blank" rel="external">http://www.cnblogs.com/wxd0108/p/7026522.html</a></p>
 
       
     </div>
@@ -432,7 +434,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Java/" rel="tag"># Java</a>
+            <a href="/tags/分布式服务框架/" rel="tag"># 分布式服务框架</a>
           
         </div>
       
@@ -445,8 +447,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/18/虚拟机类加载机制/" rel="next" title="虚拟机类加载机制">
-                <i class="fa fa-chevron-left"></i> 虚拟机类加载机制
+              <a href="/2017/08/28/Java 序列化/" rel="next" title="Java 序列化">
+                <i class="fa fa-chevron-left"></i> Java 序列化
               </a>
             
           </div>
@@ -455,8 +457,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/19/spring事务管理/" rel="prev" title="Spring 事务管理">
-                Spring 事务管理 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/08/29/Thrift基本介绍/" rel="prev" title="Thrift基本介绍">
+                Thrift基本介绍 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -599,7 +601,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#运行时栈结构"><span class="nav-number">1.</span> <span class="nav-text">运行时栈结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#局部变量表"><span class="nav-number">1.1.</span> <span class="nav-text">局部变量表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作数栈"><span class="nav-number">1.2.</span> <span class="nav-text">操作数栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态连接"><span class="nav-number">1.3.</span> <span class="nav-text">动态连接</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Tbase接口"><span class="nav-number">1.</span> <span class="nav-text">Tbase接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client静态类"><span class="nav-number">2.</span> <span class="nav-text">Client静态类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Processor类"><span class="nav-number">3.</span> <span class="nav-text">Processor类</span></a></li></ol></div>
             
 
           </div>

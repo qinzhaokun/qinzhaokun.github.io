@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java," />
+  <meta name="keywords" content="分布式服务框架," />
 
 
 
@@ -93,17 +93,19 @@
 
 
 
-<meta name="description" content="执行引擎是虚拟机最核心的组成部分之一。 运行时栈结构栈帧是用于支持虚拟机进行方法调用和方法执行的数据结构，它属于虚拟机运行时数据区的虚拟机栈的栈元素，它存储了方法的局部变量表，操作数栈，动态链接和方法返回值等信息。每个方法的调用开始到执行结束，对应着栈帧的入栈和出栈。栈帧的大小是编译时确定的，并且写入到了方法表中的Code属性之中，一个栈帧需要的内存不会受到运行时变量数据的影响 局部变量表它是一组">
-<meta name="keywords" content="Java">
+<meta name="description" content="Thrift采用的是C/S的模式，IDL文件生成了服务器端的代码和客户端的代码，其中Tprocessor是服务器端用来处理请求的，Client是给客户端发送请求的。Tbase接口定义了数据如何方法和方法参数如何被序列化，而更底层的protocol协议层定义了数据的传输格式，如二进制格式，和transport传输层，定义了传输方式，如TCP/IP方式，共享内存等  这是thrift通信的协议栈。">
+<meta name="keywords" content="分布式服务框架">
 <meta property="og:type" content="article">
-<meta property="og:title" content="虚拟机字节码执行引擎">
-<meta property="og:url" content="http://yoursite.com/2017/07/19/虚拟机字节码执行引擎/index.html">
+<meta property="og:title" content="Thrift 通信模型">
+<meta property="og:url" content="http://yoursite.com/2017/09/12/Thrift通信模型/index.html">
 <meta property="og:site_name" content="Hello, World">
-<meta property="og:description" content="执行引擎是虚拟机最核心的组成部分之一。 运行时栈结构栈帧是用于支持虚拟机进行方法调用和方法执行的数据结构，它属于虚拟机运行时数据区的虚拟机栈的栈元素，它存储了方法的局部变量表，操作数栈，动态链接和方法返回值等信息。每个方法的调用开始到执行结束，对应着栈帧的入栈和出栈。栈帧的大小是编译时确定的，并且写入到了方法表中的Code属性之中，一个栈帧需要的内存不会受到运行时变量数据的影响 局部变量表它是一组">
-<meta property="og:updated_time" content="2017-07-25T06:22:57.577Z">
+<meta property="og:description" content="Thrift采用的是C/S的模式，IDL文件生成了服务器端的代码和客户端的代码，其中Tprocessor是服务器端用来处理请求的，Client是给客户端发送请求的。Tbase接口定义了数据如何方法和方法参数如何被序列化，而更底层的protocol协议层定义了数据的传输格式，如二进制格式，和transport传输层，定义了传输方式，如TCP/IP方式，共享内存等  这是thrift通信的协议栈。">
+<meta property="og:image" content="http://yoursite.com/images/thrift_01.png">
+<meta property="og:updated_time" content="2017-09-12T08:47:11.776Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="虚拟机字节码执行引擎">
-<meta name="twitter:description" content="执行引擎是虚拟机最核心的组成部分之一。 运行时栈结构栈帧是用于支持虚拟机进行方法调用和方法执行的数据结构，它属于虚拟机运行时数据区的虚拟机栈的栈元素，它存储了方法的局部变量表，操作数栈，动态链接和方法返回值等信息。每个方法的调用开始到执行结束，对应着栈帧的入栈和出栈。栈帧的大小是编译时确定的，并且写入到了方法表中的Code属性之中，一个栈帧需要的内存不会受到运行时变量数据的影响 局部变量表它是一组">
+<meta name="twitter:title" content="Thrift 通信模型">
+<meta name="twitter:description" content="Thrift采用的是C/S的模式，IDL文件生成了服务器端的代码和客户端的代码，其中Tprocessor是服务器端用来处理请求的，Client是给客户端发送请求的。Tbase接口定义了数据如何方法和方法参数如何被序列化，而更底层的protocol协议层定义了数据的传输格式，如二进制格式，和transport传输层，定义了传输方式，如TCP/IP方式，共享内存等  这是thrift通信的协议栈。">
+<meta name="twitter:image" content="http://yoursite.com/images/thrift_01.png">
 
 
 
@@ -131,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/19/虚拟机字节码执行引擎/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/12/Thrift通信模型/"/>
 
 
 
 
 
-  <title>虚拟机字节码执行引擎 | Hello, World</title>
+  <title>Thrift 通信模型 | Hello, World</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -287,7 +289,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/19/虚拟机字节码执行引擎/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/12/Thrift通信模型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qinzhaokun">
@@ -304,7 +306,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">虚拟机字节码执行引擎</h1>
+          <h1 class="post-title" itemprop="name headline">Thrift 通信模型</h1>
         
 
         <div class="post-meta">
@@ -316,8 +318,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-19T00:00:00+08:00">
-                2017-07-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-12T18:54:25+08:00">
+                2017-09-12
               </time>
             
 
@@ -339,8 +341,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/分布式服务框架/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式服务框架</span>
                   </a>
                 </span>
 
@@ -358,8 +360,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/07/19/虚拟机字节码执行引擎/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/07/19/虚拟机字节码执行引擎/" itemprop="commentsCount"></span>
+                <a href="/2017/09/12/Thrift通信模型/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/09/12/Thrift通信模型/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -367,7 +369,7 @@
 
           
           
-             <span id="/2017/07/19/虚拟机字节码执行引擎/" class="leancloud_visitors" data-flag-title="虚拟机字节码执行引擎">
+             <span id="/2017/09/12/Thrift通信模型/" class="leancloud_visitors" data-flag-title="Thrift 通信模型">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -395,14 +397,52 @@
       
 
       
-        <p>执行引擎是虚拟机最核心的组成部分之一。</p>
-<h2 id="运行时栈结构"><a href="#运行时栈结构" class="headerlink" title="运行时栈结构"></a>运行时栈结构</h2><p><strong>栈帧</strong>是用于支持虚拟机进行方法调用和方法执行的数据结构，它属于虚拟机运行时数据区的虚拟机栈的栈元素，它存储了方法的局部变量表，操作数栈，动态链接和方法返回值等信息。每个方法的调用开始到执行结束，对应着栈帧的入栈和出栈。栈帧的大小是编译时确定的，并且写入到了方法表中的Code属性之中，一个栈帧需要的内存不会受到运行时变量数据的影响</p>
-<h3 id="局部变量表"><a href="#局部变量表" class="headerlink" title="局部变量表"></a>局部变量表</h3><p>它是一组变量值存储空间，用于存放方法参数和方法内定义的局部变量，在Java代码编译成Class文件时，局部变量表的大小就在方法的Code属性的max_locals数据项确定了。它的最小容量单位是变量槽（Slot），虚拟机规范中没有明确指定它的大小，但是它应该能存放一个boolean,byte,char,short,int,float,reference或returnAddress类型的数据，slot一般会是32位。对于64位的数据long和double，虚拟机会以高位在前的方式分配连续的两个slot空间。</p>
-<p>看到这里的时有个疑问，同样是64位，double却比long表示的数大。这是因为double牺牲了精度，扩大了范围，long可以表示从LONG.MIN_VALUE到LONG.MAX_VALUE任意一个整数，19位数；double由于有exp位，只能表示16位一下的精确整数，当数字大于16位时，精度有所损失。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">double a = LONG.MAX_VALUE-100L;</div><div class="line">double b = LONG.MAX_VALUE-101L;</div><div class="line">System.out.println(a == b);</div></pre></td></tr></table></figure></p>
-<p>由于局部变量表是线程私有的，因此分开读写两个slot虽然会破坏原子性，但是不会代码数据安全的问题。虚拟机使用索引定位的方式使用局部变量表索引值从0到最大的slot数。对于实例方法，<strong>第0号索引默认是对象实例的索引，可通过this指针来方法</strong>，之后按照顺序，先参数表，后是方法体内的局部变量。对于方法体的局部变量所占用的slot是可以重用的，当字节码PC计数器的值超出了某个变量的作用域，这个变量的slot就可以交给其他变量使用，这样可以节约栈空间，更重要的是它会影响垃圾回收，看下面的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public static void main(String [] args)&#123;</div><div class="line">  &#123;</div><div class="line">    byte[] p = new byte[64*1024*1024];</div><div class="line">  &#125;</div><div class="line">  System.gc();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>这样的话<code>System.gc()</code>不会执行垃圾回收，这是因为p虽然不被使用了，但是没有其他的局部变量复用该slot，局部变量表中该slot保存的认识p指向64M的byte的引用。</p>
-<h3 id="操作数栈"><a href="#操作数栈" class="headerlink" title="操作数栈"></a>操作数栈</h3><p>它是一个后入先出的栈，最大深度在编译时确定，被写在Code属性中的max_stacks的数据项中，数据可以是任意的Java数据类型。会有各种字节指令想操作数栈中写入和提取内容，也就是入栈和出栈的操作。</p>
-<h3 id="动态连接"><a href="#动态连接" class="headerlink" title="动态连接"></a>动态连接</h3><p>每个栈帧都包含一个指向运行时常量池中该栈帧所属方法的引用，可以支持方法调用过程中的动态连接。Class文件中常量池中存在很多符号引用，有些符号引用会在类加载阶段转化成直接引用，叫静态解析；另外一些会在运行期间转化成直接引用，称为动态连接</p>
+        <p>Thrift采用的是C/S的模式，IDL文件生成了服务器端的代码和客户端的代码，其中<code>Tprocessor</code>是服务器端用来处理请求的，<code>Client</code>是给客户端发送请求的。Tbase接口定义了数据如何方法和方法参数如何被序列化，而更底层的protocol协议层定义了数据的传输格式，如二进制格式，和transport传输层，定义了传输方式，如TCP/IP方式，共享内存等</p>
+<p><img src="/images/thrift_01.png" alt=""></p>
+<p>这是thrift通信的协议栈。</p>
+<ul>
+<li><p>底层IO模块，负责实际的数据传输，包括Socket，文件，或者压缩数据流等。</p>
+</li>
+<li><p>TTransport负责以字节流方式发送和接收Message，是底层IO模块在Thrift框架中的实现，每一个底层IO模块都会有一个对应TTransport来负责Thrift的字节流(Byte Stream)数据在该IO模块上的传输。例如TSocket对应Socket传输，TFileTransport对应文件传输。</p>
+</li>
+<li><p>TProtocol主要负责结构化数据组装成Message，或者从Message结构中读出结构化数据。TProtocol将一个有类型的数据转化为字节流以交给TTransport进行传输，或者从TTransport中读取一定长度的字节数据转化为特定类型的数据。如int32会被TBinaryProtocol Encode为一个四字节的字节数据，或者TBinaryProtocol从TTransport中取出四个字节的数据Decode为int32。</p>
+</li>
+<li><p>TServer负责接收Client的请求，并将请求转发到Processor进行处理。TServer主要任务就是高效的接受Client的请求，特别是在高并发请求的情况下快速完成请求。</p>
+</li>
+<li><p>Processor(或者TProcessor)负责对Client的请求做出相应，包括RPC请求转发，调用参数解析和用户逻辑调用，返回值写回等处理步骤。Processor是服务器端从Thrift框架转入用户逻辑的关键流程。Processor同时也负责向Message结构中写入数据或者读出数据。</p>
+</li>
+</ul>
+<h2 id="TTransport"><a href="#TTransport" class="headerlink" title="TTransport"></a>TTransport</h2><p>它描述了Thrift底层使用什么样的传输协议，一般都是TCP/IP协议，而在应用层上，它可以以使用<code>Socket</code>,<code>File</code>,<code>Zip</code>或<code>HTTP</code>.数据是按字节流(ByteStream)方式处理的，即传输层看到的是一个又一个的字节，并把这些字节按照顺序发送和接收。</p>
+<p>它具有以下几种模式：</p>
+<blockquote>
+<p>TSocket：使用阻塞的TCP Socket进行数据传输，也是最常见的模式<br>THttpTransport：采用Http传输协议进行数据传输<br>TFileTransport：文件（日志）传输类，允许client将文件传给server，允许server将收到的数据写到文件中<br>TZlibTransport：与其他的TTransport配合使用，压缩后对数据进行传输，或者将收到的数据解压</p>
+</blockquote>
+<p>下面几个类主要是对上面几个类地装饰（采用了装饰模式），以提高传输效率。</p>
+<blockquote>
+<p>TBufferedTransport：对某个Transport对象操作的数据进行buffer，即从buffer中读取数据进行传输，或者将数据直接写入buffer<br>TFramedTransport：同TBufferedTransport类似，也会对相关数据进行buffer，同时，它支持定长数据发送和接收（按块的大小，进行传输）。<br>TMemoryBuffer：从一个缓冲区中读写数据</p>
+</blockquote>
+<h2 id="TProtocol"><a href="#TProtocol" class="headerlink" title="TProtocol"></a>TProtocol</h2><p>TProtocol的主要任务是<strong>把TTransport中的字节流转化为数据流(Data Stream)</strong>,在TProtocol这一层就会出现具有数据类型的数据，如整型，浮点数，字符串，结构体等。TProtocol中数据虽然有了数据类型，但是TProtocol只会按照指定类型将数据读出和写入，而对于数据的真正用途，需要在Thrift自动生成的Server和Client中里处理。</p>
+<p>Thrift 可以让用户选择客户端与服务端之间传输通信协议的类别，在传输协议上总体划分为<strong>文本 (text)</strong> 和<strong>二进制 (binary)</strong> 传输协议，为节约带宽，提高传输效率，一般情况下使用二进制类型的传输协议为多数。常用协议有以下几种:</p>
+<blockquote>
+<p>TBinaryProtocol: 二进制格式<br>TCompactProtocol: 高效率的、密集的二进制编码格式<br>TJSONProtocol: 使用 JSON 的数据编码协议进行数据传输<br>TSimpleJSONProtocol: 提供JSON只写协议, 生成的文件很容易通过脚本语言解析。<br>TDebugProtocol: 使用易懂的可读的文本格式，以便于debug</p>
+</blockquote>
+<p>TCompactProtocol 高效的编码方式，使用了类似于ProtocolBuffer的Variable-Length Quantity (VLQ) 编码方式，主要思路是对整数采用可变长度，同时尽量利用没有使用Bit。对于一个int32并不保证一定是4个字节编码，实际中可能是1个字节，也可能是5个字节，但最多是五个字节。TCompactProtocol并不保证一定是最优的，但多数情况下都会比TBinaryProtocol性能要更好。</p>
+<h2 id="TServer"><a href="#TServer" class="headerlink" title="TServer"></a>TServer</h2><p>TServer主要作用是接收Client的请求，并转到某个TProcessor上进行请求处理。针对不同的访问规模,Thrift提供了不同的TServer模型。Thrift目前支持的Server模型包括：</p>
+<blockquote>
+<p>TSimpleServer：使用阻塞IO的单线程服务器，主要用于调试<br>TThreadedServer：使用阻塞IO的多线程服务器。每一个请求都在一个线程里处理，并发访问情况下会有很多线程同时在运行。<br>TThreadPoolServer：使用阻塞IO的多线程服务器，使用线程池管理处理线程。<br>TNonBlockingServer：使用非阻塞IO的多线程服务器，使用少量线程既可以完成大并发量的请求响应，必须使用TFramedTransport。</p>
+</blockquote>
+<p>处理大量更新的操作，主要是在<code>TThreadedServer</code>和<code>TNonblockingServer</code>中进行选择。<code>TNonblockingServer</code>能够使用少量线程处理大量并发连接，但是延迟较高；<code>TThreadedServer</code>的延迟较低。实际中，<code>TThreadedServer</code>的吞吐量可能会比<code>TNonblockingServer</code>高，但是<code>TThreadedServer</code>的CPU占用要比<code>TNonblockingServer</code>高很多。</p>
+<h2 id="Processor"><a href="#Processor" class="headerlink" title="Processor"></a>Processor</h2><p>Processor是由Thrift生成的TProcessor的子类，主要对TServer中一次请求的 InputProtocol和OutputTProtocol进行操作，也就是从InputProtocol中读出Client的请求数据，向OutputProtcol中写入用户逻辑的返回值。Processor是TServer从Thrift框架转到用户逻辑的关键流程。同时TProcessor.process是一个非常关键的处理函数，因为Client所有的RPC调用都会经过该函数处理并转发。</p>
+<p>具体的调用流程有如下三步：</p>
+<ol>
+<li><p>TServer接收到RPC请求之后，调用TProcessor.process进行处理</p>
+</li>
+<li><p>TProcessor.process首先调用TTransport.readMessageBegin接口，读出RPC调用的名称和RPC调用类型。如果RPC调用类型是RPC Call，则调用TProcessor.process_fn继续处理，对于未知的RPC调用类型，则抛出异常。</p>
+</li>
+<li><p>TProcessor.process_fn根据RPC调用名称到自己的<code>processMap</code>中查找对应的RPC处理函数。如果存在对应的RPC处理函数，则调用该处理函数继续进行请求响应。不存在则抛出异常。</p>
+</li>
+</ol>
+<p><a href="http://blog.csdn.net/chen7253886/article/details/52779471" target="_blank" rel="external">http://blog.csdn.net/chen7253886/article/details/52779471</a></p>
 
       
     </div>
@@ -432,7 +472,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Java/" rel="tag"># Java</a>
+            <a href="/tags/分布式服务框架/" rel="tag"># 分布式服务框架</a>
           
         </div>
       
@@ -445,8 +485,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/18/虚拟机类加载机制/" rel="next" title="虚拟机类加载机制">
-                <i class="fa fa-chevron-left"></i> 虚拟机类加载机制
+              <a href="/2017/09/11/CGLIB原理/" rel="next" title="CGLIB原理">
+                <i class="fa fa-chevron-left"></i> CGLIB原理
               </a>
             
           </div>
@@ -454,10 +494,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/19/spring事务管理/" rel="prev" title="Spring 事务管理">
-                Spring 事务管理 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -599,7 +635,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#运行时栈结构"><span class="nav-number">1.</span> <span class="nav-text">运行时栈结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#局部变量表"><span class="nav-number">1.1.</span> <span class="nav-text">局部变量表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作数栈"><span class="nav-number">1.2.</span> <span class="nav-text">操作数栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态连接"><span class="nav-number">1.3.</span> <span class="nav-text">动态连接</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TTransport"><span class="nav-number">1.</span> <span class="nav-text">TTransport</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TProtocol"><span class="nav-number">2.</span> <span class="nav-text">TProtocol</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TServer"><span class="nav-number">3.</span> <span class="nav-text">TServer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Processor"><span class="nav-number">4.</span> <span class="nav-text">Processor</span></a></li></ol></div>
             
 
           </div>
