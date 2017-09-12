@@ -277,4 +277,36 @@ public class DynamicProxy implements InvocationHandler{
 
 }
 
+ 通道可以是单向的，也可以是双向的，而流只能是单向的（InputStream和OutputStream）。
+ 
+ 通道可以是阻塞的，也可以是非阻塞的。非阻塞模式的通道永远
+ 
+ 不会让调用的线程休眠。请求的操作要么立即完成,要么返回一个结果表明未进行任何操作。这也是NIO为什么能够实现非阻塞的I/O。
+ 
+ `Channel`是一个顶层接口，该接口定义简单：
+ ```
+ public interface Channel extends Closeable {
+    public boolean isOpen();
+    public void close() throws IOException;
+}
+ ```
+ 
+**通道能够访问I/O服务**，主要可以分为文件通道和套接字通道。FileChannel对象却只能通过一个打开的RandomAccessFile、FileInputStream或FileOutputStream的对象上调用getChannel()方法获取，不可以直接创建
 
+#### Socket通道
+
+关于Socket通道，有三个主要的类，`ServerSocketChannel`, `SocketChannel`和`DatagramChannel`. 他们都继承自`AbstractSelectableChannel`.`ServerSocketChannel`主要是鉴定传入的连接和去创建新的`SocketChannel`对象，该通道不会传递数据，而后面两个会有数据传输。这三种通道被实例化时都会创建对等的socket对象，(Socket、ServerSocket和DatagramSocket)
+
+通过调用configureBlocking(booelan block)去设置socket通道的模式。
+
+##### ServerSocketChannel
+
+用静态的`open()`工厂方法创建一个新的`ServerSocketChannel`实例，将会返回和一个`java.net.ServerSocket`关联的通道。下一步就是要使用`bind()`方法绑定一个地址。`ServerSocketChannel`也有`accept()`方法。一旦创建了一个`ServerSocketChannel`，并且对等的`ServerSocket`绑定了端口，然后就可以在其中一个上调用`accept()`方法了。如果选择在`ServerSocket`上调用，则总是阻塞并返回一个`java.net.Socket`对象，如果选择在`ServerSocketChannel`上调用，则会返回`SocketChannel`类型的对象，返回的对象能够在非阻塞模式下运行。
+
+##### SocketChannel
+
+`Socket`和`SocketChannel`类封装点对点、有序的网络连接，类似TCP/IP网络连接。可以通过`SocketChannel`的静态方法`open()`创建新的`SocketChannel`对象，调用`socket()`方法可以返回对应的`Socket`对象。新创建的 SocketChannel 虽已打开却是未连接的。因此，可以通过`connect()`连接服务端，`sc.connect(new InetSocketAddress ("localhost", 1234));`
+
+##### DatagramChannel
+
+它是面向UDP协议的。
