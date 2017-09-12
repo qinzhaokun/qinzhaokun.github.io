@@ -1,0 +1,987 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="首先，我们来看看，Java线程池怎么写：1234567ExecutorService es = Executors.newFixedThreadPool(15);es.submit(() -&amp;gt; &amp;#123;  System.out.println(&amp;quot;I am a new Thread!&amp;quot;);&amp;#125;);es.shutdown(); 线程池的类型是ExcutorServ">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java线程池原理">
+<meta property="og:url" content="http://yoursite.com/2017/09/11/Java线程池原理/index.html">
+<meta property="og:site_name" content="Hello, World">
+<meta property="og:description" content="首先，我们来看看，Java线程池怎么写：1234567ExecutorService es = Executors.newFixedThreadPool(15);es.submit(() -&amp;gt; &amp;#123;  System.out.println(&amp;quot;I am a new Thread!&amp;quot;);&amp;#125;);es.shutdown(); 线程池的类型是ExcutorServ">
+<meta property="og:updated_time" content="2017-09-12T04:06:53.488Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java线程池原理">
+<meta name="twitter:description" content="首先，我们来看看，Java线程池怎么写：1234567ExecutorService es = Executors.newFixedThreadPool(15);es.submit(() -&amp;gt; &amp;#123;  System.out.println(&amp;quot;I am a new Thread!&amp;quot;);&amp;#125;);es.shutdown(); 线程池的类型是ExcutorServ">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/11/Java线程池原理/"/>
+
+
+
+
+
+  <title>Java线程池原理 | Hello, World</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello, World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/11/Java线程池原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qinzhaokun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello, World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java线程池原理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-11T00:00:00+08:00">
+                2017-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/09/11/Java线程池原理/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/09/11/Java线程池原理/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/09/11/Java线程池原理/" class="leancloud_visitors" data-flag-title="Java线程池原理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>首先，我们来看看，Java线程池怎么写：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">ExecutorService es = Executors.newFixedThreadPool(15);</div><div class="line"></div><div class="line">es.submit(() -&gt; &#123;</div><div class="line">  System.out.println(&quot;I am a new Thread!&quot;);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">es.shutdown();</div></pre></td></tr></table></figure></p>
+<p>线程池的类型是<code>ExcutorService</code>, 通过<code>Excutors</code>类的静态方法<code>newFixedThreadPool</code>创建一个线程池，并使用<code>submit</code>方法提交一个Runable任务。</p>
+<p>那么使用线程池，有什么好处呢？</p>
+<ol>
+<li><p>降低资源消耗。通过重复利用已创建的线程降低线程创建和销毁造成的消耗</p>
+</li>
+<li><p>提高响应速度。当任务到达时，任务可以不需要等到线程创建就立即执行</p>
+</li>
+<li><p>提高线程的可管理性</p>
+</li>
+</ol>
+<h2 id="ThreadPoolExecutor类"><a href="#ThreadPoolExecutor类" class="headerlink" title="ThreadPoolExecutor类"></a>ThreadPoolExecutor类</h2><p>它是线程池中最核心的一个类，提供了四种<em>构造函数</em>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line">public class ThreadPoolExecutor extends AbstractExecutorService &#123;</div><div class="line">......</div><div class="line">    public ThreadPoolExecutor(int corePoolSize,</div><div class="line">                                  int maximumPoolSize,</div><div class="line">                                  long keepAliveTime,</div><div class="line">                                  TimeUnit unit,</div><div class="line">                                  BlockingQueue&lt;Runnable&gt; workQueue) &#123;</div><div class="line">            this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,</div><div class="line">                Executors.defaultThreadFactory(), defaultHandler);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public ThreadPoolExecutor(int corePoolSize,</div><div class="line">                                  int maximumPoolSize,</div><div class="line">                                  long keepAliveTime,</div><div class="line">                                  TimeUnit unit,</div><div class="line">                                  BlockingQueue&lt;Runnable&gt; workQueue,</div><div class="line">                                  ThreadFactory threadFactory) &#123;</div><div class="line">            this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,</div><div class="line">                 threadFactory, defaultHandler);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public ThreadPoolExecutor(int corePoolSize,</div><div class="line">                                  int maximumPoolSize,</div><div class="line">                                  long keepAliveTime,</div><div class="line">                                  TimeUnit unit,</div><div class="line">                                  BlockingQueue&lt;Runnable&gt; workQueue,</div><div class="line">                                  RejectedExecutionHandler handler) &#123;</div><div class="line">            this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,</div><div class="line">                 Executors.defaultThreadFactory(), handler);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public ThreadPoolExecutor(int corePoolSize,</div><div class="line">                                  int maximumPoolSize,</div><div class="line">                                  long keepAliveTime,</div><div class="line">                                  TimeUnit unit,</div><div class="line">                                  BlockingQueue&lt;Runnable&gt; workQueue,</div><div class="line">                                  ThreadFactory threadFactory,</div><div class="line">                                  RejectedExecutionHandler handler) &#123;</div><div class="line">            if (corePoolSize &lt; 0 ||</div><div class="line">                maximumPoolSize &lt;= 0 ||</div><div class="line">                maximumPoolSize &lt; corePoolSize ||</div><div class="line">                keepAliveTime &lt; 0)</div><div class="line">                throw new IllegalArgumentException();</div><div class="line">            if (workQueue == null || threadFactory == null || handler == null)</div><div class="line">                throw new NullPointerException();</div><div class="line">            this.corePoolSize = corePoolSize;</div><div class="line">            this.maximumPoolSize = maximumPoolSize;</div><div class="line">            this.workQueue = workQueue;</div><div class="line">            this.keepAliveTime = unit.toNanos(keepAliveTime);</div><div class="line">            this.threadFactory = threadFactory;</div><div class="line">            this.handler = handler;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>以下是几个关键参数的定义：</p>
+<ul>
+<li><p><code>corePoolSize</code>: 核心池的大小。一开始时线程池里没有任何线程，线程池的大小为0，当不断有任务来时，会逐渐创建新的线程，当线程的数量到达<code>corePoolSize</code>时，新来的任务就会放入缓存队列当中。</p>
+</li>
+<li><p><code>maximumPoolSize</code>: 表示线程池中最多的线程数。</p>
+</li>
+<li><p><code>keepAliveTime</code>: 表示线程没有任何执行时最多能存活多久。一般的，只有当线程池中的线程数大于<code>corePoolSize</code>时，<code>keepAliveTime</code>才会起作用.即当线程池中的线程数大于corePoolSize时，如果一个线程空闲的时间达到keepAliveTime，则会终止，直到线程池中的线程数不超过corePoolSize。</p>
+</li>
+<li><p><code>uint</code>: keepAliveTime的时间单位，有7种取值：</p>
+</li>
+</ul>
+<blockquote>
+<p>TimeUnit.DAYS; // 天<br>TimeUnit.HOURS; // 时<br>TimeUnit.MINUTES; // 分<br>TimeUnit.SECONDS; // 秒<br>TimeUnit.MILLISECONDS; // 毫秒<br>TimeUnit.MICROSECONDS; // 微妙<br>TimeUnit.NANOSECONDS; // 纳秒</p>
+</blockquote>
+<ul>
+<li><code>workQueue</code> ： 一个阻塞队列，用来存储等待执行的任务,它线程池中运行过起着关键的作用，它有几种选择：</li>
+</ul>
+<blockquote>
+<p>ArrayBlockingQueue：是一个基于数组结构的有界阻塞队列，此队列按 FIFO（先进先出）原则对元素进行排序；</p>
+<p>LinkedBlockingQueue：一个基于链表结构的阻塞队列，此队列按FIFO （先进先出） 排序元素，吞吐量通常要高于ArrayBlockingQueue。静态工厂方法Executors.newFixedThreadPool()使用了这个队列；</p>
+<p>SynchronousQueue：一个不存储元素的阻塞队列。每个插入操作必须等到另一个线程调用移除操作，否则插入操作一直处于阻塞状态，吞吐量通常要高于</p>
+<p>LinkedBlockingQueue，静态工厂方法Executors.newCachedThreadPool使用了这个队列；</p>
+<p>PriorityBlockingQueue：一个具有优先级的无限阻塞队列；</p>
+</blockquote>
+<ul>
+<li><p><code>threadFactory</code> ：线程工厂，主要用于创建线程</p>
+</li>
+<li><p><code>handler</code> ：饱和策略，即当队列和线程池都满了，说明线程池处于饱和状态，那么必须采取一种策略处理提交的新任务。这个策略默认情况下是<code>AbortPolicy</code>，表示无法处理新任务时抛出异常</p>
+</li>
+</ul>
+<blockquote>
+<p>ThreadPoolExecutor.AbortPolicy： 丢弃任务并抛出RejectedExecutionException异常；</p>
+<p>ThreadPoolExecutor.DiscardPolicy：也是丢弃任务，但是不抛出异常;</p>
+<p>ThreadPoolExecutor.DiscardOldestPolicy：丢弃队列最前面的任务，然后重新尝试执行任务（重复此过程）；</p>
+<p>ThreadPoolExecutor.CallerRunsPolicy：由调用线程处理该任务;</p>
+</blockquote>
+<h2 id="继承关系"><a href="#继承关系" class="headerlink" title="继承关系"></a>继承关系</h2><p><code>ThreadPoolExecutor</code>类 —&gt; <code>AbstractExectorService</code>类 —&gt; <code>ExecutorSerivce</code>接口 —&gt; <code>Executor</code>接口</p>
+<ol>
+<li><code>Executor</code>是一个顶层接口，在它里面只声明了一个方法<code>execute(Runnable)</code>，返回值为<code>void</code>，参数为<code>Runnable</code>类型，从字面意思可以理解，就是用来执行传进去的任务的；</li>
+</ol>
+<p>然后<code>ExecutorService</code>接口继承了<code>Executor</code>接口，并声明了一些方法：<code>submit</code>、<code>invokeAll</code>、<code>invokeAny</code>以及<code>shutDown</code>等；</p>
+<p>抽象类<code>AbstractExecutorService</code>实现了<code>ExecutorService</code>接口，基本实现了<code>ExecutorServic</code>e中声明的所有方法；</p>
+<p>然后<code>ThreadPoolExecutor</code>继承了类<code>AbstractExecutorService</code></p>
+<p><code>submit</code>和<code>execute</code>方法的区别：</p>
+<p><code>execute</code>是顶层接口<code>Executor</code>的唯一方法，它在<code>ThreadPoolExecutor</code>得到了具体实现，通过这个方法可以向线程池提交一个任务，交由线程池去执行。但是它的返回值是<code>void</code></p>
+<p><code>submit</code>是<code>ExecutorService</code>申明的，在AbstractExecutorService就已经有了具体的实现，在<code>ThreadPoolExecutor</code>中并没有对其进行重写，这个方法也是用来向线程池提交任务的，但是它和execute()方法不同，它能够返回任务执行的结果，去看<code>submit()</code>方法的实现，会发现它实际上还是调用的<code>execute()</code>方法，只不过它利用了<code>Future</code>来获取任务执行结果。</p>
+<p>这里感觉由有点模板模式的味道了。</p>
+<p><code>shutdown()</code>和<code>shutdownNow()</code>是用来关闭线程池的。后者会尝试终止正在运行的task。</p>
+<p>getQueue() 、getPoolSize() 、getActiveCount()、getCompletedTaskCount()等获取与线程池相关属性的方法</p>
+<h2 id="运行原理"><a href="#运行原理" class="headerlink" title="运行原理"></a>运行原理</h2><p>重点来了，线程池是如何运行的呢？</p>
+<h3 id="线程池的状态"><a href="#线程池的状态" class="headerlink" title="线程池的状态"></a>线程池的状态</h3><blockquote>
+<p>static final int RUNNING = 0;<br>static final int SHUTDOWN = 1;<br>static final int STOP = 2;<br>static final int TERMINATED = 3;</p>
+</blockquote>
+<p>当创建线程池后，初始时，线程池处于<code>RUNNING</code>状态；</p>
+<p>如果调用了<code>shutdown()</code>方法，则线程池处于<code>SHUTDOWN</code>状态，此时线程池不能够接受新的任务，它会等待所有任务执行完毕；</p>
+<p>如果调用了<code>shutdownNow()</code>方法，则线程池处于<code>STOP</code>状态，此时线程池不能接受新的任务，并且会去尝试终止正在执行的任务；</p>
+<p>当线程池处于<code>SHUTDOWN</code>或<code>STOP</code>状态，并且所有工作线程已经销毁，任务缓存队列已经清空或执行结束后，线程池被设置为<code>TERMINATED</code>状态。</p>
+<h3 id="线程池中的成员变量"><a href="#线程池中的成员变量" class="headerlink" title="线程池中的成员变量"></a>线程池中的成员变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">private final BlockingQueue&lt;Runnable&gt; workQueue; // 任务缓存队列，用来存放等待执行的任务</div><div class="line"></div><div class="line">private final ReentrantLock mainLock = new ReentrantLock(); // 线程池的主要状态锁，对线程池的状态（比如线程池的大小，状态等）的改变都要使用这个锁</div><div class="line"></div><div class="line">private final HashSet&lt;Worker&gt; workers = new HashSet&lt;Worker&gt;(); // 用来存放工作集</div><div class="line"></div><div class="line">private volatile long keepAliveTime; //线程存活时间</div><div class="line"></div><div class="line">private volatile boolean allowCoreThreadTimeOut; // 是否允许为核心线程设置存活时间</div><div class="line"></div><div class="line">private volatile int corePoolSize; // 核心池的大小（即线程池中的线程数目大于这个参数时，提交的任务会被放进任务缓存队列）</div><div class="line"></div><div class="line">private volatile int maximumPoolSize; // 线程池最大能容忍的线程数</div><div class="line"></div><div class="line">private volatile int poolSize; // 线程池中当前的线程数</div><div class="line"></div><div class="line">private volatile RejectedExecutionHandler handler; // 任务拒绝策略</div><div class="line"></div><div class="line">private volatile ThreadFactory threadFactory; // 线程工厂，用来创建线程</div><div class="line"></div><div class="line">private int largestPoolSize; // 用来记录线程池中曾经出现过的最大线程数</div><div class="line"></div><div class="line">private long completedTaskCount; //用来记录已经执行完毕的任务个数</div></pre></td></tr></table></figure>
+<p>基本上对应构造函数中的参数。</p>
+<h3 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h3><p>一开始没有任何线程，当不断有新的任务来时，如果此时的线程数没有到达corePoolSize，则会创建新的线程；随着任务的不断到来，线程数到达了corePoolSize，新的任务会进入阻塞队列，等待被赋给某个线程执行。注意阻塞队列有两种取数据的方式，一种是<code>take()</code>,阻塞取；另一种是<code>poll()</code>有timeout的阻塞取，keepAlivetime可根据是够在有限时间内取到任务二判断应不应该删除某些线程。当阻塞队列满了之后，新来的任务又会让线程池生成新的线程，直到线程数到达maximum后，当还有任务进来时，则按照饱和策略对新的任务进行处理。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/10/kafka的基本框架/" rel="next" title="Kafka基本框架">
+                <i class="fa fa-chevron-left"></i> Kafka基本框架
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/11/CGLIB原理/" rel="prev" title="CGLIB原理">
+                CGLIB原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="qinzhaokun" />
+          <p class="site-author-name" itemprop="name">qinzhaokun</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/qinzhaokun" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ThreadPoolExecutor类"><span class="nav-number">1.</span> <span class="nav-text">ThreadPoolExecutor类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#继承关系"><span class="nav-number">2.</span> <span class="nav-text">继承关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行原理"><span class="nav-number">3.</span> <span class="nav-text">运行原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程池的状态"><span class="nav-number">3.1.</span> <span class="nav-text">线程池的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程池中的成员变量"><span class="nav-number">3.2.</span> <span class="nav-text">线程池中的成员变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工作流程"><span class="nav-number">3.3.</span> <span class="nav-text">工作流程</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">大脸猫</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吃鱼</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt3gkj5W';
+      var conf = '6157060596fdd3e86c13f21ba008eb74';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("tXNJWqef5cXXkgOuTliYlvYP-gzGzoHsz", "KyQV3wFCnWrvzEpNLVMrhHBY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
