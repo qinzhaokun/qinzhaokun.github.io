@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java," />
+  <meta name="keywords" content="Spring," />
 
 
 
@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="由于处理器的速度和内存读写的速度差异很大，造成了处理器花很大一部分时间去进行内存读写。因此，计算系统筒加入了高速缓存，以减少处理器等待数据读写的时间。但是, 由于多个处理器对应多个高速缓存，它们共享同一个主存，因此，存在缓存一致性的问题。在主存进行读写时，会遵循缓存一致性协议。此外，处理器会对代码进行乱序执行以充分利用资源，执行的结果会保证和顺序执行的结果一直，即指令重排序优化。 Java内存模型">
-<meta name="keywords" content="Java">
+<meta name="description" content="简介IOC全称是 Inversion of Control，控制反转，从字面上的意思理解，就是对象的控制权反转了。直接在对象内部通过new进行创建对象，是程序主动去创建依赖对象，此时被创建的对象的控制权在创建该对象的对象手中，而在Spring中，对象的创建由容器负责，在通过依赖注入(DI)将对象交给需要该对象的对象，因此控制权在容器，即发生了对象控制权的反转。那位，在Spring当中，容器是什么的">
+<meta name="keywords" content="Spring">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java内存模型和线程">
-<meta property="og:url" content="http://yoursite.com/2017/07/21/Java内存模型和线程/index.html">
+<meta property="og:title" content="Spring IOC原理">
+<meta property="og:url" content="http://yoursite.com/2017/07/12/spring IOC原理/index.html">
 <meta property="og:site_name" content="Hello, World">
-<meta property="og:description" content="由于处理器的速度和内存读写的速度差异很大，造成了处理器花很大一部分时间去进行内存读写。因此，计算系统筒加入了高速缓存，以减少处理器等待数据读写的时间。但是, 由于多个处理器对应多个高速缓存，它们共享同一个主存，因此，存在缓存一致性的问题。在主存进行读写时，会遵循缓存一致性协议。此外，处理器会对代码进行乱序执行以充分利用资源，执行的结果会保证和顺序执行的结果一直，即指令重排序优化。 Java内存模型">
-<meta property="og:updated_time" content="2017-07-25T06:22:57.575Z">
+<meta property="og:description" content="简介IOC全称是 Inversion of Control，控制反转，从字面上的意思理解，就是对象的控制权反转了。直接在对象内部通过new进行创建对象，是程序主动去创建依赖对象，此时被创建的对象的控制权在创建该对象的对象手中，而在Spring中，对象的创建由容器负责，在通过依赖注入(DI)将对象交给需要该对象的对象，因此控制权在容器，即发生了对象控制权的反转。那位，在Spring当中，容器是什么的">
+<meta property="og:updated_time" content="2017-09-12T05:56:50.030Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java内存模型和线程">
-<meta name="twitter:description" content="由于处理器的速度和内存读写的速度差异很大，造成了处理器花很大一部分时间去进行内存读写。因此，计算系统筒加入了高速缓存，以减少处理器等待数据读写的时间。但是, 由于多个处理器对应多个高速缓存，它们共享同一个主存，因此，存在缓存一致性的问题。在主存进行读写时，会遵循缓存一致性协议。此外，处理器会对代码进行乱序执行以充分利用资源，执行的结果会保证和顺序执行的结果一直，即指令重排序优化。 Java内存模型">
+<meta name="twitter:title" content="Spring IOC原理">
+<meta name="twitter:description" content="简介IOC全称是 Inversion of Control，控制反转，从字面上的意思理解，就是对象的控制权反转了。直接在对象内部通过new进行创建对象，是程序主动去创建依赖对象，此时被创建的对象的控制权在创建该对象的对象手中，而在Spring中，对象的创建由容器负责，在通过依赖注入(DI)将对象交给需要该对象的对象，因此控制权在容器，即发生了对象控制权的反转。那位，在Spring当中，容器是什么的">
 
 
 
@@ -131,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/21/Java内存模型和线程/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/07/12/spring IOC原理/"/>
 
 
 
 
 
-  <title>Java内存模型和线程 | Hello, World</title>
+  <title>Spring IOC原理 | Hello, World</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/21/Java内存模型和线程/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/12/spring IOC原理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qinzhaokun">
@@ -304,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java内存模型和线程</h1>
+          <h1 class="post-title" itemprop="name headline">Spring IOC原理</h1>
         
 
         <div class="post-meta">
@@ -316,8 +316,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-21T00:00:00+08:00">
-                2017-07-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-12T18:54:25+08:00">
+                2017-07-12
               </time>
             
 
@@ -339,8 +339,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
                   </a>
                 </span>
 
@@ -358,8 +358,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/07/21/Java内存模型和线程/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/07/21/Java内存模型和线程/" itemprop="commentsCount"></span>
+                <a href="/2017/07/12/spring IOC原理/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/07/12/spring IOC原理/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -367,7 +367,7 @@
 
           
           
-             <span id="/2017/07/21/Java内存模型和线程/" class="leancloud_visitors" data-flag-title="Java内存模型和线程">
+             <span id="/2017/07/12/spring IOC原理/" class="leancloud_visitors" data-flag-title="Spring IOC原理">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -395,74 +395,54 @@
       
 
       
-        <p>由于处理器的速度和内存读写的速度差异很大，造成了处理器花很大一部分时间去进行内存读写。因此，计算系统筒加入了高速缓存，以减少处理器等待数据读写的时间。但是, 由于多个处理器对应多个高速缓存，它们共享同一个主存，因此，存在缓存一致性的问题。在主存进行读写时，会遵循缓存一致性协议。此外，处理器会对代码进行乱序执行以充分利用资源，执行的结果会保证和顺序执行的结果一直，即指令重排序优化。</p>
-<h2 id="Java内存模型"><a href="#Java内存模型" class="headerlink" title="Java内存模型"></a>Java内存模型</h2><p>Java Memory Model， JMM， 它由Java定义，来屏蔽掉各种硬件和操作系统内存访问的差异，让程序能够在不同的平台达到一致性并发的效果</p>
-<h3 id="主内存和工作内存"><a href="#主内存和工作内存" class="headerlink" title="主内存和工作内存"></a>主内存和工作内存</h3><p>所有的变量都存储在主内存当中，每条线程还有自己的工作内存，类似于高速缓存，<strong>线程保存着被该线程使用到的变量的拷贝</strong>，线程对变量的操作在工作内存中，不直接写主存。线程操作其他线程的工作内存。</p>
-<h4 id="内存间的交互操作"><a href="#内存间的交互操作" class="headerlink" title="内存间的交互操作"></a>内存间的交互操作</h4><p>主内存和工作内存之间的数据同步需要一些操作来完成，Java内存模型定义了几种操作来完成：</p>
-<ul>
-<li><p>lock（锁定）：作用于主存，把主存的变量标记某个线程独占</p>
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>IOC全称是 Inversion of Control，控制反转，从字面上的意思理解，就是对象的控制权反转了。直接在对象内部通过new进行创建对象，是程序主动去创建依赖对象，此时被创建的对象的控制权在创建该对象的对象手中，而在Spring中，对象的创建由容器负责，在通过依赖注入(DI)将对象交给需要该对象的对象，因此控制权在容器，即发生了对象控制权的反转。那位，在Spring当中，容器是什么的？我觉得可以理解为是<strong>配置文件</strong>。xml ， properties文件等语义化配置文件。</p>
+<p>在Spring中，由容器负责控制对象的<strong>生命周期</strong>和<strong>对象间的关系</strong>。</p>
+<p>(DI)依赖注入，它主要实现的是<strong>动态的向某个对象提供它所需要的其他对象</strong>，它有三种注入方式：</p>
+<ol>
+<li><p>接口注入</p>
 </li>
-<li><p>unlock（解锁）：作用于主存，把其从锁定状态释放出来</p>
+<li><p>Construct注入 </p>
 </li>
-<li><p>read（读取）：主存读取到工作内存</p>
+<li><p>Setter注入</p>
 </li>
-<li><p>load（载入）：作用于工作内存，把read操作得到的值放入到工作内存中。</p>
+</ol>
+<h2 id="BeanFactory"><a href="#BeanFactory" class="headerlink" title="BeanFactory"></a>BeanFactory</h2><p>Spring当中，对象被表示为Bean，需要让对象被容器管理的，可以在xmle文件里定义<bean></bean>或在类定义中加上注解@Conponnet. <strong>BeanFactory</strong>是创建Bean的顶层接口, 也可以看做是容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">public interface BeanFactory &#123;    </div><div class="line">     </div><div class="line">     //对FactoryBean的转义定义，因为如果使用bean的名字检索FactoryBean得到的对象是工厂生成的对象，    </div><div class="line">     //如果需要得到工厂本身，需要转义           </div><div class="line">     String FACTORY_BEAN_PREFIX = &quot;&amp;&quot;; </div><div class="line">        </div><div class="line">     //根据bean的名字，获取在IOC容器中得到bean实例    </div><div class="line">     Object getBean(String name) throws BeansException;    </div><div class="line">   </div><div class="line">    //根据bean的名字和Class类型来得到bean实例，增加了类型安全验证机制。    </div><div class="line">     Object getBean(String name, Class requiredType) throws BeansException;    </div><div class="line">    </div><div class="line">    //提供对bean的检索，看看是否在IOC容器有这个名字的bean    </div><div class="line">     boolean containsBean(String name);    </div><div class="line">    </div><div class="line">    //根据bean名字得到bean实例，并同时判断这个bean是不是单例    </div><div class="line">    boolean isSingleton(String name) throws NoSuchBeanDefinitionException;    </div><div class="line">    </div><div class="line">    //得到bean实例的Class类型    </div><div class="line">    Class getType(String name) throws NoSuchBeanDefinitionException;    </div><div class="line">    </div><div class="line">    //得到bean的别名，如果根据别名检索，那么其原名也会被检索出来    </div><div class="line">   String[] getAliases(String name);    </div><div class="line">    </div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<h3 id="bean的生命周期"><a href="#bean的生命周期" class="headerlink" title="bean的生命周期"></a>bean的生命周期</h3><p>总的流程是：创建（实例化-初始化）-使用-销毁</p>
+<ol>
+<li><p>BeanFactory读取Bean定义文件，生成各种实例</p>
 </li>
-<li><p>use（使用）：作用于工作内存，把变量传递给执行器引擎</p>
+<li><p>对定义的属性进行注入，即设置对象成员变量的初始属性，可通过setter或者constructor进行注入</p>
 </li>
-<li><p>assign（赋值）：作用于工作内存，把执行引擎得到的值赋值给工作内存变量</p>
+<li><p>如果Bean类实现了org.springframework.beans.factory.BeanNameAware接口，则执行其setBeanName()方法</p>
 </li>
-<li><p>store（存储）：作用于工作内存，把工作内存中的一个变量值传送给主内存中，为write操作</p>
+<li><p>如果Bean类实现了org.springframework.beans.factory.BeanFactoryAware接口，则执行其setBeanFactory()方法</p>
 </li>
-<li><p>write（写入）：作用于主内存，写入主存</p>
+<li><p>容器中如果有实现org.springframework.beans.factory.BeanPostProcessors接口的实例，则任何Bean在初始化之前都会执行这个实例的processBeforeInitialization()方法</p>
 </li>
-</ul>
-<p>由上面分析，read和load必须同时出现，store和write必须同时出现，但是不保证一定顺序执行，有可能read和load之间有其他操作。</p>
-<h4 id="volatile型变量"><a href="#volatile型变量" class="headerlink" title="volatile型变量"></a>volatile型变量</h4><p>轻量级同步机制，它具备两种基本特性：</p>
-<ul>
-<li><p>保证此变量对所有线程的可见性，即当一条线程修改了该变量，新的变量对其他线程立刻可见。这里的可见性是有些歧义，实际上，使用volatile关键字，修改时立刻写回主存，而使用时立刻刷新（从主存读一次），因此，只有在它使用时才会确保一致。但是通过上诉的内存间交互操作可知，从主存读取到工作内存的操作并不是原子的，实际上分为两步，read和load，如果在read后有其他线程立刻修改，则会造成并发下数据不一致的情况。那什么情况下才能使用volatile呢？1）<strong>运算结果不依赖变量的当前值</strong>，或者只有单一线程修改该变量。如i++的结果依赖于i，而i=4则不依赖于i; 2）<strong>变量不需要于其他的状态变量共同参与不变约束</strong>。</p>
+<li><p>如果Bean类实现了org.springframework.beans.factory.InitializingBean接口，则执行其afterPropertiesSet()方法</p>
 </li>
-<li><p>提供内存屏障，禁止指令重排序优化。普通变量仅会保证在方法执行的过程中所有依赖赋值结果的地方都能获取正确的结果，而不能保证变量赋值操作的顺序和代码的顺序是一致的。我的理解是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">i++;</div><div class="line">j++;</div></pre></td></tr></table></figure>
+<li><p>Bean定义文件中定义init-method，在Bean定义文件中使用“init-method”属性设定方法名称</p>
 </li>
-</ul>
-<p>可能由于j正好在寄存器中，所以先执行了j++，在执行i++，这里j和i相互不依赖。</p>
-<p>大多数情况下，volatile比锁性能要好，但是很难量化，因为锁存在很多优化的手段。而对于volatile关键字，读操作和普通变量相差不大，写操作则会相对慢些。</p>
-<h4 id="特殊的long和double"><a href="#特殊的long和double" class="headerlink" title="特殊的long和double"></a>特殊的long和double</h4><p>由于long和double在内存中占用两个slot，因此读写分两次操作，所以，不保证read,load,assign和write的原则性（其他基本类型保证）。<strong>使用volatile可保证</strong>，但是出错的情况非常少见，而且商用的虚拟机都选择64位读写来作为原子操作，因此不必特意申明其为volatile。</p>
-<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p><strong>线程的引进，是将资源的分配和执行调度分开，各个线程共享进程资源（内存地址，文件I/O等），同时线程能够独立调度，它是CPU掉的的基本单位</strong>。</p>
-<h3 id="线程的实现"><a href="#线程的实现" class="headerlink" title="线程的实现"></a>线程的实现</h3><p>主流的操作系统都实现了线程的实现，而Java则提供了在不同平台，不同系统的统一实现，每个线程都是<code>java.lang.Thread</code>的实例，这个类比较特殊，因为<strong>它的所关键方法，都是Native方法</strong>，这样的方法表示该方法没有使用或无法使用平台无关的手段来实现。</p>
-<p>实现线程主要有三种方式：内核线程，用户线程和用户线程加轻量级进程混合。这一段有些深入，目前不太了解</p>
-<h3 id="状态转换"><a href="#状态转换" class="headerlink" title="状态转换"></a>状态转换</h3><p>Java定义了线程的5中状态，在任意的一个时间点，线程只能处于其中的一种状态。</p>
-<ul>
-<li><p>新建（New）线程对象以创建，Thread对象存在，但是没有启动，未调用start()方法</p>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=&quot;demoBean&quot; class=&quot;com.yangsq.bean.DemoBean&quot; init-method=&quot;initMethod&quot;&gt;  ....... &lt;/bean&gt;</div></pre></td></tr></table></figure>
+<ol>
+<li><p>容器中如果有实现org.springframework.beans.factory.BeanPostProcessors接口的实例，则任何Bean在初始化之前都会执行这个实例的processAfterInitialization()方法</p>
 </li>
-<li><p>运行（Runable）<strong>这个状态包括了操作系统中的Running和Ready</strong>,处在这个状态，它可能正在执行（占用CPU时间），也可能正在等待CPU分配执行时间。</p>
+<li><p>在容器关闭时，如果Bean类实现了org.springframework.beans.factory.DisposableBean接口，则执行它的destroy()方法</p>
 </li>
-<li><p>无线等待（Waiting）CPU不会分配执行时间给该线程，它要等到一些外部条件（notify）触发才能进入运行状态，页就是说，它需要被其他线程显示唤醒。可以使用下面几种方式使线程进入waiting状态。1) <code>Object.wait()</code> 2) <code>Thread.join()</code> 3) <code>LockSupport.park()</code></p>
+<li><p>Bean定义文件中定义destroy-method, 在容器关闭时，可以在Bean定义文件中使用“destory-method”定义的方法</p>
 </li>
-<li><p>期限等待（Timed Waitting）处于改状态的线程也不会被分配CPU时间，不过它无需被其他线程显示唤醒，而是在一段时间后有系统自动唤醒，以下方法能使线程进入该状态。1) <code>Thread.sleep()</code> 2) 设置了timeout的<code>wait()和join()</code> 等</p>
-</li>
-<li><p>阻塞（Blocked）它线程试图获取一个排它锁而未遂时，进入该状态，最常见的就是sychronized尝试进入同步区域时。</p>
-</li>
-<li><p>结束（Terminated）线程已经终止，执行完毕。</p>
-</li>
-</ul>
-<h3 id="线程相关的方法"><a href="#线程相关的方法" class="headerlink" title="线程相关的方法"></a>线程相关的方法</h3><ul>
-<li><p>sleep() 它是Thread的static方法，使得线程从Runable态进入Timed Waiting态，因此它和锁不相关，它可以在任何地方使用，不必再sychronized中就能使用，如果在sychronized块中使用，它也不会释放锁。</p>
-</li>
-<li><p>wait() 它是Object类的成员方法，因此，每个对象均有该方法，它可以使线程从runable态进入waiting态（不加时间）或进入timed waiting态（加时间），由于它是对象方法，因此调用它时必须持有该对象的锁，也即要在sychronized块中使用，否则在运行时抛出<code>java.lang.IllegalMonitorStateException</code>，调用后，<strong>它会释放锁</strong></p>
-</li>
-<li><p>notify() 它是Object类的成员方法, 也是每个对象的都有，由此可知必须拥有该对象的锁才能调用该方法。它可以通知一个在该对象等待池冲的线程，从waiting状态到runable状态，但是该线程并不会马上执行，会等待CPU分配执行时间，即ready状态</p>
-</li>
-<li><p>notifyAll() 同上，只是不是随机通知一个线程，而是通知所有线程，从waiting 到 runable，然后他们相互竞争CPU时间运行。</p>
-</li>
-<li><p>yield() 和sleep()一样，是Thread的<strong>静态方法</strong>，它可以让自己立刻让出CPU的执行时间，让CPU重新分配时间给其他线程执行。它的状态没改变，从runable-&gt; runable，如果非要说改变了，可以说是从running -&gt; ready</p>
-</li>
-<li><p>join() 它是线程的<strong>实例方法</strong>，可以使得一个线程在另一个线程结束后再执行。使得该线程从runable到waiting（不加时间）或timed waiting(加时间)。如果join()方法在一个线程实例上调用，当前运行着的线程将阻塞直到这个线程实例完成了执行，最简单的例子就是主线程Main中，调用子线程t的t.join(),表示Main线程会等到t线程结束后在执行。也可在join中传入时间，表示过了一段时候后，Main不在等待，重新竞争CPU时间。</p>
-</li>
-<li><p>interrupt() 它是线程的<strong>实例方法</strong>,调用处于waiting和timed waiting状态的线程时，该线程的中断状态将被清除，会抛出InterruptedException。 </p>
-</li>
-</ul>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=&quot;demoBean&quot; class=&quot;com.yangsq.bean.DemoBean&quot; destory-method=&quot;destroyMethod&quot;&gt;  .......&lt;/bean&gt;</div></pre></td></tr></table></figure>
+<h3 id="bean的一些属性"><a href="#bean的一些属性" class="headerlink" title="bean的一些属性"></a>bean的一些属性</h3><ol>
+<li>scope属性</li>
+</ol>
+<p>singleton与prototype，默认值为singleton，表示创建bean是单例还是多例，可以使用xm配置或者注解配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=&quot;loginService&quot; class=&quot;com.springapp.mvc.service.impl.LoginServiceImpl&quot; scope=&quot;prototype&quot;/&gt;</div><div class="line">@Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)</div></pre></td></tr></table></figure></p>
+<ol>
+<li>lazy-init属性</li>
+</ol>
+<p>表示是否延迟加载，即默认false的话，容器创建时加载，否则，第一次使用时加载， <strong>只对单例有效</strong></p>
 
       
     </div>
@@ -492,7 +472,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Java/" rel="tag"># Java</a>
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
           
         </div>
       
@@ -505,8 +485,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/19/spring事务管理/" rel="next" title="Spring 事务管理">
-                <i class="fa fa-chevron-left"></i> Spring 事务管理
+              <a href="/2017/07/12/spring AOP原理/" rel="next" title="Spring AOPԭ��">
+                <i class="fa fa-chevron-left"></i> Spring AOPԭ��
               </a>
             
           </div>
@@ -515,8 +495,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/26/统计学习方法概论/" rel="prev" title="统计学习方法概论">
-                统计学习方法概论 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/12/访问者模式/" rel="prev" title="访问者模式">
+                访问者模式 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -659,7 +639,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java内存模型"><span class="nav-number">1.</span> <span class="nav-text">Java内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主内存和工作内存"><span class="nav-number">1.1.</span> <span class="nav-text">主内存和工作内存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#内存间的交互操作"><span class="nav-number">1.1.1.</span> <span class="nav-text">内存间的交互操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#volatile型变量"><span class="nav-number">1.1.2.</span> <span class="nav-text">volatile型变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特殊的long和double"><span class="nav-number">1.1.3.</span> <span class="nav-text">特殊的long和double</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">2.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程的实现"><span class="nav-number">2.1.</span> <span class="nav-text">线程的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态转换"><span class="nav-number">2.2.</span> <span class="nav-text">状态转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程相关的方法"><span class="nav-number">2.3.</span> <span class="nav-text">线程相关的方法</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BeanFactory"><span class="nav-number">2.</span> <span class="nav-text">BeanFactory</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bean的生命周期"><span class="nav-number">2.1.</span> <span class="nav-text">bean的生命周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bean的一些属性"><span class="nav-number">2.2.</span> <span class="nav-text">bean的一些属性</span></a></li></ol></li></ol></div>
             
 
           </div>
