@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://yoursite.com/2017/07/12/zookeeperWatch%E6%9C%BA%E5%88%B6/</loc>
+    <lastmod>2017-09-17T01:39:44.337Z</lastmod>
+    <data>
+        <display>
+        <title>Zookeeper Watcher机制 和 Session</title>
+        <pubTime>2017-07-12T10:54:25.000Z</pubTime>
+        
+        <tag>Zookeeper</tag>
+         
+         
+           
+             
+              <breadCrumb title="Zookeeper" url="http://yoursite.com/categories/Zookeeper/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2017/09/12/Thrift%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B/</loc>
     <lastmod>2017-09-12T08:47:11.776Z</lastmod>
     <data>
@@ -284,19 +304,19 @@
 
     
   <url>
-    <loc>http://yoursite.com/2017/08/29/Thrift%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%BB%8D/</loc>
+    <loc>http://yoursite.com/2017/08/30/ZooKeeper%E5%8E%9F%E7%90%86%E7%AE%80%E4%BB%8B/</loc>
     <lastmod>2017-09-02T06:43:55.053Z</lastmod>
     <data>
         <display>
-        <title>Thrift基本介绍</title>
-        <pubTime>2017-08-28T16:00:00.000Z</pubTime>
+        <title>ZooKeeper原理简介</title>
+        <pubTime>2017-08-29T16:00:00.000Z</pubTime>
         
-        <tag>分布式框架</tag>
+        <tag>zookeeper</tag>
          
          
            
              
-              <breadCrumb title="分布式框架" url="http://yoursite.com/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A1%86%E6%9E%B6/"/>
+              <breadCrumb title="zookeeper" url="http://yoursite.com/categories/zookeeper/"/>
           
         </display>
     </data>
@@ -324,26 +344,6 @@
 
     
   <url>
-    <loc>http://yoursite.com/2017/08/30/ZooKeeper%E5%8E%9F%E7%90%86%E7%AE%80%E4%BB%8B/</loc>
-    <lastmod>2017-09-02T06:43:55.053Z</lastmod>
-    <data>
-        <display>
-        <title>ZooKeeper原理简介</title>
-        <pubTime>2017-08-29T16:00:00.000Z</pubTime>
-        
-        <tag>zookeeper</tag>
-         
-         
-           
-             
-              <breadCrumb title="zookeeper" url="http://yoursite.com/categories/zookeeper/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://yoursite.com/2017/08/29/Thrift%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/</loc>
     <lastmod>2017-09-02T06:43:55.053Z</lastmod>
     <data>
@@ -357,6 +357,26 @@
            
              
               <breadCrumb title="分布式服务框架" url="http://yoursite.com/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2017/08/29/Thrift%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%BB%8D/</loc>
+    <lastmod>2017-09-02T06:43:55.053Z</lastmod>
+    <data>
+        <display>
+        <title>Thrift基本介绍</title>
+        <pubTime>2017-08-28T16:00:00.000Z</pubTime>
+        
+        <tag>分布式框架</tag>
+         
+         
+           
+             
+              <breadCrumb title="分布式框架" url="http://yoursite.com/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A1%86%E6%9E%B6/"/>
           
         </display>
     </data>
@@ -484,12 +504,12 @@
 
     
   <url>
-    <loc>http://yoursite.com/2017/08/16/Java%20concurrent%E5%8C%85%E4%B8%8B%E7%9A%84%E9%AB%98%E7%BA%A7%E5%B7%A5%E5%85%B7/</loc>
+    <loc>http://yoursite.com/2017/08/21/Java%20%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97/</loc>
     <lastmod>2017-08-21T06:23:40.412Z</lastmod>
     <data>
         <display>
-        <title>Java concurrent包下的高级工具</title>
-        <pubTime>2017-08-15T16:00:00.000Z</pubTime>
+        <title>Java 阻塞队列</title>
+        <pubTime>2017-08-20T16:00:00.000Z</pubTime>
         
         <tag>Java</tag>
          
@@ -504,12 +524,12 @@
 
     
   <url>
-    <loc>http://yoursite.com/2017/08/21/Java%20%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97/</loc>
+    <loc>http://yoursite.com/2017/08/16/Java%20concurrent%E5%8C%85%E4%B8%8B%E7%9A%84%E9%AB%98%E7%BA%A7%E5%B7%A5%E5%85%B7/</loc>
     <lastmod>2017-08-21T06:23:40.412Z</lastmod>
     <data>
         <display>
-        <title>Java 阻塞队列</title>
-        <pubTime>2017-08-20T16:00:00.000Z</pubTime>
+        <title>Java concurrent包下的高级工具</title>
+        <pubTime>2017-08-15T16:00:00.000Z</pubTime>
         
         <tag>Java</tag>
          
@@ -605,11 +625,11 @@
 
     
   <url>
-    <loc>http://yoursite.com/2017/08/01/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/</loc>
+    <loc>http://yoursite.com/2017/08/01/%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F/</loc>
     <lastmod>2017-08-01T07:08:39.035Z</lastmod>
     <data>
         <display>
-        <title>适配器模式</title>
+        <title>装饰模式</title>
         <pubTime>2017-07-31T16:00:00.000Z</pubTime>
         
          
@@ -620,11 +640,11 @@
 
     
   <url>
-    <loc>http://yoursite.com/2017/08/01/%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F/</loc>
+    <loc>http://yoursite.com/2017/08/01/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/</loc>
     <lastmod>2017-08-01T07:08:39.035Z</lastmod>
     <data>
         <display>
-        <title>装饰模式</title>
+        <title>适配器模式</title>
         <pubTime>2017-07-31T16:00:00.000Z</pubTime>
         
          
@@ -655,6 +675,21 @@
 
     
   <url>
+    <loc>http://yoursite.com/2017/08/01/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2017-08-01T07:08:39.004Z</lastmod>
+    <data>
+        <display>
+        <title>代理模式</title>
+        <pubTime>2017-07-31T16:00:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2017/07/26/Java%E9%AB%98%E6%95%88%E5%B9%B6%E5%8F%91/</loc>
     <lastmod>2017-08-01T07:08:39.004Z</lastmod>
     <data>
@@ -669,21 +704,6 @@
              
               <breadCrumb title="Java" url="http://yoursite.com/categories/Java/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2017/08/01/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</loc>
-    <lastmod>2017-08-01T07:08:39.004Z</lastmod>
-    <data>
-        <display>
-        <title>代理模式</title>
-        <pubTime>2017-07-31T16:00:00.000Z</pubTime>
-        
-         
-           
         </display>
     </data>
     </url>
