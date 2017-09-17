@@ -7,6 +7,26 @@ categories: Kafka
 
 之前我们提过Kafka的基本框架，知道Producer采用Push的方式发送消息给集群，Consumer采用Pull的方式从集群中拉取消息。那么，对于写入一条消息，它的基本流程是怎样的呢？下面，我们讲沿着：Producer发布消息 -> 消息存储格式 -> Consumer消费消息这三个步骤展开。
 
+## Topic创建
+
+在讲解消息的发布和订阅之前，集群首先要有`topic`才行，因此本小节先讲讲topic的创建。
+
+### Controller控制器
+
+Kafka里的服务器都叫做Broker，但是却有一个机器叫做Controller。Kafka集群中的其中一个Broker会被选举为Controller，主要负责Partition管理和副本状态管理，也会执行类似于重分配Partition之类的管理任务。
+
+而创建Partition，就需要Controller的协调。
+
+创建topic的过程，客户端的操作很简单，它甚至不需要有Kafka集群的存在，因为kafka集群只负责存数据，至于它存的是哪个topic的数据，估计它自己都不知道，这些对应信息都存储在Zookeeper中。因此客户端创建一个topic时，只需要和zookeeper通信，在对应的znode节点新建一个子节点即可。但是有了topiic，还需要分配topic的partition，还要选出partition的leader，以及ISR等，而这些工作，都是由controller来完成。
+
+> 1. controller 在 ZooKeeper 的 /brokers/topics 节点上注册 watcher，当 topic 被创建，则 controller 会通过 watch 得到该 topic 的 partition/replica 分配。
+> 2. controller从 /brokers/ids 读取当前所有可用的 broker 列表，对于 set_p 中的每一个 partition：
+>	2.1 从分配给该 partition 的所有 replica（称为AR）中任选一个可用的 broker 作为新的 leader，并将AR设置为新的 ISR
+>	2.2 将新的 leader 和 ISR 写入 /brokers/topics/[topic]/partitions/[partition]/state
+> 3. controller 通过 RPC 向相关的 broker 发送 LeaderAndISRRequest。
+
+从上术的流程可以看出，它利用了zookeeper的watcher机制，动态监听topic节点的改变，从而进行分配partition，选择leader，设置ISR并反写到zookeeper中。
+
 ## Producer发布消息
 
 我们来回顾一下，要发送一条消息，首先一定要指定一个topic，表明他是那一种类的消息，然后一条消息要发送到一个broker上的某一个partition中，由于需要支持HA，所以对这条消息进行持久化的时候，肯定要同时写入多个partition中，成功之后在回ack给client。
@@ -29,7 +49,7 @@ categories: Kafka
 
 ### 找到partition的通信地址
 
-由于系统实现了HA，因此，一个partition有多个replica，Producer 先从 `Zookeeper` 的 "/brokers/.../state" 节点找到该 partition 的 **leader**, 之后就只与该leader通信。
+由于系统实现了HA，因此，一个partition有多个replica，Producer 先从 `Zookeeper` 的 "/brokers/.../state" 节点找到该 partition 的 **leader**, 之后就只与该leader通信。注意，这里的**leader**是指partition的leader，而事实上，kafka集群不像zookeeper一样，有leader管理，发起提议等，它是没有leader的。
 
 ### 数据传输
 
@@ -62,6 +82,39 @@ CRC校验码:    4 bytes
 
 ## Consumer订阅消息
 
-消费者要比生产者复杂得多。由于kafka不会为消费者维护offset，因此，要么自己（Consumer）维护offset，要么交给Zookeeper维护。此外还有Consumer Group的概念，一个Consumer Group有多个Consumer，一条消息只会被其中的一个Consumer消费。一般的，Consumer的数量不要大于Partition的数量，这是因为一个Partition只能被一个Consumer消费，Consumer多了就会有的轮空
+消费者要比生产者复杂得多。由于kafka不会为消费者维护offset，因此，要么自己（Consumer）维护offset，**低级API**，要么交给Zookeeper维护， **高级API**。此外还有Consumer Group的概念，一个Consumer Group有多个Consumer，一条消息只会被其中的一个Consumer消费。一般的，Consumer的数量不要大于Partition的数量，这是因为一个Partition只能被一个Consumer消费，Consumer多了就会有的轮空。
 
-对于Consumer，kafka提供了两种API对其进行消费，分别是High Level API 和 Low Level API。前者是Kafka消费数据的高层抽象，消费者客户端代码不需要管理offset的提交，并且采用了消费组的自动负载均衡功能，确保消费者的增减不会影响消息的消费；而后者通常针对特殊的消费逻辑（比如客消费者只想要消费某些特定的Partition），低级API的客户端代码需要自己实现一些和Kafka服务端相关的底层逻辑，比如选择Partition的Leader，处理Leader的故障转移等。
+### Low Level API
+
+这种API维持了单一个broker的连接，它是没有状态的，因此每次去消费数据，都有带上offset，因此它可以通过重新设置offset多次消费同一份数据。这种操作方式更灵活，但是也更繁琐。一般的，即使使用Low Level API，也会把offset手动同步到zookeeper上，当我们处理失败了，就不去更新offset。
+
+此外，选择Partition的Leader，处理Leader的故障转移等也需要客户端去实现。
+
+### High Level API
+
+更自动化的一种操作。consumer的offset会自动同步到zookeeper上，也会自动的去选取leader，leader失效时重试等。但是它也有缺点，就是它保证了每次都取的都是下一条消息，不能够回搠去读，因此，无论处理这条消息是否成功，都不能重复读了，这显然有些不合理。
+
+### Consumer与Partition的关系
+
++ 如果consumer比partition多，是浪费，因为kafka的设计是在一个partition上是不允许并发的，所以consumer数不要大于partition数
+
++ 如果consumer比partition少，一个consumer会对应于多个partitions，这里主要合理分配consumer数和partition数，否则会导致partition里面的数据被取的不均匀
+
++ 如果consumer从多个partition读到数据，不保证数据间的顺序性，kafka只保证在一个partition上数据是有序的，但多个partition，根据你读的顺序会有不同
+
++ 增减consumer，broker，partition会导致rebalance，所以rebalance后consumer对应的partition会发生变化
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
