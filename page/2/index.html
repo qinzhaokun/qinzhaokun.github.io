@@ -284,7 +284,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/31/SQL优化经验/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/01/InnoDB的锁/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qinzhaokun">
@@ -303,7 +303,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/SQL优化经验/" itemprop="url">SQL优化经验</a></h1>
+                <a class="post-title-link" href="/2017/09/01/InnoDB的锁/" itemprop="url">InnoDB的锁</a></h1>
         
 
         <div class="post-meta">
@@ -315,8 +315,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:00:00+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-01T00:00:00+08:00">
+                2017-09-01
               </time>
             
 
@@ -357,8 +357,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/08/31/SQL优化经验/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://yoursite.com/2017/08/31/SQL优化经验/" class="cy_cmt_count" data-xid="2017/08/31/SQL优化经验/" itemprop="commentsCount" ></span>
+                <a href="/2017/09/01/InnoDB的锁/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://yoursite.com/2017/09/01/InnoDB的锁/" class="cy_cmt_count" data-xid="2017/09/01/InnoDB的锁/" itemprop="commentsCount" ></span>
                 </a>
               
             
@@ -366,7 +366,7 @@
 
           
           
-             <span id="/2017/08/31/SQL优化经验/" class="leancloud_visitors" data-flag-title="SQL优化经验">
+             <span id="/2017/09/01/InnoDB的锁/" class="leancloud_visitors" data-flag-title="InnoDB的锁">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -396,14 +396,12 @@
       
         
           
-          
-摘自网络
-
-今天，数据库的操作越来越成为整个应用的性能瓶颈了，这点对于Web应用尤其明显。关于数据库的性能，这并不只是DBA才需要担心的事，而这更是我们程序员需要去关注的事情。当我们去设计数据库表结构，对操作数据库时（尤其是查表时的SQL语句），我们都需要注意数据操作的性能。这里，我们不会讲过多的
+          在我们区别InnoDB和MYISAM这两个存储引擎的时候，总会说一句前者支持行锁，然而这样的回答太笼统
+数据库使用锁是为了支持更好的并发，提供数据的完整性和一致性. 行级锁是Mysql中锁定粒度最细的一种锁，表示只针对当前操作的行进行加锁。行级锁能大大减少数据库操作的冲突。其加锁粒度最小，但加锁的开
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/SQL优化经验/#more" rel="contents">
+            <a class="btn" href="/2017/09/01/InnoDB的锁/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -617,6 +615,171 @@ Connection P
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/31/SQL优化经验/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qinzhaokun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello, World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/31/SQL优化经验/" itemprop="url">SQL优化经验</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:00:00+08:00">
+                2017-08-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/08/31/SQL优化经验/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://yoursite.com/2017/08/31/SQL优化经验/" class="cy_cmt_count" data-xid="2017/08/31/SQL优化经验/" itemprop="commentsCount" ></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/08/31/SQL优化经验/" class="leancloud_visitors" data-flag-title="SQL优化经验">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+摘自网络
+
+今天，数据库的操作越来越成为整个应用的性能瓶颈了，这点对于Web应用尤其明显。关于数据库的性能，这并不只是DBA才需要担心的事，而这更是我们程序员需要去关注的事情。当我们去设计数据库表结构，对操作数据库时（尤其是查表时的SQL语句），我们都需要注意数据操作的性能。这里，我们不会讲过多的
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/31/SQL优化经验/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/30/ZooKeeper原理简介/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -780,168 +943,6 @@ Connection P
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/29/Thrift基本介绍/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qinzhaokun">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hello, World">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/29/Thrift基本介绍/" itemprop="url">Thrift基本介绍</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-29T00:00:00+08:00">
-                2017-08-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式框架/" itemprop="url" rel="index">
-                    <span itemprop="name">分布式框架</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2017/08/29/Thrift基本介绍/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://yoursite.com/2017/08/29/Thrift基本介绍/" class="cy_cmt_count" data-xid="2017/08/29/Thrift基本介绍/" itemprop="commentsCount" ></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/2017/08/29/Thrift基本介绍/" class="leancloud_visitors" data-flag-title="Thrift基本介绍">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          基本概念Thrift是一个RPC框架，能够帮助用户进行远程方法调用，它由Fackbook开源。它的一个比较大的特点就是跨语言，框架之上能够支持多种语言。它是如何支持多语言的呢？答案是Thrift的IDL（接口定义语言）文件，它是一个自定义的文件类型，主要用来描述接口函数及数据类型。但是该文件不能够直
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/29/Thrift基本介绍/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/29/Thrift原理分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1060,6 +1061,168 @@ Connection P
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/08/29/Thrift原理分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/29/Thrift基本介绍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qinzhaokun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello, World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/29/Thrift基本介绍/" itemprop="url">Thrift基本介绍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-29T00:00:00+08:00">
+                2017-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式框架/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式框架</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/08/29/Thrift基本介绍/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://yoursite.com/2017/08/29/Thrift基本介绍/" class="cy_cmt_count" data-xid="2017/08/29/Thrift基本介绍/" itemprop="commentsCount" ></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/08/29/Thrift基本介绍/" class="leancloud_visitors" data-flag-title="Thrift基本介绍">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          基本概念Thrift是一个RPC框架，能够帮助用户进行远程方法调用，它由Fackbook开源。它的一个比较大的特点就是跨语言，框架之上能够支持多种语言。它是如何支持多语言的呢？答案是Thrift的IDL（接口定义语言）文件，它是一个自定义的文件类型，主要用来描述接口函数及数据类型。但是该文件不能够直
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/29/Thrift基本介绍/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1430,170 +1593,6 @@ Connection P
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/21/Java 阻塞队列/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qinzhaokun">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hello, World">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/21/Java 阻塞队列/" itemprop="url">Java 阻塞队列</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-21T00:00:00+08:00">
-                2017-08-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2017/08/21/Java 阻塞队列/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://yoursite.com/2017/08/21/Java 阻塞队列/" class="cy_cmt_count" data-xid="2017/08/21/Java 阻塞队列/" itemprop="commentsCount" ></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/2017/08/21/Java 阻塞队列/" class="leancloud_visitors" data-flag-title="Java 阻塞队列">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          BlockingQueue是一个高性能的容器，它被用来线程之间共享数据，它是典型的生产者和消费者的实现。它支持两个附加的操作：读数据时等待队列变成非空；写数据时等待队列变成可写。JDK7提供了阻塞队列，它们分别是：
-
-ArrayBlockingQueue 由数组组成的有界阻塞队列，必须指定队列的大小
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/21/Java 阻塞队列/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/21/Java 动态代理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1757,7 +1756,7 @@ ArrayBlockingQueue 由数组组成的有界阻塞队列，必须指定队列的�
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/17/Java同步器-AQS/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/21/Java 阻塞队列/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qinzhaokun">
@@ -1776,7 +1775,7 @@ ArrayBlockingQueue 由数组组成的有界阻塞队列，必须指定队列的�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/17/Java同步器-AQS/" itemprop="url">Java同步器-AQS</a></h1>
+                <a class="post-title-link" href="/2017/08/21/Java 阻塞队列/" itemprop="url">Java 阻塞队列</a></h1>
         
 
         <div class="post-meta">
@@ -1788,8 +1787,8 @@ ArrayBlockingQueue 由数组组成的有界阻塞队列，必须指定队列的�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-17T00:00:00+08:00">
-                2017-08-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-21T00:00:00+08:00">
+                2017-08-21
               </time>
             
 
@@ -1830,8 +1829,8 @@ ArrayBlockingQueue 由数组组成的有界阻塞队列，必须指定队列的�
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/08/17/Java同步器-AQS/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://yoursite.com/2017/08/17/Java同步器-AQS/" class="cy_cmt_count" data-xid="2017/08/17/Java同步器-AQS/" itemprop="commentsCount" ></span>
+                <a href="/2017/08/21/Java 阻塞队列/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://yoursite.com/2017/08/21/Java 阻塞队列/" class="cy_cmt_count" data-xid="2017/08/21/Java 阻塞队列/" itemprop="commentsCount" ></span>
                 </a>
               
             
@@ -1839,7 +1838,7 @@ ArrayBlockingQueue 由数组组成的有界阻塞队列，必须指定队列的�
 
           
           
-             <span id="/2017/08/17/Java同步器-AQS/" class="leancloud_visitors" data-flag-title="Java同步器-AQS">
+             <span id="/2017/08/21/Java 阻塞队列/" class="leancloud_visitors" data-flag-title="Java 阻塞队列">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1869,11 +1868,13 @@ ArrayBlockingQueue 由数组组成的有界阻塞队列，必须指定队列的�
       
         
           
-          同步器AQS，全称是AbstractQueuedSynchronizer。框架是构建concurrent包下很多工具类的基础，其中包括，Lock,CountDownLatch, CycliBarrier等都需要依赖AQS。 同步中的ReentrantLock中都是依靠AQS实现同步的（它有Lock实
+          BlockingQueue是一个高性能的容器，它被用来线程之间共享数据，它是典型的生产者和消费者的实现。它支持两个附加的操作：读数据时等待队列变成非空；写数据时等待队列变成可写。JDK7提供了阻塞队列，它们分别是：
+
+ArrayBlockingQueue 由数组组成的有界阻塞队列，必须指定队列的大小
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/17/Java同步器-AQS/#more" rel="contents">
+            <a class="btn" href="/2017/08/21/Java 阻塞队列/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1959,7 +1960,7 @@ ArrayBlockingQueue 由数组组成的有界阻塞队列，必须指定队列的�
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">56</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1970,7 +1971,7 @@ ArrayBlockingQueue 由数组组成的有界阻塞队列，必须指定队列的�
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1981,7 +1982,7 @@ ArrayBlockingQueue 由数组组成的有界阻塞队列，必须指定队列的�
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

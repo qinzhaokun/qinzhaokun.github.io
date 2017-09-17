@@ -1,0 +1,980 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Docker," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="只讲解最最基本的概念。 什么是Docker百度百科定义如下：  Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的容器中，然后发布到任何流行的Linux机器上，也可以实现虚拟化，容器是完全使用沙箱机制，相互之间不会有任何接口。  Docker可以看作是一个虚拟机，有一套运行的环境，可以简单的想象docker就是一个本地的Linux操作系统，这和KVM, Vi">
+<meta name="keywords" content="Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dokcer 基本原理">
+<meta property="og:url" content="http://yoursite.com/2017/09/17/Docker 基本原理/index.html">
+<meta property="og:site_name" content="Hello, World">
+<meta property="og:description" content="只讲解最最基本的概念。 什么是Docker百度百科定义如下：  Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的容器中，然后发布到任何流行的Linux机器上，也可以实现虚拟化，容器是完全使用沙箱机制，相互之间不会有任何接口。  Docker可以看作是一个虚拟机，有一套运行的环境，可以简单的想象docker就是一个本地的Linux操作系统，这和KVM, Vi">
+<meta property="og:image" content="http://yoursite.com/images/docker_01.png">
+<meta property="og:image" content="http://yoursite.com/images/docker_02.png">
+<meta property="og:image" content="http://yoursite.com/images/docker_03.jpg">
+<meta property="og:updated_time" content="2017-09-17T07:51:54.176Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dokcer 基本原理">
+<meta name="twitter:description" content="只讲解最最基本的概念。 什么是Docker百度百科定义如下：  Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的容器中，然后发布到任何流行的Linux机器上，也可以实现虚拟化，容器是完全使用沙箱机制，相互之间不会有任何接口。  Docker可以看作是一个虚拟机，有一套运行的环境，可以简单的想象docker就是一个本地的Linux操作系统，这和KVM, Vi">
+<meta name="twitter:image" content="http://yoursite.com/images/docker_01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/17/Docker 基本原理/"/>
+
+
+
+
+
+  <title>Dokcer 基本原理 | Hello, World</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello, World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/17/Docker 基本原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qinzhaokun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello, World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Dokcer 基本原理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-17T00:00:00+08:00">
+                2017-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dokcer/" itemprop="url" rel="index">
+                    <span itemprop="name">Dokcer</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/09/17/Docker 基本原理/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/09/17/Docker 基本原理/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/09/17/Docker 基本原理/" class="leancloud_visitors" data-flag-title="Dokcer 基本原理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>只讲解最最基本的概念。</p>
+<h2 id="什么是Docker"><a href="#什么是Docker" class="headerlink" title="什么是Docker"></a>什么是Docker</h2><p>百度百科定义如下：</p>
+<blockquote>
+<p>Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的容器中，然后发布到任何流行的Linux机器上，也可以实现虚拟化，容器是完全使用沙箱机制，相互之间不会有任何接口。</p>
+</blockquote>
+<p>Docker可以看作是一个虚拟机，有一套运行的环境，可以简单的想象docker就是一个本地的Linux操作系统，这和KVM, Virtualbox, Vmware很像。Docker的目的就是要在宿主机上实现一个像Virtualbox这样功能的东西，但是，实现原理却不一样。KVM, Virtualbox, Vmware是虚拟出机器，让每个实例看到一个单独的机器；而Docker是虚拟出操作系统，实现应用之间的隔离，让各个应用觉得自己有一个自己的操作系统，而且彼此之间隔离。</p>
+<ul>
+<li><p>在没有虚拟化的情况下，假设有两个进程，1和2。它们共享kernel，不同的PID，共享网卡，共享IP地址，看到一样的根文件系统（不chroot的情况下）等，用Linux IPC手段进程间通信。</p>
+</li>
+<li><p>Docker的情况，进程1和进程2运行于不同的容器，进程1和进程2是两个世界的人，互相不认识，都觉得自己拥有自己的根文件系统，自己的网卡和ip等，然后进程1和进程2的PID还可以一样，比如假设2个都是100。但是，此100非彼100。但是，不同的容器在同一个宿主机的内核上。</p>
+</li>
+</ul>
+<p><img src="/images/docker_01.png" alt=""></p>
+<ul>
+<li>虚拟机的情况，进程1和进程2运行于不同的虚拟机，则操作系统都是双份的，它们感觉自己在不同的虚拟电脑上面跑。</li>
+</ul>
+<p><img src="/images/docker_02.png" alt=""></p>
+<p>虚拟机创建的是整个世界，包括运行时的内核；而Docker创建的是运行环境(Container)，不同的Container都运行在用一个内核上。container相当于沙箱进行资源的隔离与权限的控制。而Docker如何进行资源的隔离呢？这是借助Linux系统的LXC功能，而LXC主要依赖<strong>kernel的namespace</strong>来做资源隔离和<strong>CGroups</strong>来做资源的使用限制。</p>
+<h2 id="kernel的namespace"><a href="#kernel的namespace" class="headerlink" title="kernel的namespace"></a>kernel的namespace</h2><p>Linux 内核从版本 2.4.19 开始陆续引入了 namespace 的概念。它提供了一种资源隔离方案，PID,IPC,Network等系统资源不再是全局性的，而是属于特定的Namespace。Linux 内核中实现了六种 namespace：</p>
+<h3 id="Mount-namespaces"><a href="#Mount-namespaces" class="headerlink" title="Mount namespaces"></a>Mount namespaces</h3><p>文件系统挂接点的隔离，每个容器能看到不同的文件系统层次结构，这样不同容器中的进程就看到了不同的文件目录，<strong>实现了文件系统的隔离</strong>。</p>
+<h3 id="UTS-namespaces"><a href="#UTS-namespaces" class="headerlink" title="UTS namespaces"></a>UTS namespaces</h3><p>隔离了nodename 和 domainname。它允许每个容器拥有自己的<strong>hostname</strong> 和 <strong>domainame</strong>。</p>
+<h3 id="IPC-namespaces"><a href="#IPC-namespaces" class="headerlink" title="IPC namespaces"></a>IPC namespaces</h3><p>进程间通信的资源的隔离。每个容器有其自己的 System V IPC 和 POSIX 消息队列文件系统，因此，只有在同一个 IPC namespace 的进程之间才能互相通信</p>
+<h3 id="PID-namespace"><a href="#PID-namespace" class="headerlink" title="PID namespace"></a>PID namespace</h3><p>每个 PID namespace 中的进程可以有其独立的 PID； 每个容器可以有其 PID 为1的root进程；也使得容器可以在不同的 host 之间迁移，因为 namespace 中的进程 ID 和 host无关了。这也使得容器中的每个进程有两个PID：容器中的 PID 和 host 上的 PID。</p>
+<h3 id="Network-namespaces"><a href="#Network-namespaces" class="headerlink" title="Network namespaces"></a>Network namespaces</h3><p>每个容器用有其独立的网络设备，IP 地址，IP 路由表，/proc/net 目录，端口号等等。这也使得一个 host 上多个容器内的同一个应用都绑定到各自容器的 80 端口上。</p>
+<h3 id="User-namespaces"><a href="#User-namespaces" class="headerlink" title="User namespaces"></a>User namespaces</h3><p> 在 user namespace 中的进程的用户和组 ID 可以和在 host 上不同； 每个 container 可以有不同的 user 和 group id；一个 host 上的非特权用户可以成为 user namespace 中的特权用户；</p>
+<h2 id="Control-Groups"><a href="#Control-Groups" class="headerlink" title="Control Groups"></a>Control Groups</h2><p> cgroups 实现了对资源的配额和度量。cgroups 的使用非常简单，提供类似文件的接口，在 /cgroup目录下新建一个文件夹即可新建一个group，在此文件夹中新建task文件，并将pid写入该文件，即可实现对该进程的资源控制。groups可以限制blkio、cpu、cpuacct、cpuset、devices、freezer、memory、net_cls、ns九大子系统的资源</p>
+<h2 id="Docker的存储"><a href="#Docker的存储" class="headerlink" title="Docker的存储"></a>Docker的存储</h2><p> 刚刚收到Docker使用了LXC的namespace技术和CGroups技术实现了资源的隔离和度量，那么，它的文件系统是怎样的呢？</p>
+<h3 id="Linux的内核文件系统"><a href="#Linux的内核文件系统" class="headerlink" title="Linux的内核文件系统"></a>Linux的内核文件系统</h3><p>一个典型的 Linux 系统要能运行的话，它至少需要两个文件系统：</p>
+<ul>
+<li><p>boot file system （bootfs）：包含 boot loader 和 kernel。用户不会修改这个文件系统。实际上，在启动（boot）过程完成后，整个内核都会被加载进内存，此时 bootfs 会被卸载掉从而释放出所占用的内存。同时也可以看出，对于同样内核版本的不同的 Linux 发行版的 bootfs 都是一致的。</p>
+</li>
+<li><p>root file system （rootfs）：包含典型的目录结构，包括 /dev, /proc, /bin, /etc, /lib, /usr, and /tmp 等再加上要运行用户应用所需要的所有配置文件，二进制文件和库文件。这个文件系统在不同的Linux 发行版中是不同的。而且用户可以对这个文件进行修改。</p>
+</li>
+</ul>
+<p>Linux 系统在启动时，roofs 首先会被挂载为只读模式，然后在启动完成后被修改为读写模式，随后它们就可以被修改了。对于以上两种文件系统的理解，可以是bootfs是Linux内核的文件系统，而rootfs是不同linux发行版本的文件系统，如Ubuntu roofs, centos rootfs</p>
+<h3 id="AUFS"><a href="#AUFS" class="headerlink" title="AUFS"></a>AUFS</h3><p>AUFS是一种联合文件系统，它可以<strong>把不同物理位置的目录合并mount到同一个目录中</strong>.举个简单的例子：把 /tmp， /var， /opt三个目录联合挂着到 /aufs目录下，则 /aufs目录可见 /tmp，/var， /opt目录下的所有文件。而每个成员目录，则称为虚拟文件系统的一个branch</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mount -t aufs -o br=/tmp=rw: /var=ro: /opt=ro none /aufs</div></pre></td></tr></table></figure>
+<p>一般的，命令从左到右的目录，只有最左边的（最上层）是读写的，其余的为只读。但我们对/aufs进行修改时，改变会反应到挂载的目录中。</p>
+<h3 id="Docker中的文件系统"><a href="#Docker中的文件系统" class="headerlink" title="Docker中的文件系统"></a>Docker中的文件系统</h3><p>有了AUFS的基本了解，理解Docker的镜像就比较容易了。首先看什么是镜像</p>
+<h4 id="Docker-images"><a href="#Docker-images" class="headerlink" title="Docker images"></a>Docker images</h4><p>Docker的镜像跟virtualbox的镜像不一样。在虚拟机中，镜像是一个系统的完整体，包括了系统、用户在上面做的操作等等。而在Docker中，<strong>镜像是一组文件的叠加</strong>。Docker Image是用AUFS系统组织起来的，如上面的命令，每一个branch就代表着每一个镜像层，一个镜像层可以构建另一个镜像层，一般，最上面的镜像层是读写的，其余的是只读的。</p>
+<p>为什么Docker image可以创建多个不同的容器？</p>
+<blockquote>
+<p>创建多个容器时，只需创建多个容器运行目录，使用aufs把容器运行目录挂载在Image目录之上，即实现一个Image运行多个Container。</p>
+</blockquote>
+<p><img src="/images/docker_03.jpg" alt=""></p>
+<p>如图所示，在 Docker 中，基础镜像中的 roofs 会一直保持只读模式，Docker 会利用 union mount 来在这个 rootfs 上增加更多的只读文件系统，最后它们看起来就像一个文件系统即容器的 rootfs。这就是一个linux操作系统的基础镜像。</p>
+<ul>
+<li>所有 Docker 容器都共享主机系统的 bootfs 即 Linux 内核</li>
+<li>每个容器有自己的 rootfs，它来自不同的 Linux 发行版的基础镜像，包括 Ubuntu，Debian 和 SUSE 等<br>所有基于一种基础镜像的容器都共享这种 rootfs</li>
+</ul>
+<p>但我们通过dockerfiles 添加一些东西时，其实实际上是在Base image上增加镜像层，注意，这些镜像层都是只读的。镜像层对应的目录在 <code>/var/lib/docker/aufs/diff/文件夹内</code>。所以我们发现，罚我们重复运行dockerfile时，第二次运行时，不用再次创建镜像层，而是直接类似从cache中读取。</p>
+<p>我们有了Docker image后，不能够直接使用，而是要用<code>docker run iamge</code> 来生成容器。当生成容器时，会则镜像层上生成一个容器层，这个容器层是可读写的，同样位于<code>/var/lib/docker/aufs/diff/文件夹内</code>，而在容器内对文件的修改，增加，删除，都会在这个容器层里操作，而当container停止运行时，这个容器层也不在存在了。</p>
+<p>关于 Docker的分层镜像，除了 aufs，docker还支持btrfs, devicemapper和vfs，你可以使用 -s 或 –storage-driver= 选项来指定相关的镜像存储。在Ubuntu 14.04下，Docker 默认 Ubuntu的 AUFS。</p>
+<h4 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h4><p>刚刚提到在容器内对文件的操作都在容器层，容器停止了就消失了，很想linux里的/tmp目录，每次重启，上次的数据就没了，那么如果想要保存容器运行时生成的数据呢？</p>
+<h5 id="目录挂载"><a href="#目录挂载" class="headerlink" title="目录挂载"></a>目录挂载</h5><p>docker可以支持把一个宿主机上的目录挂载到镜像里</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run -it -v /home/dock/Downloads:/usr/Downloads ubuntu64 /bin/bash</div></pre></td></tr></table></figure>
+<p>通过-v参数，冒号前为宿主机目录，必须为绝对路径，冒号后为镜像内挂载的路径。这样，可以在容器内操作本地文件了，存储直接存到宿主机的文件系统。</p>
+<h5 id="数据卷"><a href="#数据卷" class="headerlink" title="数据卷"></a>数据卷</h5><ol>
+<li>宿主机的文件作为数据卷</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">dockerfile中指定VOLUME后的目录，如VOLUME /var/lib/test</div><div class="line">或者</div><div class="line">docker run 命令中加-v选项。如 </div><div class="line">docker run -d -P -v /webapp training/webapp python app.py</div></pre></td></tr></table></figure>
+<ol>
+<li>容器数据卷</li>
+</ol>
+<p>专门用于挂载数据卷的容器，供其他容器引用，多用于多个容器需要共享同一段数据。用法：–volumes-from</p>
+<p>具体是先创建一个数据卷容器，在创建一个新的容器来引用数据卷容器。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker run -d -v /dbdata --name=dbdata training/postgres//创建一个数据卷容器 </div><div class="line">docker run -d --volumes-from dbdata --name=db1 training/postgres//创建一个名为db1的容器并引用</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/12/Thrift通信模型/" rel="next" title="Thrift 通信模型">
+                <i class="fa fa-chevron-left"></i> Thrift 通信模型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="qinzhaokun" />
+          <p class="site-author-name" itemprop="name">qinzhaokun</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/qinzhaokun" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Docker"><span class="nav-number">1.</span> <span class="nav-text">什么是Docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kernel的namespace"><span class="nav-number">2.</span> <span class="nav-text">kernel的namespace</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mount-namespaces"><span class="nav-number">2.1.</span> <span class="nav-text">Mount namespaces</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UTS-namespaces"><span class="nav-number">2.2.</span> <span class="nav-text">UTS namespaces</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IPC-namespaces"><span class="nav-number">2.3.</span> <span class="nav-text">IPC namespaces</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PID-namespace"><span class="nav-number">2.4.</span> <span class="nav-text">PID namespace</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Network-namespaces"><span class="nav-number">2.5.</span> <span class="nav-text">Network namespaces</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#User-namespaces"><span class="nav-number">2.6.</span> <span class="nav-text">User namespaces</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Control-Groups"><span class="nav-number">3.</span> <span class="nav-text">Control Groups</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker的存储"><span class="nav-number">4.</span> <span class="nav-text">Docker的存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux的内核文件系统"><span class="nav-number">4.1.</span> <span class="nav-text">Linux的内核文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AUFS"><span class="nav-number">4.2.</span> <span class="nav-text">AUFS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker中的文件系统"><span class="nav-number">4.3.</span> <span class="nav-text">Docker中的文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker-images"><span class="nav-number">4.3.1.</span> <span class="nav-text">Docker images</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拓展"><span class="nav-number">4.3.2.</span> <span class="nav-text">拓展</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#目录挂载"><span class="nav-number">4.3.2.1.</span> <span class="nav-text">目录挂载</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据卷"><span class="nav-number">4.3.2.2.</span> <span class="nav-text">数据卷</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">大脸猫</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吃鱼</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt3gkj5W';
+      var conf = '6157060596fdd3e86c13f21ba008eb74';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("tXNJWqef5cXXkgOuTliYlvYP-gzGzoHsz", "KyQV3wFCnWrvzEpNLVMrhHBY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
