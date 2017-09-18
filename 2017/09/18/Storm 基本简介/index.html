@@ -103,7 +103,7 @@
 <meta property="og:image" content="http://yoursite.com/images/storm_01.png">
 <meta property="og:image" content="http://yoursite.com/images/storm_02.jpg">
 <meta property="og:image" content="http://yoursite.com/images/storm_03.jpg">
-<meta property="og:updated_time" content="2017-09-18T05:59:55.833Z">
+<meta property="og:updated_time" content="2017-09-18T06:25:11.588Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Storm 基本简介">
 <meta name="twitter:description" content="Storm是分布式实时计算系统，它对应的是Hadoop的批处理，Storm处理的则是连续不断的数据流，它使用以下的场景：  流式数据，数据并不是静态的存在于某个存储设备，而是动态的数据流。  分布式的RPC，由于storm是分布式并且处理的延迟很低，通常可以作为RPC框架来使用。  持续计算，任务只用初始化一次，并且一直运行。   Storm架构Storm和Hadoop一样，也采用了Master/">
@@ -417,8 +417,6 @@
 <li><p>故障检测，即当<code>Supervisor</code>出现故障时，及时的进行处理。</p>
 </li>
 </ol>
-<p>的指派和分发<strong>，而supervisor是运行在从节点，负责执行具体的任务。
-</strong>任务的指派和分发**，而supervisor是运行在从节点，负责执行具体的任务。</p>
 <p><code>Supervisor</code>运行在主节点，它的主要功能比较单一，就是执行具体的任务(Spout/Blot)</p>
 <p><code>Supervisor</code>和<code>Nimbus</code>不会直接的进行 交互，而是通过Zookeeper来协调，并且，所有的状态信息，心跳信息，配置信息等都保存在Zookeeper的znode中。所以，无论是<code>Supervisor</code>和<code>Nimbus</code>，都是快速失败的，瞬时的宕机和重启，对系统来说没有影响。</p>
 <p><img src="/images/storm_01.png" alt=""></p>
@@ -538,8 +536,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/17/Docker 基本原理/" rel="next" title="Dokcer 基本原理">
-                <i class="fa fa-chevron-left"></i> Dokcer 基本原理
+              <a href="/2017/09/18/Storm 消息可靠性传输/" rel="next" title="Storm 消息可靠性传输">
+                <i class="fa fa-chevron-left"></i> Storm 消息可靠性传输
               </a>
             
           </div>
@@ -620,7 +618,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">57</span>
+                <span class="site-state-item-count">58</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
