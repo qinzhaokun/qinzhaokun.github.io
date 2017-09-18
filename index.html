@@ -303,7 +303,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/18/Storm 基本简介/" itemprop="url">Storm ��������</a></h1>
+                <a class="post-title-link" href="/2017/09/18/Storm 基本简介/" itemprop="url">Storm 基本简介</a></h1>
         
 
         <div class="post-meta">
@@ -366,7 +366,7 @@
 
           
           
-             <span id="/2017/09/18/Storm 基本简介/" class="leancloud_visitors" data-flag-title="Storm ��������">
+             <span id="/2017/09/18/Storm 基本简介/" class="leancloud_visitors" data-flag-title="Storm 基本简介">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -396,11 +396,13 @@
       
         
           
-          Storm�Ƿֲ�ʽʵʱ����ϵͳ������Ӧ����Hadoop����������Storm�����������������ϵ�����������ʹ�����µĳ�����
+          Storm是分布式实时计算系统，它对应的是Hadoop的批处理，Storm处理的则是连续不断的数据流，它使用以下的场景：
 
-��ʽ���ݣ����ݲ����Ǿ�̬�Ĵ�����ĳ���洢�豸�����Ƕ�̬����������
+流式数据，数据并不是静态的存在于某个存储设备，而是动态的数据流。
 
-�ֲ�
+分布式的RPC，由于storm是分布式并且处理的延迟很低，通常可以作为RPC框架来使用。
+
+持续计算，任务只
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1103,6 +1105,169 @@ Docker可以看作是一个虚拟
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/10/kafka的基本框架/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qinzhaokun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello, World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/10/kafka的基本框架/" itemprop="url">Kafka基本框架</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-10T18:54:25+08:00">
+                2017-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kafka/" itemprop="url" rel="index">
+                    <span itemprop="name">Kafka</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/09/10/kafka的基本框架/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://yoursite.com/2017/09/10/kafka的基本框架/" class="cy_cmt_count" data-xid="2017/09/10/kafka的基本框架/" itemprop="commentsCount" ></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/09/10/kafka的基本框架/" class="leancloud_visitors" data-flag-title="Kafka基本框架">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Kafka是由LinkedIn开发的一个分布式的消息系统，使用Scala编写，它以可水平扩展和高吞吐率而被广泛使用。目前越来越多的开源分布式处理系统如Cloudera、Apache Storm、Spark都支持与Kafka集成。
+背景介绍创建背景Kafka是一个消息系统，原本开发自LinkedIn，
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/10/kafka的基本框架/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/10/MapReduce简要介绍/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1230,169 +1395,6 @@ YARN进行资源管理
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/09/10/MapReduce简要介绍/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/10/kafka的基本框架/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qinzhaokun">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hello, World">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/10/kafka的基本框架/" itemprop="url">Kafka基本框架</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-10T18:54:25+08:00">
-                2017-09-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Kafka/" itemprop="url" rel="index">
-                    <span itemprop="name">Kafka</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2017/09/10/kafka的基本框架/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://yoursite.com/2017/09/10/kafka的基本框架/" class="cy_cmt_count" data-xid="2017/09/10/kafka的基本框架/" itemprop="commentsCount" ></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/2017/09/10/kafka的基本框架/" class="leancloud_visitors" data-flag-title="Kafka基本框架">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Kafka是由LinkedIn开发的一个分布式的消息系统，使用Scala编写，它以可水平扩展和高吞吐率而被广泛使用。目前越来越多的开源分布式处理系统如Cloudera、Apache Storm、Spark都支持与Kafka集成。
-背景介绍创建背景Kafka是一个消息系统，原本开发自LinkedIn，
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/10/kafka的基本框架/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1764,7 +1766,7 @@ YARN进行资源管理
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/03/TCP三次握手和四次分手/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/03/Java集合类/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qinzhaokun">
@@ -1783,7 +1785,7 @@ YARN进行资源管理
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/TCP三次握手和四次分手/" itemprop="url">TCP三次握手和四次分手</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Java集合类/" itemprop="url">Java 集合类</a></h1>
         
 
         <div class="post-meta">
@@ -1818,8 +1820,8 @@ YARN进行资源管理
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/网络/" itemprop="url" rel="index">
-                    <span itemprop="name">网络</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -1837,8 +1839,8 @@ YARN进行资源管理
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/09/03/TCP三次握手和四次分手/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://yoursite.com/2017/09/03/TCP三次握手和四次分手/" class="cy_cmt_count" data-xid="2017/09/03/TCP三次握手和四次分手/" itemprop="commentsCount" ></span>
+                <a href="/2017/09/03/Java集合类/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://yoursite.com/2017/09/03/Java集合类/" class="cy_cmt_count" data-xid="2017/09/03/Java集合类/" itemprop="commentsCount" ></span>
                 </a>
               
             
@@ -1846,7 +1848,7 @@ YARN进行资源管理
 
           
           
-             <span id="/2017/09/03/TCP三次握手和四次分手/" class="leancloud_visitors" data-flag-title="TCP三次握手和四次分手">
+             <span id="/2017/09/03/Java集合类/" class="leancloud_visitors" data-flag-title="Java 集合类">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1876,15 +1878,13 @@ YARN进行资源管理
       
         
           
-          TCP三次握手协议初始条件，Server处于监听端口状态
-
-Client发送同步请求报文(SYN=1)给客户端，client进入同步已发送状态(SYN_SEND)
-
-Server接收到请求报文，需要对这个报文进行确认，发送确认报文(SYN+ACK)给client，同时进入同步已接收状态(SYN_RE
+          Java的集合类有两个大分支：Collection 和 Map
+Collection容器是用于持有对象的。最好的持有对象的方法是数组，但是数组的长度固定。容器的顶层接口是Collections, 其中包含List，set接口， Map接口不属于Collections接口的。
+ArrayList是动态
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/TCP三次握手和四次分手/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Java集合类/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
