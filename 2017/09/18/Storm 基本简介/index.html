@@ -1,0 +1,1011 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Storm," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Storm�Ƿֲ�ʽʵʱ����ϵͳ������Ӧ����Hadoop����������Storm�����������������ϵ�����������ʹ�����µĳ�����  ��ʽ���ݣ����ݲ����Ǿ�̬�Ĵ�����ĳ���洢�豸�����Ƕ�̬����������  �ֲ�ʽ��RPC������storm�Ƿֲ�ʽ���Ҵ������ӳٺܵͣ�ͨ��������ΪRPC">
+<meta name="keywords" content="Storm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Storm ��������">
+<meta property="og:url" content="http://yoursite.com/2017/09/18/Storm 基本简介/index.html">
+<meta property="og:site_name" content="Hello, World">
+<meta property="og:description" content="Storm�Ƿֲ�ʽʵʱ����ϵͳ������Ӧ����Hadoop����������Storm�����������������ϵ�����������ʹ�����µĳ�����  ��ʽ���ݣ����ݲ����Ǿ�̬�Ĵ�����ĳ���洢�豸�����Ƕ�̬����������  �ֲ�ʽ��RPC������storm�Ƿֲ�ʽ���Ҵ������ӳٺܵͣ�ͨ��������ΪRPC">
+<meta property="og:image" content="http://yoursite.com/images/storm_01.png">
+<meta property="og:image" content="http://yoursite.com/images/storm_02.jpg">
+<meta property="og:image" content="http://yoursite.com/images/storm_03.jpg">
+<meta property="og:updated_time" content="2017-09-18T05:57:18.267Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Storm ��������">
+<meta name="twitter:description" content="Storm�Ƿֲ�ʽʵʱ����ϵͳ������Ӧ����Hadoop����������Storm�����������������ϵ�����������ʹ�����µĳ�����  ��ʽ���ݣ����ݲ����Ǿ�̬�Ĵ�����ĳ���洢�豸�����Ƕ�̬����������  �ֲ�ʽ��RPC������storm�Ƿֲ�ʽ���Ҵ������ӳٺܵͣ�ͨ��������ΪRPC">
+<meta name="twitter:image" content="http://yoursite.com/images/storm_01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/18/Storm 基本简介/"/>
+
+
+
+
+
+  <title>Storm �������� | Hello, World</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello, World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/18/Storm 基本简介/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qinzhaokun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello, World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Storm ��������</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-18T00:00:00+08:00">
+                2017-09-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Storm/" itemprop="url" rel="index">
+                    <span itemprop="name">Storm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/09/18/Storm 基本简介/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/09/18/Storm 基本简介/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/09/18/Storm 基本简介/" class="leancloud_visitors" data-flag-title="Storm ��������">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>Storm</strong>�Ƿֲ�ʽʵʱ����ϵͳ������Ӧ����Hadoop����������Storm�����������������ϵ�����������ʹ�����µĳ�����</p>
+<ol>
+<li><p>��ʽ���ݣ����ݲ����Ǿ�̬�Ĵ�����ĳ���洢�豸�����Ƕ�̬����������</p>
+</li>
+<li><p>�ֲ�ʽ��RPC������storm�Ƿֲ�ʽ���Ҵ������ӳٺܵͣ�ͨ��������ΪRPC������ʹ�á�</p>
+</li>
+<li><p>�������㣬����ֻ�ó�ʼ��һ�Σ�����һֱ���С�</p>
+</li>
+</ol>
+<h2 id="Storm�ܹ�"><a href="#Storm�ܹ�" class="headerlink" title="Storm�ܹ�"></a>Storm�ܹ�</h2><p>Storm��Hadoopһ����Ҳ������Master/Slave��ģ�ͣ��������ֽ��̣�һ����<strong>Nimbus</strong>��<strong>Supervisor</strong>��<code>Nimbus</code>���������ڵ㣬������Ҫ�������£�</p>
+<ol>
+<li><p>�����ַ�����</p>
+</li>
+<li><p>������<code>Supervisor</code>���ŷ�������</p>
+</li>
+<li><p>���ϼ��⣬����<code>Supervisor</code>���ֹ���ʱ����ʱ�Ľ��д�����</p>
+</li>
+</ol>
+<p>��ָ�ɺͷַ�<strong>����supervisor�������ڴӽڵ㣬����ִ�о�����������
+</strong>������ָ�ɺͷַ�**����supervisor�������ڴӽڵ㣬����ִ�о�����������</p>
+<p><code>Supervisor</code>���������ڵ㣬������Ҫ���ܱȽϵ�һ������ִ�о���������(Spout/Blot)</p>
+<p><code>Supervisor</code>��<code>Nimbus</code>����ֱ�ӵĽ��� ����������ͨ��Zookeeper��Э�������ң����е�״̬��Ϣ��������Ϣ��������Ϣ�ȶ�������Zookeeper��znode�С����ԣ�������<code>Supervisor</code>��<code>Nimbus</code>�����ǿ���ʧ�ܵģ�˲ʱ��崻�����������ϵͳ��˵û��Ӱ�졣</p>
+<p><img src="/images/storm_01.png" alt=""></p>
+<p>�����ǴӼ�Ⱥ�ĽǶ�������Storm�ļܹ������潫�����ķ���Storm�ľ���Ԫ��</p>
+<h2 id="��������"><a href="#��������" class="headerlink" title="��������"></a>��������</h2><p>Ϊ��ʵ�ֲַ�ʽ��ʵʱ����ϵͳ��Storm�����˺ܶ�����Ԫ�����ڼ��㣬���磺<code>Topology</code>, <code>Stream</code>, <code>Spout</code>, <code>Bolt</code>��<code>Tuple</code>, <code>Stream Group</code>�ȡ�</p>
+<p><img src="/images/storm_02.jpg" alt=""></p>
+<p>������Storm��һ��topologyģ��ͼ��</p>
+<h3 id="Topology"><a href="#Topology" class="headerlink" title="Topology"></a>Topology</h3><p>��Hadoop�����е���һ��Job����tomcat�����е���һ��Web Application������Storm�У����е���<code>Topology</code>. ����һ�������ĸ�������Ǿ����Ķ�������������ִ��ʵʱ�����Ļ���Ԫ�أ����磺<code>Spout</code>, <code>Bolt</code>�����ҹ涨��������ô����Щ�����ﴫ���ġ�</p>
+<h3 id="Tuple"><a href="#Tuple" class="headerlink" title="Tuple"></a>Tuple</h3><p>tuple��storm����Ҫ���ݽṹ��������storm��ʹ�õ���������Ԫ������ģ�ͺ�Ԫ�顣tuple����һ��ֵ�б���tuple�е�ֵ�������κ����͵ġ����Ĺٷ��������£�</p>
+<blockquote>
+<p>��A tuple is a named of values where each value can be any type.��  tuple��һ���������б��Ķ������洢��ÿ��Ԫ�ؽ���field���ֶΣ����������κ�����</p>
+</blockquote>
+<p><img src="/images/storm_03.jpg" alt=""></p>
+<p>ÿ��tuple��һ��ֵ��ÿ��ֵ����һ�����֣�һ��Tuple�����������е�һ������������Ԫ�����磺һ��cookie��־�������԰�������Field, ÿ��Field��ʾһ�����ԡ� </p>
+<p>����һ��<code>Tuple</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">public class DoubleAndTripleBolt implements IRichBolt &#123;</div><div class="line">    private OutputCollector _collector;</div><div class="line">    @Override</div><div class="line">    public void prepare(Map conf, TopologyContext context, OutputCollector collector) &#123;</div><div class="line">        _collector = collector;</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public voide xecute(Tuple input) &#123;</div><div class="line">        int val = input.getInteger(0);</div><div class="line">        _collector.emit(input,new Values(val*2, val*3));</div><div class="line">        _collector.ack(input);</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void cleanup() &#123;</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void declareOutputFields(OutputFieldsDeclarer declarer) &#123;</div><div class="line">        declarer.declare(newFields(&quot;double&quot;,&quot;triple&quot;));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>declareOutputFields��������Ҫ�������ֶ� �� [��double��, ��triple��]��</p>
+<p>Ҳ����ʹ���Լ������Ķ�������Ϊֵ�����Ǳ���ʵ�����л���</p>
+<h3 id="Stream"><a href="#Stream" class="headerlink" title="Stream"></a>Stream</h3><p>һ��Stream��û�б߽���Tuple���У���Щtuples�ᱻ��һ�ֲַ�ʽ�ķ�ʽ���еش����ʹ�����ÿһ��Stream��������ʱ�򶼻ḳ��һ��id��</p>
+<h3 id="Spouts"><a href="#Spouts" class="headerlink" title="Spouts"></a>Spouts</h3><p>����<code>Topology</code>�����ݵ�Դͷ��<strong>һ����˵��ϢԴ����һ���ⲿԴ��ȡ���ݲ�����topology���淢����Ϣ: tuple</strong>��</p>
+<p>Spout�����ǿɿ��ģ�Ҳ�����ǲ��ɿ��ģ��ɿ���spout���ڷ���Tupleʧ�ܵ������£��ظ����ͣ��෴�����ɿ���spout�����������͹���Tuple�������Ƿ��ɹ���</p>
+<p>Spouts�ܹ����Ͷ�������ʹ��OutputFieldsDeclarer(interface)��declareStream�������������������ҵ�ʹ��SpoutOutputCollector��ʵ��2���ӿ�ģʽ����emit��������ָ��������ȥ����Tuple��</p>
+<p>Spouts����Ҫ������</p>
+<ul>
+<li><p>nextTuple(), nextTuple���Է���һ���µ�Tuple��Topology�����ߵ�û���µ�Tuple�����͵�ʱ�򣬾ͼ򵥵ķ��ء������κ�spout��ʵ�֣�<em>nextTuple��������������ΪStorm���õ�����spout���ǻ���ͬһ���߳�</em>���û������ṩһ������ʽ��ʵ�֣�������������������̨ѭ�������⣬��̨���ܻ�����nextTuple()�ĵ���Ƶ�ʣ�����ϵͳ��һ�����ò������Կ��Ƶ�ǰ��pending��Tuple������Ŀ�������ﵽ�������ƣ����ܾͻ���һЩ���ء�</p>
+</li>
+<li><p>ack��fail���������ص�������Spout�ڷ�����һ��tuple�󣬸�tuple��ͨ��acking���Ʊ�acker׷�٣�������ʽ��fail��ack�⣬ÿ��tuple��һ����ʱʱ�䣬������������ʱ�仹δȷ����tuple��״̬����ôacker��֪ͨspout������tuple����ʧ���ˣ�Ȼ�����ܵõ�������Ϣ�󣬾ͻ�����spout��fail����������acker��������tuple�����ɹ��ˣ�Ҳ��֪ͨspout��Ȼ��������spout��ack����������ͨ����˵�û��ڷ���tupleʱ��Ҫȷ�����ݲ���ʧ�����Ὣ�Ѿ�������tuple����������Ȼ����ack������ɾ����Ӧtuple����fail�������ط���Ӧ��tuple��</p>
+</li>
+</ul>
+<p>Spoutsʹ��<code>SpoutOutputCollector</code>������tuple�ģ�<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public interface ISpoutOutputCollector &#123;</div><div class="line"></div><div class="line">       List&lt;Integer&gt; emit(String streamId, List&lt;Object&gt; tuple, Object messageId);</div><div class="line"></div><div class="line">       void emitDirect(int taskId, String streamId, List&lt;Object&gt; tuple, Object messageId);</div><div class="line"></div><div class="line">void reportError(Throwable error);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Spoutͨ������ISpoutOutputCollector��emit��������tuple�ķ���,��ʵ���ϣ�<code>emit</code>����Ҳû��������ȥ���ͣ�����Ҫ�Ǹ����û��ṩ��streamId����������tuple��Ҫ���͵���Ŀ��taskID��<code>emitDirect</code>����������һЩ��ֱ��ָ��Ŀ��taskID��<strong>���Ƕ�ֻ�ǽ�<tasked,tuple>���ɵ����жԷŵ�һ�������У�Ȼ��������һ���̸߳�����tuple�Ӷ�����ȡ�������͵�Ŀ��task</tasked,tuple></strong>�����������Ƶ�Storm�ĵײ�ͨ�ţ�ZeroMQ��Netty��</p>
+<h3 id="Bolt"><a href="#Bolt" class="headerlink" title="Bolt"></a>Bolt</h3><p>��Ϣ�����δ����ģ�����װ��bolt�У���ͬ��bolt������ʵ�ֲ�ͬ���߼������ˣ��ۺϣ���ѯ���ݿ��ȵȵȵȡ����ӵ���Ϣ������������Ҫ�ܶಽ�裬��������һ��ͼƬ���汻ת��������ͼƬ��������Ҫ������ ��һ������ÿ��ͼƬ��ת���������ڶ����ҳ�ת��������ǰ10��ͼƬ��</p>
+<p>Bolts���Է���������Ϣ����ʹ��OutputFieldsDeclarer.declareStream����stream��ʹ��OutputCollector.emit��ѡ��Ҫ������stream��</p>
+<p><code>excute</code>����������һ��tuple��Ϊ���룬Boltsʹ��OutputCollector������tuple,Bolts����ҪΪ��������ÿһ��tuple����OutputCollector��ack��������֪ͨstorm����tuple�����������ˡ��C �Ӷ�����֪ͨ����tuple�ķ�����Spouts��</p>
+<p>һ���������ǣ�Bolts����һ������tuple,����0�����߶���tuple,Ȼ������ack֪ͨstorm�Լ��Ѿ�����������tuple�ˡ�storm�ṩ��һ��IBasicBolt���Զ�����ack��</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public interface IOutputCollector extends IErrorReporter &#123;</div><div class="line"></div><div class="line">List&lt;Integer&gt; emit(String streamId, Collection&lt;Tuple&gt; anchors, List&lt;Object&gt; tuple);</div><div class="line"></div><div class="line">void emitDirect(int taskId, String streamId, Collection&lt;Tuple&gt; anchors, List&lt;Object&gt; tuple);</div><div class="line"></div><div class="line">void ack(Tuple input);</div><div class="line"></div><div class="line">void fail(Tuple input);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>IOutputCollector�ǻᱻBolt���õģ���ISpoutOutputCollector�������ơ���������Ҳ�����ԣ��������ǿ��Կ�������emitϵ�к���������һ������Collection<tuple> anchors����������һ��anchorsԭ�����ڣ�����spout��˵����������tuple����root tuple�����Ƕ���bolt��˵������ͨ��һ������������tuple��������������tuple�ģ�����tuple֮������һ�����ӹ�ϵ�ģ�anchors��������ָ����ǰҪemit������tuple�����и��ף�����ͨ�������Ž�����tuple���������û�����һ���յ�anchors����ô����Ҫemit��tuple�����ᱻ����tuple����Ҳ�Ͳ��ᱻ׷�٣���ʹ��������ʧ�ˣ�Ҳ���ᱻspout��֪��</tuple></p>
+<p>����anchors�����⣬IOutputCollector������ack��fail�����ӿڡ��������ӿڣ���Spout��ack��fail��ȫ��ͬ������Spout��˵ack��fail���ṩ��Spout��tuple���ͳɹ���ʧ��ʱ���д�����һ�����ᡣ��IOutputCollector��ack��fail������acker�㱨��ǰtuple�Ĵ���״̬�ģ�����ҪBolt�ڴ�����tuple���������õġ�</p>
+<h3 id="Stream-groupings"><a href="#Stream-groupings" class="headerlink" title="Stream groupings"></a>Stream groupings</h3><p>����һ��Topology������һ���Ƕ���ÿ��bolt����ʲô��������Ϊ���롣stream grouping������������һ��streamӦ������������Bolts�����Ķ���Tasks��</p>
+<p>storm������6�����͵�stream grouping:</p>
+<ol>
+<li><p>Shuffle Grouping: �������飬 �����ɷ�stream������tuple�� ��֤ÿ��bolt���յ���tuple��Ŀ��ͬ��</p>
+</li>
+<li><p>Fields Grouping�����ֶη��飬 ���簴userid�����飬 ����ͬ��userid��tuple�ᱻ�ֵ���ͬ��Bolts�� ����ͬ��userid���ᱻ���䵽��ͬ��Bolts��</p>
+</li>
+<li><p>All Grouping�� �㲥���ͣ� ����ÿһ��tuple�� ���е�Bolts�����յ���</p>
+</li>
+<li><p>Global Grouping: ȫ�ַ��飬 ����tuple�����䵽storm�е�һ��bolt������һ��task���پ���һ�����Ƿ�����idֵ���͵��Ǹ�task��</p>
+</li>
+<li><p>Non Grouping: �����飬 ������������˼��˵stream�����ĵ���˭���յ�����tuple��Ŀǰ���ַ�����Shuffle grouping��һ����Ч���� ��һ�㲻ͬ����storm��������bolt�ŵ�����bolt�Ķ�����ͬһ���߳�����ȥִ�С�</p>
+</li>
+<li><p>Direct Grouping: ֱ�ӷ��飬 ����һ�ֱȽ��ر��ķ��鷽���������ַ�����ζ����Ϣ�ķ����߾ٶ�����Ϣ�����ߵ��ĸ�task����������Ϣ�� ֻ�б�����ΪDirect Stream����Ϣ�������������ַ��鷽��������������Ϣtuple����ʹ��emitDirect���������䡣��Ϣ�����߿���ͨ��TopologyContext�����ߴ���������Ϣ��taskid (OutputCollector.emit����Ҳ�᷵��taskid)</p>
+</li>
+</ol>
+<h2 id="���ж�"><a href="#���ж�" class="headerlink" title="���ж�"></a>���ж�</h2><p>storm���˵Ĳ��жȿ��Դ�����4��ά�Ƚ������ã� </p>
+<ol>
+<li>node������������ָһ��storm��Ⱥ�е�supervisor������������ </li>
+<li>worker��jvm���̣���ָ����������worker���̵�����������Щ������������ƽ�����䵽����node�� </li>
+<li>executor���̣߳���ָĳ��spout����bolt�����߳���������Щ�̻߳ᱻ����ƽ���ķ��䵽����worker�� </li>
+<li>task��spout/boltʵ������task��spout��bolt��ʵ�������ǵ�nextTuple()��execute()�����ᱻexecutors�̵߳��á�������ȷָ����storm����ÿ��executor����һ��task�����������˶���task����һ���̳߳����˶���spout/boltʵ��. ע�⣺�������õĶ�������������Щ�����ᱻƽ�����䵽���Ե������ϣ�����������ÿ���������ж��ٸ�����/�̡߳�</li>
+</ol>
+<p>һ��worker��һ��jvm���̣���ֻ����һ�� topology��һ��worker����������executorsȥ��ĳ��topology�� һ��executor���ܶ���tasks��Ĭ��������һ��executorһ��task��������һ��executorֻ����һ��spout����bolt��</p>
+<p>���жȵĶ�̬���� ��storm���˵Ĳ��жȽ��е�����2�ַ����� </p>
+<ol>
+<li><p>kill topo��&gt;�޸Ĵ��롪&gt;���롪&gt;�ύ���� </p>
+</li>
+<li><p>��̬���� </p>
+</li>
+</ol>
+<p>��1�ַ���̫�������ˣ���ʱ��topo����˵kill��kill�����⣬�����Ӽ�̨�������ѵ�Ҫ������topo kill����Ҫ�޸Ĵ��룿 ����storm�ṩ�˶�̬�����ķ���,��̬������2�ַ����� </p>
+<ol>
+<li><p>ui��ʽ������ĳ��topo��ҳ�棬����rebalance���ɣ���ʱ���Կ���topo��״̬��rebalancing�����˷���ֻ�ǰѽ��̡��߳��ڸ������������·��䣬�����������ӻ��������߼��ٻ��������Σ����ܵ���worker������executor������ </p>
+</li>
+<li><p>cli��ʽ��storm rebalance �ٸ�����</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">storm rebalance toponame -n 7 -e filter-bolt=6 -e hdfs-bolt=8</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>��topo��worker��������Ϊ7������filter-bolt��hdfs-bolt��executor�����ֱ�����Ϊ6��8. ��ʱ���鿴topo��״̬��rebalancing���������ɺ󣬿��Կ���3̨�����е�worker�����ֱ�Ϊ3��2��2</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Storm/" rel="tag"># Storm</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/17/Docker 基本原理/" rel="next" title="Dokcer 基本原理">
+                <i class="fa fa-chevron-left"></i> Dokcer 基本原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="qinzhaokun" />
+          <p class="site-author-name" itemprop="name">qinzhaokun</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">57</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/qinzhaokun" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Storm�ܹ�"><span class="nav-number">1.</span> <span class="nav-text">Storm�ܹ�</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#��������"><span class="nav-number">2.</span> <span class="nav-text">��������</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Topology"><span class="nav-number">2.1.</span> <span class="nav-text">Topology</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tuple"><span class="nav-number">2.2.</span> <span class="nav-text">Tuple</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stream"><span class="nav-number">2.3.</span> <span class="nav-text">Stream</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spouts"><span class="nav-number">2.4.</span> <span class="nav-text">Spouts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bolt"><span class="nav-number">2.5.</span> <span class="nav-text">Bolt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stream-groupings"><span class="nav-number">2.6.</span> <span class="nav-text">Stream groupings</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#���ж�"><span class="nav-number">3.</span> <span class="nav-text">���ж�</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">大脸猫</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吃鱼</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt3gkj5W';
+      var conf = '6157060596fdd3e86c13f21ba008eb74';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("tXNJWqef5cXXkgOuTliYlvYP-gzGzoHsz", "KyQV3wFCnWrvzEpNLVMrhHBY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
