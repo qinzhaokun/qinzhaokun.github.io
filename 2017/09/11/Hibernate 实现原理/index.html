@@ -1,0 +1,992 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hibernate," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="ORMORM的全称是Object Relational Mapping，即对象关系映射。它的实现思想就是将关系数据库中表的数据映射成为对象，以对象的形式展现，这样开发人员就可以把对数据库的操作转化为对这些对象的操作。因此它的目的是为了方便开发人员以面向对象的思想来实现对数据库的操作。 Hibernate是什么一种实现了ORM功能的框架 实现原理实现ORM功能的时候，主要的文件有：映射类（.java">
+<meta name="keywords" content="Hibernate">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hibernate">
+<meta property="og:url" content="http://yoursite.com/2017/09/11/Hibernate 实现原理/index.html">
+<meta property="og:site_name" content="Hello, World">
+<meta property="og:description" content="ORMORM的全称是Object Relational Mapping，即对象关系映射。它的实现思想就是将关系数据库中表的数据映射成为对象，以对象的形式展现，这样开发人员就可以把对数据库的操作转化为对这些对象的操作。因此它的目的是为了方便开发人员以面向对象的思想来实现对数据库的操作。 Hibernate是什么一种实现了ORM功能的框架 实现原理实现ORM功能的时候，主要的文件有：映射类（.java">
+<meta property="og:updated_time" content="2017-09-25T06:13:53.447Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hibernate">
+<meta name="twitter:description" content="ORMORM的全称是Object Relational Mapping，即对象关系映射。它的实现思想就是将关系数据库中表的数据映射成为对象，以对象的形式展现，这样开发人员就可以把对数据库的操作转化为对这些对象的操作。因此它的目的是为了方便开发人员以面向对象的思想来实现对数据库的操作。 Hibernate是什么一种实现了ORM功能的框架 实现原理实现ORM功能的时候，主要的文件有：映射类（.java">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/11/Hibernate 实现原理/"/>
+
+
+
+
+
+  <title>Hibernate | Hello, World</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello, World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/11/Hibernate 实现原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qinzhaokun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello, World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Hibernate</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-11T00:00:00+08:00">
+                2017-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hibernate/" itemprop="url" rel="index">
+                    <span itemprop="name">Hibernate</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/09/11/Hibernate 实现原理/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/09/11/Hibernate 实现原理/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/09/11/Hibernate 实现原理/" class="leancloud_visitors" data-flag-title="Hibernate">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="ORM"><a href="#ORM" class="headerlink" title="ORM"></a>ORM</h2><p>ORM的全称是Object Relational Mapping，即对象关系映射。它的实现思想就是将关系数据库中表的数据映射成为对象，以对象的形式展现，这样开发人员就可以把对数据库的操作转化为对这些对象的操作。因此它的目的是为了方便开发人员以面向对象的思想来实现对数据库的操作。</p>
+<h2 id="Hibernate是什么"><a href="#Hibernate是什么" class="headerlink" title="Hibernate是什么"></a>Hibernate是什么</h2><p>一种实现了ORM功能的框架</p>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>实现ORM功能的时候，主要的文件有：<strong>映射类</strong>（<em>.java）、<strong>映射文件</strong>（</em>.hbm.xml）以及<strong>数据库配置文件</strong>（<em>.properties或</em>.cfg.xml），它们各自都有各自的作用。</p>
+<ul>
+<li><p>映射类：它的作用是描述数据库表的结构，表中的字段在类中被描述成属性，将来就可以实现把表中的记录映射成为该类的对象。</p>
+</li>
+<li><p>映射文件：它的作用是指定数据库表和映射类之间的关系，包括映射类和数据库表的对应关系、表字段和类属性类型的对应关系以及表字段和类属性名称的对应关系等。</p>
+</li>
+<li><p>数据库配置文件：它的作用是指定与数据库连接时需要的连接信息，比如连接哪中数据库、登录用户名、登录密码以及连接字符串等。</p>
+<p>Hibernate如何使用<strong>反射机制</strong>的呢？在启动时读取配置文件创建Configeration实例时，根据字符串能够过得某个类的实例，并动态配饰实例属性。</p>
+</li>
+</ul>
+<p>工作流程如下：</p>
+<h3 id="创建Configeration实例"><a href="#创建Configeration实例" class="headerlink" title="创建Configeration实例"></a>创建Configeration实例</h3><p>根据它的构造方法将指定的配置信息(默认hibernate.cfg.xml)读到内存。<strong>一个Configeration 实例代表Hibernate 所有Java类到Sql数据库映射的集合</strong>。</p>
+<h3 id="创建SessionFactory实例"><a href="#创建SessionFactory实例" class="headerlink" title="创建SessionFactory实例"></a>创建SessionFactory实例</h3><p>当使用<code>Configeration</code>实例创建了<code>SessionFactory</code>实例后，把<code>Configeration</code> 对象中的所有配置信息拷贝到<code>SessionFactory</code>的缓存中。<strong><code>SessionFactory</code>的实例代表一个数据库存储源</strong>，创建后不在与<code>Configeration</code> 对象关联。<code>SessionFactory</code>是线程安全的，通常情况下，一个应用程序只有一个SessionFactory的实例。</p>
+<h3 id="创建Session实例"><a href="#创建Session实例" class="headerlink" title="创建Session实例"></a>创建Session实例</h3><p>通过SessionFactory创建Session实例，session不是线程安全的，每个使用者应该用SessionFactory实例获得自己的session实例。获得session实例后就可以利用<strong>session的各种方法对对象进行持久化操作了</strong>。</p>
+<h3 id="创建Transaction事务"><a href="#创建Transaction事务" class="headerlink" title="创建Transaction事务"></a>创建Transaction事务</h3><p>Hibernate本身没有实现自己的事务管理功能，而是对底层JDBC事务或JTA事务的轻量级封装.</p>
+<p>通过<code>Session</code>的<code>beginTransaction()</code>方法可以得到一个对象的实例。主要用于管理实务。一个事物对象可能会包括多个对数据库进行的操作。</p>
+<h2 id="hibernate的缓存"><a href="#hibernate的缓存" class="headerlink" title="hibernate的缓存"></a>hibernate的缓存</h2><h3 id="为什么要使用缓存"><a href="#为什么要使用缓存" class="headerlink" title="为什么要使用缓存"></a>为什么要使用缓存</h3><p>为了降低应用程序对物理数据源访问的频次，从而提高应用程序的运行性能。缓存内的数据是对物理数据源中的数据的复制，应用程序在运行时从缓存读写数据，在特定的时刻或事件会同步缓存和物理数据源的数据。</p>
+<p>在hibernate框架中，主要包含两个方面的缓存，一级缓存和二级缓存。hibernate缓存的作用主要表现在以下两个方面： </p>
+<ol>
+<li><p>通过主键(ID)加载数据的时候</p>
+</li>
+<li><p>延迟加载中</p>
+</li>
+</ol>
+<h3 id="一级缓存"><a href="#一级缓存" class="headerlink" title="一级缓存"></a>一级缓存</h3><p>hibernate的一级缓存是由session提供的，因此它只存在session的生命周期中。也就是说session关闭的时候该session所管理的一级缓存也随之被清除。hibernate的一级缓存是session所内置的，不能被卸载，也不能进行任何配置。一级缓存采用的是Key-Value的MAP方式来实现的。在缓存实体对象时，对象的主关键字ID是MAP的Key，实体对象就是对象的值。所以说一级缓存是以实体对象为单位进行存储的。访问的时候使用的是主键关键字ID。一级缓存使用的是自动维护的功能。但可以通过session提供的手动方法对一级缓存的管理进行手动干预。evict()方法用于将某个对象从session的一级缓存中清除。clear()方法用于将session缓存中的方法全部清除。</p>
+<h3 id="二级缓存"><a href="#二级缓存" class="headerlink" title="二级缓存"></a>二级缓存</h3><p><code>SessionFactory</code>提供的缓存机制可以将缓存分为内置缓存和外置缓存。内置缓存存放了映射文件中数据的副本和预定义SQL语句。<code>SessionFactory</code>的外置缓存就是我们的二级缓存。它是一个可配置的插件，默认情况下<code>SessionFactory不</code>会启用这个插件，外置缓存的数据是数据库数据的副本。外置缓存的介质可以是内存或者硬盘。二级缓存的实现原理与一级缓存是一样的。也是通过Key-Value的Map来实现对对象的缓存。二级缓存是作用在<code>SessionFactory</code>范围内的。因此它比一级缓存的范围更广。它可被所有的<code>Session</code>对象所共享。需要注意的是放入缓存中的数据不能有第三方的应用对数据进行修改。</p>
+<h4 id="什么样的数据适合存放到第二级缓存"><a href="#什么样的数据适合存放到第二级缓存" class="headerlink" title="什么样的数据适合存放到第二级缓存?"></a>什么样的数据适合存放到第二级缓存?</h4><ol>
+<li><p>很少被修改的数据</p>
+</li>
+<li><p>不是很重要的数据，允许出现偶尔并发的数据</p>
+</li>
+<li><p>不会被并发访问的数据</p>
+</li>
+<li><p>参考数据,指的是供应用参考的常量数据，它的实例数目有限，它的实例会被许多其他类的实例引用，实例极少或者从来不会被修改。</p>
+</li>
+</ol>
+<h4 id="不适合存放到第二级缓存的数据？"><a href="#不适合存放到第二级缓存的数据？" class="headerlink" title="不适合存放到第二级缓存的数据？"></a>不适合存放到第二级缓存的数据？</h4><ol>
+<li><p>经常被修改的数据</p>
+</li>
+<li><p>财务数据，绝对不允许出现并发</p>
+</li>
+<li><p>与其他应用共享的数据。</p>
+</li>
+</ol>
+<h2 id="Hibernate实体对象的生命周期"><a href="#Hibernate实体对象的生命周期" class="headerlink" title="Hibernate实体对象的生命周期"></a>Hibernate实体对象的生命周期</h2><p>实体对象的生命周期主要存在三种不同状态：<em>瞬态</em>、<em>持久态</em>和<em>游离态</em>。</p>
+<h3 id="瞬态"><a href="#瞬态" class="headerlink" title="瞬态"></a>瞬态</h3><p>表示该实体对象在内存中是自由自在的。与数据库中的数据没有任何关系。与session没有任何关系，也就是没有通过session的实例对其任何持久化的操作。</p>
+<h3 id="持久态"><a href="#持久态" class="headerlink" title="持久态"></a>持久态</h3><p>该实体对象处于hibernate框架所管理的状态。也就是说这个对象是与session的实体对象相关的。处于持久态的实体对象的特征就是其所作的任何的变更操作都将被Hibernate持久化到数据库中。我们可以说持久态的周期与其对应的session的周期息息相关的。hibernate会依据处于持久态的实体对象的属性变化而改变数据库中的对应记录。</p>
+<h3 id="游离态"><a href="#游离态" class="headerlink" title="游离态"></a>游离态</h3><p>处于持久态的实体对象，当不再与其对应的session对象相关联时，就处于游离态。</p>
+<h2 id="延迟加载"><a href="#延迟加载" class="headerlink" title="延迟加载"></a>延迟加载</h2><p>延迟加载机制是为了避免一些无谓的性能开销而提出来的，所谓延迟加载就是当在真正需要数据的时候，才真正执行数据加载操作。在Hibernate中提供了对<strong>实体对象</strong>的延迟加载以及对<strong>集合</strong>的延迟加载，另外在Hibernate3中还提供了对<strong>属性</strong>的延迟加载。</p>
+<h3 id="实体对象的延迟加载"><a href="#实体对象的延迟加载" class="headerlink" title="实体对象的延迟加载"></a>实体对象的延迟加载</h3><p>如果想对实体对象使用延迟加载，必须要在实体的映射配置文件中进行相应的配置，如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;hibernate-mapping&gt;</div><div class="line"> &lt;class name=”com.neusoft.entity.User” table=”user” lazy=”true”&gt;</div><div class="line">   ……</div><div class="line"> &lt;/class&gt;</div><div class="line">&lt;/hibernate-mapping&gt;</div></pre></td></tr></table></figure></p>
+<p>通过将class的<code>lazy</code>属性设置为<code>true</code>，来开启实体的延迟加载特性。</p>
+<blockquote>
+<p>User user=(User)session.load(User.class,”1”);（1）<br>System.out.println(user.getName());（2）<br>当运行到(1)处时，Hibernate并没有发起对数据的查询，如果我们此时通过一些调试工具(比如JBuilder2005的Debug工具)，观察此时user对象的内存快照，我们会惊奇的发现，此时返回的可能是User$EnhancerByCGLIB$$bede8986类型的对象，而且其属性为null,这是怎么回事？还记得前面我曾讲过session.load()方法，会返回实体对象的代理类对象，这里所返回的对象类型就是User对象的代理类对象。在Hibernate中通过使用CGLIB,来实现动态构造一个目标对象的代理类对象，并且在代理类对象中包含目标对象的所有属性和方法，而且所有属性均被赋值为null。通过调试器显示的内存快照，我们可以看出此时真正的User对象，是包含在代理对象的CGLIB$CALBACK_0.target属性中，当代码运行到（2）处时，此时调用user.getName()方法，这时通过CGLIB赋予的回调机制，实际上调用CGLIB$CALBACK_0.getName()方法，当调用该方法时，Hibernate会首先检查CGLIB$CALBACK_0.target属性是否为null，如果不为空，则调用目标对象的getName方法，如果为空，则会发起数据库查询，生成类似这样的SQL语句：select * from user where id=’1’;来查询数据，并构造目标对象，并且将它赋值到CGLIB$CALBACK_0.target属性中。</p>
+<p>这样，通过一个中间代理对象，Hibernate实现了实体的延迟加载，只有当用户真正发起获得实体对象属性的动作时，才真正会发起数据库查询操作。所以实体的延迟加载是用通过中间代理类完成的，所以只有session.load()方法才会利用实体延迟加载，因为只有session.load()方法才会返回实体类的代理类对象。</p>
+</blockquote>
+<h3 id="集合类型的延迟加载"><a href="#集合类型的延迟加载" class="headerlink" title="集合类型的延迟加载"></a>集合类型的延迟加载</h3><h3 id="属性延迟加载"><a href="#属性延迟加载" class="headerlink" title="属性延迟加载"></a>属性延迟加载</h3><p>在Hibernate3中，引入了一种新的特性——属性的延迟加载，这个机制又为获取高性能查询提供了有力的工具。在前面我们讲大数据对象读取时，在User对象中有一个resume字段，该字段是一个java.sql.Clob类型，包含了用户的简历信息，当我们加载该对象时，我们不得不每一次都要加载这个字段，而不论我们是否真的需要它，而且这种大数据对象的读取本身会带来很大的性能开销。在Hibernate2中，我们只有通过我们前面讲过的面性能的粒度细分，来分解User类，来解决这个问题（请参照那一节的论述），但是在Hibernate3中，我们可以通过属性延迟加载机制，来使我们获得只有当我们真正需要操作这个字段时，才去读取这个字段数据的能力，为此我们必须如下配置我们的实体类：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;hibernate-mapping&gt;</div><div class="line"> &lt;class name=”com.neusoft.entity.User” table=”user”&gt;</div><div class="line">……</div><div class="line">&lt;property name=”resume” type=”java.sql.Clob” column=”resume” lazy=”true”/&gt;</div><div class="line">   &lt;/class&gt;</div><div class="line">&lt;/hibernate-mapping&gt;</div></pre></td></tr></table></figure></p>
+<p>通过对<property>元素的<code>lazy</code>属性设置<code>true</code>来开启属性的延迟加载</property></p>
+<h2 id="Hibernate的优势"><a href="#Hibernate的优势" class="headerlink" title="Hibernate的优势"></a>Hibernate的优势</h2><ul>
+<li><p>Hibernate通过XML配置文件将Java类映射到数据库表，而不需要编写任何代码。</p>
+</li>
+<li><p>提供简单的API,用于直接存储和检索数据库中的Java对象。</p>
+</li>
+<li><p>如果数据库或任何表中有更改，只需要修改XML文件。</p>
+</li>
+<li><p>提取我们不熟悉的SQL类型，并提供我们熟悉的Java对象。</p>
+</li>
+<li><p>Hibernate不需要应用府服务器来操作。</p>
+</li>
+<li><p>操作复杂关联的数据库对象。</p>
+</li>
+<li><p>使用智能抓取策略简化数据库操作。</p>
+</li>
+<li><p>提供简单的数据查询。</p>
+</li>
+</ul>
+<p><a href="http://www.cnblogs.com/kubixuesheng/p/7497963.html#3780947" target="_blank" rel="external">http://www.cnblogs.com/kubixuesheng/p/7497963.html#3780947</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hibernate/" rel="tag"># Hibernate</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/10/MapReduce简要介绍/" rel="next" title="Hadoop简要介绍">
+                <i class="fa fa-chevron-left"></i> Hadoop简要介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/11/Java线程池原理/" rel="prev" title="Java线程池原理">
+                Java线程池原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="qinzhaokun" />
+          <p class="site-author-name" itemprop="name">qinzhaokun</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">67</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/qinzhaokun" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ORM"><span class="nav-number">1.</span> <span class="nav-text">ORM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hibernate是什么"><span class="nav-number">2.</span> <span class="nav-text">Hibernate是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现原理"><span class="nav-number">3.</span> <span class="nav-text">实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Configeration实例"><span class="nav-number">3.1.</span> <span class="nav-text">创建Configeration实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建SessionFactory实例"><span class="nav-number">3.2.</span> <span class="nav-text">创建SessionFactory实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Session实例"><span class="nav-number">3.3.</span> <span class="nav-text">创建Session实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Transaction事务"><span class="nav-number">3.4.</span> <span class="nav-text">创建Transaction事务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hibernate的缓存"><span class="nav-number">4.</span> <span class="nav-text">hibernate的缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要使用缓存"><span class="nav-number">4.1.</span> <span class="nav-text">为什么要使用缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一级缓存"><span class="nav-number">4.2.</span> <span class="nav-text">一级缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二级缓存"><span class="nav-number">4.3.</span> <span class="nav-text">二级缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么样的数据适合存放到第二级缓存"><span class="nav-number">4.3.1.</span> <span class="nav-text">什么样的数据适合存放到第二级缓存?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不适合存放到第二级缓存的数据？"><span class="nav-number">4.3.2.</span> <span class="nav-text">不适合存放到第二级缓存的数据？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hibernate实体对象的生命周期"><span class="nav-number">5.</span> <span class="nav-text">Hibernate实体对象的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#瞬态"><span class="nav-number">5.1.</span> <span class="nav-text">瞬态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#持久态"><span class="nav-number">5.2.</span> <span class="nav-text">持久态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#游离态"><span class="nav-number">5.3.</span> <span class="nav-text">游离态</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#延迟加载"><span class="nav-number">6.</span> <span class="nav-text">延迟加载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实体对象的延迟加载"><span class="nav-number">6.1.</span> <span class="nav-text">实体对象的延迟加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合类型的延迟加载"><span class="nav-number">6.2.</span> <span class="nav-text">集合类型的延迟加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#属性延迟加载"><span class="nav-number">6.3.</span> <span class="nav-text">属性延迟加载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hibernate的优势"><span class="nav-number">7.</span> <span class="nav-text">Hibernate的优势</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">大脸猫</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吃鱼</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt3gkj5W';
+      var conf = '6157060596fdd3e86c13f21ba008eb74';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("tXNJWqef5cXXkgOuTliYlvYP-gzGzoHsz", "KyQV3wFCnWrvzEpNLVMrhHBY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
