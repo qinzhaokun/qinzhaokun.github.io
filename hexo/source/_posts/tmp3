@@ -1,0 +1,50 @@
+### 代码示例2
+
+#### 场景
+
+对于一个url，会有转发该用url的用户列表；每一个用户都有粉丝，当每个用户转发一个url时，他的粉丝会看到，我们的目的就是对于一个url，得到所有能够看到该url的用户。即得到用户列表，累加每个用户的粉丝，进行粉丝去重。下面我们看如何使用trident来解决这样的问题。
+
+这个topology会读取两个state源：一个将该URL映射到所有转发该推文的用户列表，还有一个将用户映射到该用户的粉丝列表。topology的定义如下：
+
+```
+TridentState urlToTweeters =
+       topology.newStaticState(getUrlToTweetersState());
+TridentState tweetersToFollowers =
+       topology.newStaticState(getTweeterToFollowersState());
+ 
+topology.newDRPCStream("reach")
+       .stateQuery(urlToTweeters, new Fields("args"), new MapGet(), new Fields("tweeters"))
+       .each(new Fields("tweeters"), new ExpandList(), new Fields("tweeter"))
+       .shuffle()
+       .stateQuery(tweetersToFollowers, new Fields("tweeter"), new MapGet(), new Fields("followers"))
+       .parallelismHint(200)
+       .each(new Fields("followers"), new ExpandList(), new Fields("follower"))
+       .groupBy(new Fields("follower"))
+       .aggregate(new One(), new Fields("one"))
+       .parallelismHint(20)
+       .aggregate(new Count(), new Fields("reach"));
+```
+使用newStaticState方法创建了TridentState对象来代表一个外部数据库,用这个TridentState对象，我们就可以在这个topology上面进行动态查询了。和所有的state源一样，在这些数据库上面的查找会自动被批量执行，从而最大程度的提升效率。
+
+首先，查询urlToTweeters数据库来得到转发过这个URL的用户列表。这个查询会返回一个tweeter列表，因此我们使用ExpandList函数来把其中的每一个tweeter转换成一个tuple
+
+接下来，我们来获取每个tweeter的follower。我们使用shuffle来把要处理的tweeter均匀地分配到toplology运行的每一个worker中并发去处理。然后查询tweetersToFollowers数据库从而的到每个转发者的粉丝。你可以看到我们为topology的这部分分配了很大的并行度，这是因为这部分是整个topology中最耗资源的计算部分。
+
+然后，我们对这些粉丝进行去重和计数。这分为如下两步：①、通过“follower”字段对流进行分组，并对每个组执行“One”聚合器。“One”聚合器对每个分组简单的发送一个tuple，该tuple仅包含一个数字“1”。②、将这些“1”加到一起，得到去重后的粉丝集中的粉丝数。“One”聚合器的定义如下：
+
+```
+public class One implements CombinerAggregator<Integer> {
+   public Integer init(TridentTuple tuple) {
+       return 1;
+   }
+ 
+   public Integer combine(Integer val1, Integer val2) {
+       return 1;
+   }
+ 
+   public Integer zero() {
+       return 1;
+   }
+}
+```
+这是一个“汇总聚合器(combiner aggregator)”, 它会在传送结果到其他worker汇总之前进行局部汇总，从而使性能最优。同样，Sum被定义成一个汇总聚合器，在topology的最后部分进行全局求和是高效的。
