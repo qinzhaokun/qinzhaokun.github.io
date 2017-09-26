@@ -63,4 +63,62 @@ man => [count=5, txid=3]
 dog => [count=4, txid=3]
 apple => [count=10, txid=2]
 ```
+
+### 代码示例1
+
+统计数据流中单词的个数。
+
+#### 无限输入流
+
+```
+FixedBatchSpout spout = new FixedBatchSpout(new Fields("sentence"), 3,
+               new Values("the cow jumped over the moon"),
+               new Values("the man went to the store and bought some candy"),
+               new Values("four score and seven years ago"),
+               new Values("how many apples can you eat"));
+spout.setCycle(true);
+```
+这个spout会循环输出列出的那些语句
+
+#### 统计单词数
+
+```
+TridentTopology topology = new TridentTopology();
+TridentState wordCounts =
+     topology.newStream("spout1", spout)
+       .each(new Fields("sentence"), new Split(), new Fields("word"))
+       .groupBy(new Fields("word"))
+       .persistentAggregate(new MemoryMapState.Factory(), new Count(), new Fields("count"))
+       .parallelismHint(6);
+```
+
+我们首先创建了一个TridentTopology对象，该对象提供了相应的接口去构造Trident计算过程。①、TridentTopology类中的newStream方法从输入源（input source）中读取数据，并创建一个新的数据流。在这个例子中，我们使用了上面定义的FixedBatchSpout对象作为输入源。输入数据源同样也可以是如Kestrel或者Kafka这样的队列服务。
+
+Trident在处理输入stream的时候会把输入转换成batch（包含若干个tuple）来处理。一般来说，这些小的batch中的tuple可能会在数千或者数百万这样的数量级，这完全取决于你的输入的吞吐量。
+
+Trident提供了一系列非常成熟的批处理API来处理这些小batch。这些API和你在Pig或者Cascading中看到的非常类似， 你可以做groupby、join、 aggregation、执行 function和filter等等。当然，独立的处理每个小的batch并不是非常有趣的事情，所以Trident提供了功能来实现batch之间的聚合并可以将这些聚合的结果存储到内存、Memcached、Cassandra或者是一些其他的存储中。同时，Trident还提供了非常好的功能来查询实时状态，这些实时状态可以被Trident更新，同时它也可以是一个独立的状态源。
+
+`persistentAggregate`方法会帮助你把一个状态源聚合的结果存储或者更新到存储当中。在这个例子中，单词的数量被保持在内存中，不过我们可以很简单的把这些数据保存到其他的存储当中，如 Memcached、 Cassandra等。如果我们要把结果存储到Memcached中，只是简单的使用下面这句话替换掉persistentAggregate就可以，这当中的”serverLocations”是Memcached cluster的主机和端口号列表：
+
+```
+.persistentAggregate(MemcachedState.transactional(serverLocations), new Count(), new Fields("count"))
+```
+
+`persistentAggregate`方法会把数据流转换成一个TridentState对象。在这个例子当中，TridentState对象代表了所有的单词的数量。我们会使用这个TridentState对象来实现在计算过程中的分布式查询部分。
+
+#### Split函数
+
+```
+public class Split extends BaseFunction {
+   public void execute(TridentTuple tuple, TridentCollector collector) {
+       String sentence = tuple.getString(0);
+       for(String word: sentence.split(" ")) {
+           collector.emit(new Values(word));
+       }
+   }
+}
+```
+
+
+
 现在我们再来讨论一下“模糊事务型” spout。
