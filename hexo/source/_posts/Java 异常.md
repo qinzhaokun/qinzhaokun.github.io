@@ -94,4 +94,4 @@ try{
 
 在这里，先会执行test()函数，再执行finally，在返回test()的返回值。所以，顺序是**执行return语句，执行finally块，被后，返回return值**
 
-还有一点需要注意到是，不要在finally里return，如果这样的话，try里的return值就无法被返回了，finally中return后的代码也无法被执行。
+**还有一点需要注意到是，不要在finally里return，如果这样的话，try里的return值就无法被返回了，finally中return后的代码也无法被执行**。
