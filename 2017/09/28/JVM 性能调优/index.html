@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="Full GC减少Full GC的频率 减少Young GC和Full GC的时间 GC 调优对高并发大数据量交互的应用还是很有必要的，尤其是默认 JVM 参数通常不满足业务需求，需要进行专门调优。由于系统堆设置较大，Full GC 一次暂停应用时间会较长，这对线上实时服务影响较大  最好的GC算法是Concurrent Mark Sweep（CMS垃圾回收），特别是对于Web服务端程序。因为低延">
+<meta name="description" content="一般调优都有3个步骤：  性能监控，需要一些系统工具来检测系统的运行状况，命令行下的jstack,jstat, 界面下的Jconsole，VisualVM  性能分析，当发现出问题了，需要分析造成问题的原因，如CPU过载或空转，FullGC时间过长等  性能调优，分析好出问题的原因后，需要采取行动，如定位代码的问题，优化代码，或者系统重新配置等   性能分析CPU分析当程序响应很慢时，可以使用to">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM 性能调优">
 <meta property="og:url" content="http://yoursite.com/2017/09/28/JVM 性能调优/index.html">
 <meta property="og:site_name" content="Hello, World">
-<meta property="og:description" content="Full GC减少Full GC的频率 减少Young GC和Full GC的时间 GC 调优对高并发大数据量交互的应用还是很有必要的，尤其是默认 JVM 参数通常不满足业务需求，需要进行专门调优。由于系统堆设置较大，Full GC 一次暂停应用时间会较长，这对线上实时服务影响较大  最好的GC算法是Concurrent Mark Sweep（CMS垃圾回收），特别是对于Web服务端程序。因为低延">
-<meta property="og:updated_time" content="2017-10-02T00:33:09.759Z">
+<meta property="og:description" content="一般调优都有3个步骤：  性能监控，需要一些系统工具来检测系统的运行状况，命令行下的jstack,jstat, 界面下的Jconsole，VisualVM  性能分析，当发现出问题了，需要分析造成问题的原因，如CPU过载或空转，FullGC时间过长等  性能调优，分析好出问题的原因后，需要采取行动，如定位代码的问题，优化代码，或者系统重新配置等   性能分析CPU分析当程序响应很慢时，可以使用to">
+<meta property="og:updated_time" content="2017-10-02T22:40:56.823Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM 性能调优">
-<meta name="twitter:description" content="Full GC减少Full GC的频率 减少Young GC和Full GC的时间 GC 调优对高并发大数据量交互的应用还是很有必要的，尤其是默认 JVM 参数通常不满足业务需求，需要进行专门调优。由于系统堆设置较大，Full GC 一次暂停应用时间会较长，这对线上实时服务影响较大  最好的GC算法是Concurrent Mark Sweep（CMS垃圾回收），特别是对于Web服务端程序。因为低延">
+<meta name="twitter:description" content="一般调优都有3个步骤：  性能监控，需要一些系统工具来检测系统的运行状况，命令行下的jstack,jstat, 界面下的Jconsole，VisualVM  性能分析，当发现出问题了，需要分析造成问题的原因，如CPU过载或空转，FullGC时间过长等  性能调优，分析好出问题的原因后，需要采取行动，如定位代码的问题，优化代码，或者系统重新配置等   性能分析CPU分析当程序响应很慢时，可以使用to">
 
 
 
@@ -395,7 +395,83 @@
       
 
       
-        <h2 id="Full-GC"><a href="#Full-GC" class="headerlink" title="Full GC"></a>Full GC</h2><p>减少Full GC的频率</p>
+        <p>一般调优都有3个步骤：</p>
+<ol>
+<li><p>性能监控，需要一些系统工具来检测系统的运行状况，命令行下的jstack,jstat, 界面下的Jconsole，VisualVM</p>
+</li>
+<li><p>性能分析，当发现出问题了，需要分析造成问题的原因，如CPU过载或空转，FullGC时间过长等</p>
+</li>
+<li><p>性能调优，分析好出问题的原因后，需要采取行动，如定位代码的问题，优化代码，或者系统重新配置等</p>
+</li>
+</ol>
+<h2 id="性能分析"><a href="#性能分析" class="headerlink" title="性能分析"></a>性能分析</h2><h3 id="CPU分析"><a href="#CPU分析" class="headerlink" title="CPU分析"></a>CPU分析</h3><p>当程序响应很慢时，可以使用top,vmstat,ps等命令查看CPU的使用率是否有异常，一般CPU忙时，有几种情况：</p>
+<ol>
+<li>线程无限循环</li>
+<li>频繁GC</li>
+<li>线程切换频繁</li>
+</ol>
+<h3 id="内存分析"><a href="#内存分析" class="headerlink" title="内存分析"></a>内存分析</h3><p>这里可分为堆外内存和堆内内存。</p>
+<h4 id="堆外内存"><a href="#堆外内存" class="headerlink" title="堆外内存"></a>堆外内存</h4><p> 堆外内存主要是JNI、Deflater/Inflater、DirectByteBuffer（nio中会用到）使用的工具查看系统的物理内存，如果使用较高，则要考虑加内存，使用过少，考虑多分一些内存给堆内的。</p>
+<h4 id="堆内内存"><a href="#堆内内存" class="headerlink" title="堆内内存"></a>堆内内存</h4><p>此部分内存为Java应用主要的内存区域。当出现<strong>频繁GC</strong>或OOM时，表示内存堆内内存存在问题，使用jmap或者生产堆转储快照的方式分析。当出现问题时，应注意一下几个方面：</p>
+<ol>
+<li>创建的对象：这个是存储在堆中的，需要控制好对象的数量和大小，尤其是大的对象很容易进入老年代</li>
+<li>全局集合：全局集合通常是生命周期比较长的，因此需要特别注意全局集合的使用</li>
+<li>缓存：缓存选用的数据结构不同，会很大程序影响内存的大小和gc</li>
+<li>ClassLoader：主要是动态加载类容易造成永久代内存不足</li>
+<li>多线程：线程分配会占用本地内存，过多的线程也会造成内存不足</li>
+</ol>
+<h3 id="IO分析"><a href="#IO分析" class="headerlink" title="IO分析"></a>IO分析</h3><ol>
+<li><p>vmstat来查看本地文件io的状况，由此可以判定io繁忙状况</p>
+</li>
+<li><p>使用的是netstat工具查看网络I/O，当time_wait或者close_wait连接过多时，会影响应用的相应速度。</p>
+</li>
+</ol>
+<h2 id="性能调优"><a href="#性能调优" class="headerlink" title="性能调优"></a>性能调优</h2><h3 id="CPU调优"><a href="#CPU调优" class="headerlink" title="CPU调优"></a>CPU调优</h3><ol>
+<li>不要存在一直运行的线程(无限while循环)，可以使用sleep休眠一段时间。这种情况普遍存在于一些pull方式消费数据的场景下，当一次pull没有拿到数据的时候建议sleep一下，再做下一次pull。</li>
+<li>轮询的时候可以使用wait/notify机制</li>
+<li>避免循环、正则表达式匹配、计算过多，包括使用String的format、split、replace方法(可以使用apache的commons-lang里的StringUtils对应的方法)，使用正则去判断邮箱格式(有时候会造成死循环)、序列/反序列化等。</li>
+<li>结合jvm和代码，避免产生频繁的gc，尤其是full GC。</li>
+</ol>
+<h3 id="内存调优"><a href="#内存调优" class="headerlink" title="内存调优"></a>内存调优</h3><ol>
+<li><p>合理设置各个代的大小。避免新生代设置过小(不够用，经常minor gc并进入老年代)以及过大(会产生碎片)，同样也要避免Survivor设置过大和过小。</p>
+</li>
+<li><p>选择合适的GC策略。需要根据不同的场景选择合适的gc策略。这里需要说的是，cms并非全能的。除非特别需要再设置，毕竟cms的新生代回收策略parnew并非最快的，且cms会产生碎片。此外，G1直到jdk8的出现也并没有得到广泛应用，并不建议使用。</p>
+</li>
+<li><p>jvm启动参数配置-XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:[log_path]，以记录gc日志，便于排查问题。</p>
+</li>
+</ol>
+<p>关于年轻代和年老代的选择：</p>
+<ul>
+<li><p>年轻代大小选择：响应时间优先的应用，尽可能设大，直到接近系统的最低响应时间限制（根据实际情况选择）。在此种情况下，年轻代收集发生gc的频率是最小的。同时，也能够减少到达年老代的对象。吞吐量优先的应用，也尽可能的设置大，因为对响应时间没有要求，垃圾收集可以并行进行，建议适合8CPU以上的应用使用。</p>
+</li>
+<li><p>年老代大小选择：响应时间优先的应用，年老代一般都是使用并发收集器，所以其大小需要小心设置，一般要考虑并发会话率和会话持续时间等一些参数。如果堆设置小了，会造成内存碎片、高回收频率以及应用暂停而使用传统的标记清除方式；如果堆大了，则需要较长的收集时间。</p>
+</li>
+</ul>
+<p>而代码上面的优化，可以从以下几个方面考虑：</p>
+<ol>
+<li>避免保存重复的String对象，同时也需要小心String.subString()与String.intern()的使用</li>
+<li>尽量不要使用finalizer</li>
+<li>释放不必要的引用：ThreadLocal使用完记得释放以防止内存泄漏，各种stream使用完也记得close。</li>
+<li>使用对象池避免无节制创建对象，造成频繁gc。但不要随便使用对象池，除非像连接池、线程池这种初始化/创建资源消耗较大的场景，</li>
+<li>缓存失效算法，可以考虑使用SoftReference、WeakReference保存缓存对象</li>
+<li>谨慎热部署/加载的使用，尤其是动态加载类等</li>
+<li>不要用Log4j输出文件名、行号，因为Log4j通过打印线程堆栈实现，生成大量String。此外，使用log4j时，建议此种经典用法，先判断对应级别的日志是否打开，再做操作，否则也会生成大量String。</li>
+</ol>
+<h3 id="IO调优"><a href="#IO调优" class="headerlink" title="IO调优"></a>IO调优</h3><p>文件IO上需要注意：</p>
+<ol>
+<li>考虑使用异步写入代替同步写入，可以借鉴redis的aof机制。</li>
+<li>利用缓存，减少随机读</li>
+<li>尽量批量写入，减少io次数和寻址</li>
+<li>使用数据库代替文件存储</li>
+</ol>
+<p>网络IO上需要注意：</p>
+<ol>
+<li>和文件IO类似，使用异步IO、多路复用IO/事件驱动IO代替同步阻塞IO</li>
+<li>批量进行网络IO,减少IO次数</li>
+<li>使用缓存，减少对网络数据的读取</li>
+<li>使用协程: Quasar</li>
+</ol>
+<h2 id="Full-GC"><a href="#Full-GC" class="headerlink" title="Full GC"></a>Full GC</h2><p>减少Full GC的频率</p>
 <p>减少Young GC和Full GC的时间</p>
 <p>GC 调优对高并发大数据量交互的应用还是很有必要的，尤其是默认 JVM 参数通常不满足业务需求，需要进行专门调优。由于系统堆设置较大，Full GC 一次暂停应用时间会较长，这对线上实时服务影响较大</p>
 <ol>
@@ -466,8 +542,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/27/Java 异常/" rel="next" title="Java 异常">
-                <i class="fa fa-chevron-left"></i> Java 异常
+              <a href="/2017/09/28/分布式事务一致性/" rel="next" title="分布式事务一致性">
+                <i class="fa fa-chevron-left"></i> 分布式事务一致性
               </a>
             
           </div>
@@ -476,8 +552,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/09/28/分布式事务一致性/" rel="prev" title="分布式事务一致性">
-                分布式事务一致性 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/29/Java IO/" rel="prev" title="Java IO">
+                Java IO <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -552,7 +628,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-count">78</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -620,7 +696,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Full-GC"><span class="nav-number">1.</span> <span class="nav-text">Full GC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结主要调优参数："><span class="nav-number">2.</span> <span class="nav-text">总结主要调优参数：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设定堆内存大小"><span class="nav-number">2.1.</span> <span class="nav-text">设定堆内存大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设定新生代大小"><span class="nav-number">2.2.</span> <span class="nav-text">设定新生代大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设定老生代大小"><span class="nav-number">2.3.</span> <span class="nav-text">设定老生代大小</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设定垃圾回收器"><span class="nav-number">3.</span> <span class="nav-text">设定垃圾回收器</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#性能分析"><span class="nav-number">1.</span> <span class="nav-text">性能分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU分析"><span class="nav-number">1.1.</span> <span class="nav-text">CPU分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存分析"><span class="nav-number">1.2.</span> <span class="nav-text">内存分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#堆外内存"><span class="nav-number">1.2.1.</span> <span class="nav-text">堆外内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#堆内内存"><span class="nav-number">1.2.2.</span> <span class="nav-text">堆内内存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IO分析"><span class="nav-number">1.3.</span> <span class="nav-text">IO分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能调优"><span class="nav-number">2.</span> <span class="nav-text">性能调优</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU调优"><span class="nav-number">2.1.</span> <span class="nav-text">CPU调优</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存调优"><span class="nav-number">2.2.</span> <span class="nav-text">内存调优</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IO调优"><span class="nav-number">2.3.</span> <span class="nav-text">IO调优</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Full-GC"><span class="nav-number">3.</span> <span class="nav-text">Full GC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结主要调优参数："><span class="nav-number">4.</span> <span class="nav-text">总结主要调优参数：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设定堆内存大小"><span class="nav-number">4.1.</span> <span class="nav-text">设定堆内存大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设定新生代大小"><span class="nav-number">4.2.</span> <span class="nav-text">设定新生代大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设定老生代大小"><span class="nav-number">4.3.</span> <span class="nav-text">设定老生代大小</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设定垃圾回收器"><span class="nav-number">5.</span> <span class="nav-text">设定垃圾回收器</span></a></li></ol></div>
             
 
           </div>

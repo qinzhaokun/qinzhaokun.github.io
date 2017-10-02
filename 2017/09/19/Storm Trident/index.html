@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/09/19/Storm Trident/index.html">
 <meta property="og:site_name" content="Hello, World">
 <meta property="og:description" content="trident可以理解为storm批处理的高级抽象,提供了分组、分区、聚合、函数等操作,提供一致性和恰好一次处理的语义 Trident 中含有对状态化（stateful）的数据源进行读取和写入操作的一级抽象封装工具。这个所谓的状态（state）既可以保存在拓扑内部（保存在内存中并通过 HDFS 来实现备份），也可以存入像 Memcached 或者 Cassandra 这样的外部数据库中。而对于 T">
-<meta property="og:updated_time" content="2017-10-02T00:33:10.006Z">
+<meta property="og:updated_time" content="2017-10-02T20:32:14.632Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Storm Trient">
 <meta name="twitter:description" content="trident可以理解为storm批处理的高级抽象,提供了分组、分区、聚合、函数等操作,提供一致性和恰好一次处理的语义 Trident 中含有对状态化（stateful）的数据源进行读取和写入操作的一级抽象封装工具。这个所谓的状态（state）既可以保存在拓扑内部（保存在内存中并通过 HDFS 来实现备份），也可以存入像 Memcached 或者 Cassandra 这样的外部数据库中。而对于 T">
@@ -431,6 +431,15 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">.persistentAggregate(MemcachedState.transactional(serverLocations), new Count(), new Fields(&quot;count&quot;))</div></pre></td></tr></table></figure>
 <p><code>persistentAggregate</code>方法会把数据流转换成一个TridentState对象。在这个例子当中，TridentState对象代表了所有的单词的数量。我们会使用这个TridentState对象来实现在计算过程中的分布式查询部分。</p>
 <h4 id="Split函数"><a href="#Split函数" class="headerlink" title="Split函数"></a>Split函数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public class Split extends BaseFunction &#123;</div><div class="line">   public void execute(TridentTuple tuple, TridentCollector collector) &#123;</div><div class="line">       String sentence = tuple.getString(0);</div><div class="line">       for(String word: sentence.split(&quot; &quot;)) &#123;</div><div class="line">           collector.emit(new Values(word));</div><div class="line">       &#125;</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="代码示例2"><a href="#代码示例2" class="headerlink" title="代码示例2"></a>代码示例2</h3><h4 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h4><p>对于一个url，会有转发该用url的用户列表；每一个用户都有粉丝，当每个用户转发一个url时，他的粉丝会看到，我们的目的就是对于一个url，得到所有能够看到该url的用户。即得到用户列表，累加每个用户的粉丝，进行粉丝去重。下面我们看如何使用trident来解决这样的问题。</p>
+<p>这个topology会读取两个state源：一个将该URL映射到所有转发该推文的用户列表，还有一个将用户映射到该用户的粉丝列表。topology的定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">TridentState urlToTweeters =</div><div class="line">       topology.newStaticState(getUrlToTweetersState());</div><div class="line">TridentState tweetersToFollowers =</div><div class="line">       topology.newStaticState(getTweeterToFollowersState());</div><div class="line"> </div><div class="line">topology.newDRPCStream(&quot;reach&quot;)</div><div class="line">       .stateQuery(urlToTweeters, new Fields(&quot;args&quot;), new MapGet(), new Fields(&quot;tweeters&quot;))</div><div class="line">       .each(new Fields(&quot;tweeters&quot;), new ExpandList(), new Fields(&quot;tweeter&quot;))</div><div class="line">       .shuffle()</div><div class="line">       .stateQuery(tweetersToFollowers, new Fields(&quot;tweeter&quot;), new MapGet(), new Fields(&quot;followers&quot;))</div><div class="line">       .parallelismHint(200)</div><div class="line">       .each(new Fields(&quot;followers&quot;), new ExpandList(), new Fields(&quot;follower&quot;))</div><div class="line">       .groupBy(new Fields(&quot;follower&quot;))</div><div class="line">       .aggregate(new One(), new Fields(&quot;one&quot;))</div><div class="line">       .parallelismHint(20)</div><div class="line">       .aggregate(new Count(), new Fields(&quot;reach&quot;));</div></pre></td></tr></table></figure>
+<p>使用newStaticState方法创建了TridentState对象来代表一个外部数据库,用这个TridentState对象，我们就可以在这个topology上面进行动态查询了。和所有的state源一样，在这些数据库上面的查找会自动被批量执行，从而最大程度的提升效率。</p>
+<p>首先，查询urlToTweeters数据库来得到转发过这个URL的用户列表。这个查询会返回一个tweeter列表，因此我们使用ExpandList函数来把其中的每一个tweeter转换成一个tuple</p>
+<p>接下来，我们来获取每个tweeter的follower。我们使用shuffle来把要处理的tweeter均匀地分配到toplology运行的每一个worker中并发去处理。然后查询tweetersToFollowers数据库从而的到每个转发者的粉丝。你可以看到我们为topology的这部分分配了很大的并行度，这是因为这部分是整个topology中最耗资源的计算部分。</p>
+<p>然后，我们对这些粉丝进行去重和计数。这分为如下两步：①、通过“follower”字段对流进行分组，并对每个组执行“One”聚合器。“One”聚合器对每个分组简单的发送一个tuple，该tuple仅包含一个数字“1”。②、将这些“1”加到一起，得到去重后的粉丝集中的粉丝数。“One”聚合器的定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public class One implements CombinerAggregator&lt;Integer&gt; &#123;</div><div class="line">   public Integer init(TridentTuple tuple) &#123;</div><div class="line">       return 1;</div><div class="line">   &#125;</div><div class="line"> </div><div class="line">   public Integer combine(Integer val1, Integer val2) &#123;</div><div class="line">       return 1;</div><div class="line">   &#125;</div><div class="line"> </div><div class="line">   public Integer zero() &#123;</div><div class="line">       return 1;</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这是一个“汇总聚合器(combiner aggregator)”, 它会在传送结果到其他worker汇总之前进行局部汇总，从而使性能最优。同样，Sum被定义成一个汇总聚合器，在topology的最后部分进行全局求和是高效的。</p>
 <p>现在我们再来讨论一下“模糊事务型” spout。</p>
 
       
@@ -474,8 +483,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/19/Kafka Spout/" rel="next" title="Kafka Spout">
-                <i class="fa fa-chevron-left"></i> Kafka Spout
+              <a href="/2017/09/19/Storm Spout和Bolt分析/" rel="next" title="Storm Spout和Bolt分析">
+                <i class="fa fa-chevron-left"></i> Storm Spout和Bolt分析
               </a>
             
           </div>
@@ -484,8 +493,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/09/19/Storm Spout和Bolt分析/" rel="prev" title="Storm Spout和Bolt分析">
-                Storm Spout和Bolt分析 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/19/Kafka Spout/" rel="prev" title="Kafka Spout">
+                Kafka Spout <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -560,7 +569,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-count">78</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -628,7 +637,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#事务型-spout（Transactional-spouts）"><span class="nav-number">1.</span> <span class="nav-text">事务型 spout（Transactional spouts）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码示例1"><span class="nav-number">1.1.</span> <span class="nav-text">代码示例1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#无限输入流"><span class="nav-number">1.1.1.</span> <span class="nav-text">无限输入流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#统计单词数"><span class="nav-number">1.1.2.</span> <span class="nav-text">统计单词数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Split函数"><span class="nav-number">1.1.3.</span> <span class="nav-text">Split函数</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#事务型-spout（Transactional-spouts）"><span class="nav-number">1.</span> <span class="nav-text">事务型 spout（Transactional spouts）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码示例1"><span class="nav-number">1.1.</span> <span class="nav-text">代码示例1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#无限输入流"><span class="nav-number">1.1.1.</span> <span class="nav-text">无限输入流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#统计单词数"><span class="nav-number">1.1.2.</span> <span class="nav-text">统计单词数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Split函数"><span class="nav-number">1.1.3.</span> <span class="nav-text">Split函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码示例2"><span class="nav-number">1.2.</span> <span class="nav-text">代码示例2</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#场景"><span class="nav-number">1.2.1.</span> <span class="nav-text">场景</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
