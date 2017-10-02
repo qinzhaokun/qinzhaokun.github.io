@@ -96,13 +96,13 @@
 <meta name="description" content="ORMORM的全称是Object Relational Mapping，即对象关系映射。它的实现思想就是将关系数据库中表的数据映射成为对象，以对象的形式展现，这样开发人员就可以把对数据库的操作转化为对这些对象的操作。因此它的目的是为了方便开发人员以面向对象的思想来实现对数据库的操作。 Hibernate是什么一种实现了ORM功能的框架 实现原理实现ORM功能的时候，主要的文件有：映射类（.java">
 <meta name="keywords" content="Hibernate">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hibernate">
+<meta property="og:title" content="Hibernate 实现原理">
 <meta property="og:url" content="http://yoursite.com/2017/09/11/Hibernate 实现原理/index.html">
 <meta property="og:site_name" content="Hello, World">
 <meta property="og:description" content="ORMORM的全称是Object Relational Mapping，即对象关系映射。它的实现思想就是将关系数据库中表的数据映射成为对象，以对象的形式展现，这样开发人员就可以把对数据库的操作转化为对这些对象的操作。因此它的目的是为了方便开发人员以面向对象的思想来实现对数据库的操作。 Hibernate是什么一种实现了ORM功能的框架 实现原理实现ORM功能的时候，主要的文件有：映射类（.java">
-<meta property="og:updated_time" content="2017-09-25T06:13:53.447Z">
+<meta property="og:updated_time" content="2017-10-02T00:38:31.281Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hibernate">
+<meta name="twitter:title" content="Hibernate 实现原理">
 <meta name="twitter:description" content="ORMORM的全称是Object Relational Mapping，即对象关系映射。它的实现思想就是将关系数据库中表的数据映射成为对象，以对象的形式展现，这样开发人员就可以把对数据库的操作转化为对这些对象的操作。因此它的目的是为了方便开发人员以面向对象的思想来实现对数据库的操作。 Hibernate是什么一种实现了ORM功能的框架 实现原理实现ORM功能的时候，主要的文件有：映射类（.java">
 
 
@@ -137,7 +137,7 @@
 
 
 
-  <title>Hibernate | Hello, World</title>
+  <title>Hibernate 实现原理 | Hello, World</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -304,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hibernate</h1>
+          <h1 class="post-title" itemprop="name headline">Hibernate 实现原理</h1>
         
 
         <div class="post-meta">
@@ -367,7 +367,7 @@
 
           
           
-             <span id="/2017/09/11/Hibernate 实现原理/" class="leancloud_visitors" data-flag-title="Hibernate">
+             <span id="/2017/09/11/Hibernate 实现原理/" class="leancloud_visitors" data-flag-title="Hibernate 实现原理">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -455,21 +455,23 @@
 <h3 id="集合类型的延迟加载"><a href="#集合类型的延迟加载" class="headerlink" title="集合类型的延迟加载"></a>集合类型的延迟加载</h3><h3 id="属性延迟加载"><a href="#属性延迟加载" class="headerlink" title="属性延迟加载"></a>属性延迟加载</h3><p>在Hibernate3中，引入了一种新的特性——属性的延迟加载，这个机制又为获取高性能查询提供了有力的工具。在前面我们讲大数据对象读取时，在User对象中有一个resume字段，该字段是一个java.sql.Clob类型，包含了用户的简历信息，当我们加载该对象时，我们不得不每一次都要加载这个字段，而不论我们是否真的需要它，而且这种大数据对象的读取本身会带来很大的性能开销。在Hibernate2中，我们只有通过我们前面讲过的面性能的粒度细分，来分解User类，来解决这个问题（请参照那一节的论述），但是在Hibernate3中，我们可以通过属性延迟加载机制，来使我们获得只有当我们真正需要操作这个字段时，才去读取这个字段数据的能力，为此我们必须如下配置我们的实体类：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;hibernate-mapping&gt;</div><div class="line"> &lt;class name=”com.neusoft.entity.User” table=”user”&gt;</div><div class="line">……</div><div class="line">&lt;property name=”resume” type=”java.sql.Clob” column=”resume” lazy=”true”/&gt;</div><div class="line">   &lt;/class&gt;</div><div class="line">&lt;/hibernate-mapping&gt;</div></pre></td></tr></table></figure></p>
 <p>通过对<property>元素的<code>lazy</code>属性设置<code>true</code>来开启属性的延迟加载</property></p>
 <h2 id="Hibernate的优势"><a href="#Hibernate的优势" class="headerlink" title="Hibernate的优势"></a>Hibernate的优势</h2><ul>
-<li><p>Hibernate通过XML配置文件将Java类映射到数据库表，而不需要编写任何代码。</p>
+<li><p>对象化，以面向对象的思想操作数据库里的数据。</p>
 </li>
-<li><p>提供简单的API,用于直接存储和检索数据库中的Java对象。</p>
+<li><p>移植性，不用考虑数据库之间的差异性，更换数据库只需要修改配置即可</p>
 </li>
-<li><p>如果数据库或任何表中有更改，只需要修改XML文件。</p>
+<li><p>开发效率，数据的操作和对象关联，开发者不需要写大量的SQL语句</p>
 </li>
-<li><p>提取我们不熟悉的SQL类型，并提供我们熟悉的Java对象。</p>
+<li><p>提供了缓存机制，session缓存，二级缓存和查询缓存。</p>
 </li>
-<li><p>Hibernate不需要应用府服务器来操作。</p>
+</ul>
+<h2 id="Hibernate的劣势"><a href="#Hibernate的劣势" class="headerlink" title="Hibernate的劣势"></a>Hibernate的劣势</h2><ul>
+<li><p>过度封装JDBC，导致了失去了对SQL的控制，不够灵活，难以优化。</p>
 </li>
-<li><p>操作复杂关联的数据库对象。</p>
+<li><p>没有专门的批处理机制</p>
 </li>
-<li><p>使用智能抓取策略简化数据库操作。</p>
+<li><p>内存消耗比较大，要做数据和对象的转换</p>
 </li>
-<li><p>提供简单的数据查询。</p>
+<li><p>复杂查询不不给力，不如mybatis</p>
 </li>
 </ul>
 <p><a href="http://www.cnblogs.com/kubixuesheng/p/7497963.html#3780947" target="_blank" rel="external">http://www.cnblogs.com/kubixuesheng/p/7497963.html#3780947</a></p>
@@ -601,7 +603,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">67</span>
+                <span class="site-state-item-count">76</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -612,7 +614,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -623,7 +625,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -669,7 +671,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ORM"><span class="nav-number">1.</span> <span class="nav-text">ORM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hibernate是什么"><span class="nav-number">2.</span> <span class="nav-text">Hibernate是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现原理"><span class="nav-number">3.</span> <span class="nav-text">实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Configeration实例"><span class="nav-number">3.1.</span> <span class="nav-text">创建Configeration实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建SessionFactory实例"><span class="nav-number">3.2.</span> <span class="nav-text">创建SessionFactory实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Session实例"><span class="nav-number">3.3.</span> <span class="nav-text">创建Session实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Transaction事务"><span class="nav-number">3.4.</span> <span class="nav-text">创建Transaction事务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hibernate的缓存"><span class="nav-number">4.</span> <span class="nav-text">hibernate的缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要使用缓存"><span class="nav-number">4.1.</span> <span class="nav-text">为什么要使用缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一级缓存"><span class="nav-number">4.2.</span> <span class="nav-text">一级缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二级缓存"><span class="nav-number">4.3.</span> <span class="nav-text">二级缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么样的数据适合存放到第二级缓存"><span class="nav-number">4.3.1.</span> <span class="nav-text">什么样的数据适合存放到第二级缓存?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不适合存放到第二级缓存的数据？"><span class="nav-number">4.3.2.</span> <span class="nav-text">不适合存放到第二级缓存的数据？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hibernate实体对象的生命周期"><span class="nav-number">5.</span> <span class="nav-text">Hibernate实体对象的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#瞬态"><span class="nav-number">5.1.</span> <span class="nav-text">瞬态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#持久态"><span class="nav-number">5.2.</span> <span class="nav-text">持久态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#游离态"><span class="nav-number">5.3.</span> <span class="nav-text">游离态</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#延迟加载"><span class="nav-number">6.</span> <span class="nav-text">延迟加载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实体对象的延迟加载"><span class="nav-number">6.1.</span> <span class="nav-text">实体对象的延迟加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合类型的延迟加载"><span class="nav-number">6.2.</span> <span class="nav-text">集合类型的延迟加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#属性延迟加载"><span class="nav-number">6.3.</span> <span class="nav-text">属性延迟加载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hibernate的优势"><span class="nav-number">7.</span> <span class="nav-text">Hibernate的优势</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ORM"><span class="nav-number">1.</span> <span class="nav-text">ORM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hibernate是什么"><span class="nav-number">2.</span> <span class="nav-text">Hibernate是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现原理"><span class="nav-number">3.</span> <span class="nav-text">实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Configeration实例"><span class="nav-number">3.1.</span> <span class="nav-text">创建Configeration实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建SessionFactory实例"><span class="nav-number">3.2.</span> <span class="nav-text">创建SessionFactory实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Session实例"><span class="nav-number">3.3.</span> <span class="nav-text">创建Session实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Transaction事务"><span class="nav-number">3.4.</span> <span class="nav-text">创建Transaction事务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hibernate的缓存"><span class="nav-number">4.</span> <span class="nav-text">hibernate的缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要使用缓存"><span class="nav-number">4.1.</span> <span class="nav-text">为什么要使用缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一级缓存"><span class="nav-number">4.2.</span> <span class="nav-text">一级缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二级缓存"><span class="nav-number">4.3.</span> <span class="nav-text">二级缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么样的数据适合存放到第二级缓存"><span class="nav-number">4.3.1.</span> <span class="nav-text">什么样的数据适合存放到第二级缓存?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不适合存放到第二级缓存的数据？"><span class="nav-number">4.3.2.</span> <span class="nav-text">不适合存放到第二级缓存的数据？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hibernate实体对象的生命周期"><span class="nav-number">5.</span> <span class="nav-text">Hibernate实体对象的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#瞬态"><span class="nav-number">5.1.</span> <span class="nav-text">瞬态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#持久态"><span class="nav-number">5.2.</span> <span class="nav-text">持久态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#游离态"><span class="nav-number">5.3.</span> <span class="nav-text">游离态</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#延迟加载"><span class="nav-number">6.</span> <span class="nav-text">延迟加载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实体对象的延迟加载"><span class="nav-number">6.1.</span> <span class="nav-text">实体对象的延迟加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合类型的延迟加载"><span class="nav-number">6.2.</span> <span class="nav-text">集合类型的延迟加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#属性延迟加载"><span class="nav-number">6.3.</span> <span class="nav-text">属性延迟加载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hibernate的优势"><span class="nav-number">7.</span> <span class="nav-text">Hibernate的优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hibernate的劣势"><span class="nav-number">8.</span> <span class="nav-text">Hibernate的劣势</span></a></li></ol></div>
             
 
           </div>

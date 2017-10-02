@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/09/22/Java 垃圾回收器/index.html">
 <meta property="og:site_name" content="Hello, World">
 <meta property="og:description" content="本篇讲解垃圾回收的具体实现。由于Java虚拟机规范中对垃圾回收器应该如何实现没有明确的规定，因此，不同的厂商都会有自己的实现。 并发 &amp;amp;&amp;amp; 并行并行是Parallel, 是指多条垃圾回收线程并行的工作，这时用户的业务线程是被挂起的，造成了Stop the world 并发是Concurrent, 用户的线程和垃圾回收线程并发执行，共同抢占CPU时间。一般意义来说,不会造成Stop">
-<meta property="og:updated_time" content="2017-09-25T05:19:35.111Z">
+<meta property="og:updated_time" content="2017-10-02T00:33:09.797Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java 垃圾回收器">
 <meta name="twitter:description" content="本篇讲解垃圾回收的具体实现。由于Java虚拟机规范中对垃圾回收器应该如何实现没有明确的规定，因此，不同的厂商都会有自己的实现。 并发 &amp;amp;&amp;amp; 并行并行是Parallel, 是指多条垃圾回收线程并行的工作，这时用户的业务线程是被挂起的，造成了Stop the world 并发是Concurrent, 用户的线程和垃圾回收线程并发执行，共同抢占CPU时间。一般意义来说,不会造成Stop">
@@ -399,6 +399,30 @@
 <h2 id="并发-amp-amp-并行"><a href="#并发-amp-amp-并行" class="headerlink" title="并发 &amp;&amp; 并行"></a>并发 &amp;&amp; 并行</h2><p><strong>并行</strong>是Parallel, 是指多条垃圾回收线程并行的工作，这时用户的业务线程是被挂起的，造成了<code>Stop the world</code></p>
 <p><strong>并发</strong>是Concurrent, 用户的线程和垃圾回收线程并发执行，共同抢占CPU时间。一般意义来说,不会造成<code>Stop the world</code></p>
 <h2 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h2><p>串行垃圾回收收集器，最基本，最简单，历史最悠久的收集器</p>
+<h2 id="CMS-Concurrent-Mark-Sweep-垃圾收集器"><a href="#CMS-Concurrent-Mark-Sweep-垃圾收集器" class="headerlink" title="CMS(Concurrent Mark-Sweep) 垃圾收集器"></a>CMS(Concurrent Mark-Sweep) 垃圾收集器</h2><p>CMS(Concurrent Mark-Sweep)是以牺牲吞吐量为代价来获得最短回收停顿时间的垃圾回收器。对于要求服务器响应速度的应用上，这种垃圾回收器非常适合。在启动JVM参数加上-XX:+UseConcMarkSweepGC ，这个参数表示对于老年代的回收采用CMS。</p>
+<h3 id="清理步骤"><a href="#清理步骤" class="headerlink" title="清理步骤"></a>清理步骤</h3><ul>
+<li><p>初始标记 ：在这个阶段，需要虚拟机停顿正在执行的任务，官方的叫法STW(Stop The Word)。这个过程从垃圾回收的”根对象”开始，只扫描到能够和”根对象”直接关联的对象，并作标记。所以这个过程虽然暂停了整个JVM，但是很快就完成了。</p>
+</li>
+<li><p>并发标记 ：这个阶段紧随初始标记阶段，在初始标记的基础上继续向下追溯标记。并发标记阶段，应用程序的线程和并发标记的线程并发执行，所以用户不会感受到停顿。</p>
+</li>
+<li><p>并发预清理 ：并发预清理阶段仍然是并发的。在这个阶段，虚拟机查找在执行并发标记阶段新进入老年代的对象(可能会有一些对象从新生代晋升到老年代， 或者有一些对象被分配到老年代)。通过重新扫描，减少下一个阶段”重新标记”的工作，因为下一个阶段会Stop The World。</p>
+</li>
+<li><p>重新标记 ：这个阶段会暂停虚拟机，收集器线程扫描在CMS堆中剩余的对象。扫描从”根对象”开始向下追溯，并处理对象关联。</p>
+</li>
+<li><p>并发清理 ：清理垃圾对象，这个阶段收集器线程和应用程序线程并发执行。</p>
+</li>
+<li><p>并发重置 ：这个阶段，重置CMS收集器的数据结构，等待下一次垃圾回收。</p>
+</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li><p>使用标记清理会产生空间碎片</p>
+</li>
+<li><p>需要更多CPU资源</p>
+</li>
+<li><p>需要更大的堆空间</p>
+</li>
+</ul>
+<p>CMS回收器减少了回收的停顿时间，但是降低了堆空间的利用率。</p>
 <p><a href="http://www.jianshu.com/p/50d5c88b272d" target="_blank" rel="external">http://www.jianshu.com/p/50d5c88b272d</a></p>
 
       
@@ -452,8 +476,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/09/25/Java Servlet/" rel="prev" title="Java Servlet">
-                Java Servlet <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/25/Session机制/" rel="prev" title="Session机制">
+                Session机制 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -528,7 +552,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">67</span>
+                <span class="site-state-item-count">76</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -539,7 +563,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -550,7 +574,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -596,7 +620,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#并发-amp-amp-并行"><span class="nav-number">1.</span> <span class="nav-text">并发 && 并行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Serial收集器"><span class="nav-number">2.</span> <span class="nav-text">Serial收集器</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#并发-amp-amp-并行"><span class="nav-number">1.</span> <span class="nav-text">并发 && 并行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Serial收集器"><span class="nav-number">2.</span> <span class="nav-text">Serial收集器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMS-Concurrent-Mark-Sweep-垃圾收集器"><span class="nav-number">3.</span> <span class="nav-text">CMS(Concurrent Mark-Sweep) 垃圾收集器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#清理步骤"><span class="nav-number">3.1.</span> <span class="nav-text">清理步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺点"><span class="nav-number">3.2.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></div>
             
 
           </div>
