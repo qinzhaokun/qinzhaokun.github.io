@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="Java����֪ʶ�߳� �̰߳�ȫ(synchronized, volatile, ��������)  ���̵߳�ʵ�ַ�ʽ(Thread, Runable, Callable, Future, FutureTask)  ͬ��������(CountDownLatch, CyclicBarrier, Semaphore, BlockingQueue)  �ֹ����ͱ�����(ƫ���">
+<meta name="description" content="Java基础知识线程 线程安全(synchronized, volatile, 可重入锁)  多线程的实现方式(Thread, Runable, Callable, Future, FutureTask)  同步工具类(CountDownLatch, CyclicBarrier, Semaphore, BlockingQueue)  乐观锁和悲观锁(偏向锁, 轻量级锁, 重量级锁, CAS操作)">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JVM ���Ը�ϰҪ��">
+<meta property="og:title" content="JVM 面试复习要点">
 <meta property="og:url" content="http://yoursite.com/2017/10/04/Java 面试复习要点/index.html">
 <meta property="og:site_name" content="Hello, World">
-<meta property="og:description" content="Java����֪ʶ�߳� �̰߳�ȫ(synchronized, volatile, ��������)  ���̵߳�ʵ�ַ�ʽ(Thread, Runable, Callable, Future, FutureTask)  ͬ��������(CountDownLatch, CyclicBarrier, Semaphore, BlockingQueue)  �ֹ����ͱ�����(ƫ���">
-<meta property="og:updated_time" content="2017-10-03T21:42:37.418Z">
+<meta property="og:description" content="Java基础知识线程 线程安全(synchronized, volatile, 可重入锁)  多线程的实现方式(Thread, Runable, Callable, Future, FutureTask)  同步工具类(CountDownLatch, CyclicBarrier, Semaphore, BlockingQueue)  乐观锁和悲观锁(偏向锁, 轻量级锁, 重量级锁, CAS操作)">
+<meta property="og:updated_time" content="2017-10-03T21:58:44.908Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JVM ���Ը�ϰҪ��">
-<meta name="twitter:description" content="Java����֪ʶ�߳� �̰߳�ȫ(synchronized, volatile, ��������)  ���̵߳�ʵ�ַ�ʽ(Thread, Runable, Callable, Future, FutureTask)  ͬ��������(CountDownLatch, CyclicBarrier, Semaphore, BlockingQueue)  �ֹ����ͱ�����(ƫ���">
+<meta name="twitter:title" content="JVM 面试复习要点">
+<meta name="twitter:description" content="Java基础知识线程 线程安全(synchronized, volatile, 可重入锁)  多线程的实现方式(Thread, Runable, Callable, Future, FutureTask)  同步工具类(CountDownLatch, CyclicBarrier, Semaphore, BlockingQueue)  乐观锁和悲观锁(偏向锁, 轻量级锁, 重量级锁, CAS操作)">
 
 
 
@@ -137,7 +137,7 @@
 
 
 
-  <title>JVM ���Ը�ϰҪ�� | Hello, World</title>
+  <title>JVM 面试复习要点 | Hello, World</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -304,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">JVM ���Ը�ϰҪ��</h1>
+          <h1 class="post-title" itemprop="name headline">JVM 面试复习要点</h1>
         
 
         <div class="post-meta">
@@ -367,7 +367,7 @@
 
           
           
-             <span id="/2017/10/04/Java 面试复习要点/" class="leancloud_visitors" data-flag-title="JVM ���Ը�ϰҪ��">
+             <span id="/2017/10/04/Java 面试复习要点/" class="leancloud_visitors" data-flag-title="JVM 面试复习要点">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -395,29 +395,29 @@
       
 
       
-        <h2 id="Java����֪ʶ"><a href="#Java����֪ʶ" class="headerlink" title="Java����֪ʶ"></a>Java����֪ʶ</h2><h3 id="�߳�"><a href="#�߳�" class="headerlink" title="�߳�"></a>�߳�</h3><ul>
-<li><p>�̰߳�ȫ(synchronized, volatile, ��������)</p>
+        <h2 id="Java基础知识"><a href="#Java基础知识" class="headerlink" title="Java基础知识"></a>Java基础知识</h2><h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><ul>
+<li><p>线程安全(synchronized, volatile, 可重入锁)</p>
 </li>
-<li><p><a href="https://qinzhaokun.github.io/2017/08/03/Java%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B/" target="_blank" rel="external">���̵߳�ʵ�ַ�ʽ</a>(Thread, Runable, Callable, Future, FutureTask)</p>
+<li><p><a href="https://qinzhaokun.github.io/2017/08/03/Java%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B/" target="_blank" rel="external">多线程的实现方式</a>(Thread, Runable, Callable, Future, FutureTask)</p>
 </li>
-<li><p>ͬ��������(CountDownLatch, CyclicBarrier, Semaphore, BlockingQueue)</p>
+<li><p>同步工具类(<a href="https://qinzhaokun.github.io/2017/08/16/Java%20concurrent%E5%8C%85%E4%B8%8B%E7%9A%84%E9%AB%98%E7%BA%A7%E5%B7%A5%E5%85%B7/" target="_blank" rel="external">CountDownLatch, CyclicBarrier, Semaphore</a>, <a href="https://qinzhaokun.github.io/2017/08/21/Java%20%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97/" target="_blank" rel="external">BlockingQueue</a>)</p>
 </li>
-<li><p>�ֹ����ͱ�����(ƫ����, ��������, ��������, CAS����)</p>
+<li><p>乐观锁和悲观锁(<a href="https://qinzhaokun.github.io/2017/10/02/Java%20%E9%94%81/" target="_blank" rel="external">偏向锁, 轻量级锁, 重量级锁</a>, CAS操作)</p>
 </li>
-<li><p>�̳߳�ԭ��</p>
+<li><p><a href="https://qinzhaokun.github.io/2017/09/11/Java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%8E%9F%E7%90%86/" target="_blank" rel="external">线程池原理</a></p>
 </li>
 </ul>
-<h3 id="������"><a href="#������" class="headerlink" title="������"></a>������</h3><ul>
-<li><p>HashMap��ʵ��ԭ������Hashtable�ıȽ�</p>
+<h3 id="集合类"><a href="#集合类" class="headerlink" title="集合类"></a>集合类</h3><ul>
+<li><p><a href="https://qinzhaokun.github.io/2017/09/26/Java%20Map/" target="_blank" rel="external">HashMap</a>的实现原理，和Hashtable的比较</p>
 </li>
 <li><p>TreeMap, LinkedHashMap, concurrentHashMap, WeakHashMap</p>
 </li>
-<li><p>ArrayList, LinkedList��ʵ��ԭ��������</p>
+<li><p><a href="https://qinzhaokun.github.io/2017/09/03/Java%E9%9B%86%E5%90%88%E7%B1%BB/" target="_blank" rel="external">ArrayList, LinkedList</a>的实现原理和区别</p>
 </li>
-<li><p>HashSet��ʵ��ԭ�� </p>
+<li><p>HashSet的实现原理 </p>
 </li>
 </ul>
-<h3 id="��������"><a href="#��������" class="headerlink" title="��������"></a>��������</h3><h3 id="��̬��������-JDK�Դ��K�̬������CGLIB�K�̬����"><a href="#��̬��������-JDK�Դ��K�̬������CGLIB�K�̬����" class="headerlink" title="��̬��������(JDK�Դ��Ķ�̬������CGLIB�Ķ�̬����)"></a>��̬��������(JDK�Դ��Ķ�̬������CGLIB�Ķ�̬����)</h3><h3 id="���л�"><a href="#���л�" class="headerlink" title="���л�"></a>���л�</h3><h3 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h3><ul>
+<h3 id="反射机制"><a href="#反射机制" class="headerlink" title="反射机制"></a><a href="https://qinzhaokun.github.io/2017/08/22/Java%20%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6/" target="_blank" rel="external">反射机制</a></h3><h3 id="动态代理机制-JDK自带的动态代理和CGLIB的动态代理"><a href="#动态代理机制-JDK自带的动态代理和CGLIB的动态代理" class="headerlink" title="动态代理机制(JDK自带的动态代理和CGLIB的动态代理)"></a>动态代理机制(JDK自带的动态代理和<a href="https://qinzhaokun.github.io/2017/09/11/CGLIB%E5%8E%9F%E7%90%86/" target="_blank" rel="external">CGLIB</a>的动态代理)</h3><h3 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h3><h3 id="IO"><a href="#IO" class="headerlink" title="IO"></a><a href="https://qinzhaokun.github.io/2017/09/29/Java%20IO/" target="_blank" rel="external">IO</a></h3><h3 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a><a href="https://qinzhaokun.github.io/2017/08/14/Java%20NIO/" target="_blank" rel="external">NIO</a></h3><ul>
 <li><p>Buffer</p>
 </li>
 <li><p>Channel</p>
@@ -427,7 +427,7 @@
 <li><p>netty</p>
 </li>
 </ul>
-<h2 id="JVM������"><a href="#JVM������" class="headerlink" title="JVM������"></a>JVM������</h2><h2 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h2><h2 id="���ݿ�"><a href="#���ݿ�" class="headerlink" title="���ݿ�"></a>���ݿ�</h2><h2 id="����"><a href="#����" class="headerlink" title="����"></a>����</h2>
+<h3 id="抽象类和接口-各自的特点和比较"><a href="#抽象类和接口-各自的特点和比较" class="headerlink" title="抽象类和接口(各自的特点和比较)"></a><a href="https://qinzhaokun.github.io/2017/06/15/%E6%8A%BD%E8%B1%A1%E7%B1%BB%E4%B8%8E%E6%8E%A5%E5%8F%A3/" target="_blank" rel="external">抽象类和接口</a>(各自的特点和比较)</h3><h2 id="JVM虚拟机"><a href="#JVM虚拟机" class="headerlink" title="JVM虚拟机"></a>JVM虚拟机</h2><h2 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h2><h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2>
       
     </div>
 
@@ -619,7 +619,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java����֪ʶ"><span class="nav-number">1.</span> <span class="nav-text">Java����֪ʶ</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#�߳�"><span class="nav-number">1.1.</span> <span class="nav-text">�߳�</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#������"><span class="nav-number">1.2.</span> <span class="nav-text">������</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#��������"><span class="nav-number">1.3.</span> <span class="nav-text">��������</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#��̬��������-JDK�Դ��K�̬������CGLIB�K�̬����"><span class="nav-number">1.4.</span> <span class="nav-text">��̬��������(JDK�Դ��Ķ�̬������CGLIB�Ķ�̬����)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#���л�"><span class="nav-number">1.5.</span> <span class="nav-text">���л�</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NIO"><span class="nav-number">1.6.</span> <span class="nav-text">NIO</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM������"><span class="nav-number">2.</span> <span class="nav-text">JVM������</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring"><span class="nav-number">3.</span> <span class="nav-text">Spring</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#���ݿ�"><span class="nav-number">4.</span> <span class="nav-text">���ݿ�</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#����"><span class="nav-number">5.</span> <span class="nav-text">����</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java基础知识"><span class="nav-number">1.</span> <span class="nav-text">Java基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程"><span class="nav-number">1.1.</span> <span class="nav-text">线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合类"><span class="nav-number">1.2.</span> <span class="nav-text">集合类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反射机制"><span class="nav-number">1.3.</span> <span class="nav-text">反射机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态代理机制-JDK自带的动态代理和CGLIB的动态代理"><span class="nav-number">1.4.</span> <span class="nav-text">动态代理机制(JDK自带的动态代理和CGLIB的动态代理)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#序列化"><span class="nav-number">1.5.</span> <span class="nav-text">序列化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IO"><span class="nav-number">1.6.</span> <span class="nav-text">IO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NIO"><span class="nav-number">1.7.</span> <span class="nav-text">NIO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象类和接口-各自的特点和比较"><span class="nav-number">1.8.</span> <span class="nav-text">抽象类和接口(各自的特点和比较)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM虚拟机"><span class="nav-number">2.</span> <span class="nav-text">JVM虚拟机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring"><span class="nav-number">3.</span> <span class="nav-text">Spring</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库"><span class="nav-number">4.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络"><span class="nav-number">5.</span> <span class="nav-text">网络</span></a></li></ol></div>
             
 
           </div>

@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="��Java��Ч�������н��������صĸ�����ǲ��Ǻ�ϵͳ��������Ҫϵͳ�������ع�һ�� ����λ����������Java����ͷ�У�����ͷ����һ��Mark Word�������������Ǻ������صġ�markword���ݵĳ�����32λ��64λ����������δ����ѹ��ָ�룩�зֱ�Ϊ32bit��64bit�">
+<meta name="description" content="在Java高效并发中有介绍锁相关的概念，但是不是很系统，这里需要系统的整理回顾一下 锁的位置锁存在于Java对象头中，对象头中有一个Mark Word的数据区域，是和锁相关的。markword数据的长度在32位和64位的虚拟机（未开启压缩指针）中分别为32bit和64bit，它的最后2bit是锁状态标志位，用来标记当前对象的状态，对象的所处的状态，决定了markword存储的内容  无锁状态  最">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java ��">
+<meta property="og:title" content="Java 锁">
 <meta property="og:url" content="http://yoursite.com/2017/10/02/Java 锁/index.html">
 <meta property="og:site_name" content="Hello, World">
-<meta property="og:description" content="��Java��Ч�������н��������صĸ�����ǲ��Ǻ�ϵͳ��������Ҫϵͳ�������ع�һ�� ����λ����������Java����ͷ�У�����ͷ����һ��Mark Word�������������Ǻ������صġ�markword���ݵĳ�����32λ��64λ����������δ����ѹ��ָ�룩�зֱ�Ϊ32bit��64bit�">
-<meta property="og:updated_time" content="2017-10-02T02:46:11.519Z">
+<meta property="og:description" content="在Java高效并发中有介绍锁相关的概念，但是不是很系统，这里需要系统的整理回顾一下 锁的位置锁存在于Java对象头中，对象头中有一个Mark Word的数据区域，是和锁相关的。markword数据的长度在32位和64位的虚拟机（未开启压缩指针）中分别为32bit和64bit，它的最后2bit是锁状态标志位，用来标记当前对象的状态，对象的所处的状态，决定了markword存储的内容  无锁状态  最">
+<meta property="og:updated_time" content="2017-10-03T21:51:11.126Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java ��">
-<meta name="twitter:description" content="��Java��Ч�������н��������صĸ�����ǲ��Ǻ�ϵͳ��������Ҫϵͳ�������ع�һ�� ����λ����������Java����ͷ�У�����ͷ����һ��Mark Word�������������Ǻ������صġ�markword���ݵĳ�����32λ��64λ����������δ����ѹ��ָ�룩�зֱ�Ϊ32bit��64bit�">
+<meta name="twitter:title" content="Java 锁">
+<meta name="twitter:description" content="在Java高效并发中有介绍锁相关的概念，但是不是很系统，这里需要系统的整理回顾一下 锁的位置锁存在于Java对象头中，对象头中有一个Mark Word的数据区域，是和锁相关的。markword数据的长度在32位和64位的虚拟机（未开启压缩指针）中分别为32bit和64bit，它的最后2bit是锁状态标志位，用来标记当前对象的状态，对象的所处的状态，决定了markword存储的内容  无锁状态  最">
 
 
 
@@ -137,7 +137,7 @@
 
 
 
-  <title>Java �� | Hello, World</title>
+  <title>Java 锁 | Hello, World</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -304,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java ��</h1>
+          <h1 class="post-title" itemprop="name headline">Java 锁</h1>
         
 
         <div class="post-meta">
@@ -367,7 +367,7 @@
 
           
           
-             <span id="/2017/10/02/Java 锁/" class="leancloud_visitors" data-flag-title="Java ��">
+             <span id="/2017/10/02/Java 锁/" class="leancloud_visitors" data-flag-title="Java 锁">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -395,74 +395,74 @@
       
 
       
-        <p>��<a href="https://qinzhaokun.github.io/2017/07/26/Java%E9%AB%98%E6%95%88%E5%B9%B6%E5%8F%91/" target="_blank" rel="external">Java��Ч����</a>���н���<strong>��</strong>���صĸ�����ǲ��Ǻ�ϵͳ��������Ҫϵͳ�������ع�һ��</p>
-<h2 id="����λ��"><a href="#����λ��" class="headerlink" title="����λ��"></a>����λ��</h2><p>��������Java����ͷ�У�<strong>����ͷ</strong>����һ��Mark Word�������������Ǻ������صġ�markword���ݵĳ�����32λ��64λ����������δ����ѹ��ָ�룩�зֱ�Ϊ32bit��64bit����������2bit����״̬��־λ���������ǵ�ǰ������״̬��������������״̬��������markword�洢������</p>
+        <p>在<a href="https://qinzhaokun.github.io/2017/07/26/Java%E9%AB%98%E6%95%88%E5%B9%B6%E5%8F%91/" target="_blank" rel="external">Java高效并发</a>中有介绍<strong>锁</strong>相关的概念，但是不是很系统，这里需要系统的整理回顾一下</p>
+<h2 id="锁的位置"><a href="#锁的位置" class="headerlink" title="锁的位置"></a>锁的位置</h2><p>锁存在于Java对象头中，<strong>对象头</strong>中有一个Mark Word的数据区域，是和锁相关的。markword数据的长度在32位和64位的虚拟机（未开启压缩指针）中分别为32bit和64bit，它的最后2bit是锁状态标志位，用来标记当前对象的状态，对象的所处的状态，决定了markword存储的内容</p>
 <ul>
-<li>����״̬</li>
+<li>无锁状态</li>
 </ul>
-<p>�����������ı�־λ��<strong>01</strong>���洢�����Ƕ�����<code>hashCode</code>,�ִ�����</p>
+<p>最后的两个的标志位是<strong>01</strong>，存储内容是对象的<code>hashCode</code>,分带年龄</p>
 <ul>
-<li>��������</li>
+<li>轻量级锁</li>
 </ul>
-<p>�����������ı�־λ��<strong>00</strong>���洢������ָ��ջ������¼��ָ��</p>
+<p>最后的两个的标志位是<strong>00</strong>，存储内容是指向栈中锁记录的指针</p>
 <ul>
-<li>��������</li>
+<li>重量级锁</li>
 </ul>
-<p>�����������ı�־λ��<strong>10</strong>���洢������ָ�򻥳���������������ָ��</p>
+<p>最后的两个的标志位是<strong>10</strong>，存储内容是指向互斥量（重量级锁）指针</p>
 <ul>
-<li>GC����</li>
+<li>GC标记</li>
 </ul>
-<p>�����������ı�־λ��<strong>11</strong>�������κ����ݣ�׼����������</p>
+<p>最后的两个的标志位是<strong>11</strong>，不存任何数据，准备被回收了</p>
 <ul>
-<li>ƫ����</li>
+<li>偏向锁</li>
 </ul>
-<p>�����������ı�־λ��<strong>01</strong>������������һ���ģ��������ĵ�������λbit��1����ʾ��ƫ�������洢������ƫ���߳�ID��ƫ��ʱ�����������ִ�����</p>
-<h2 id="��������"><a href="#��������" class="headerlink" title="��������"></a>��������</h2><p>���� -&gt; ƫ���� -&gt; �������� -&gt; ��������</p>
-<p>ƫ�������������������ֹ�����ʹ��CAS����������ͷ�����ݣ������������ڱ�����</p>
+<p>最后的两个的标志位是<strong>01</strong>，和无锁的是一样的，但是它的倒数第三位bit是1，表示是偏向锁，存储内容是偏向线程ID、偏向时间戳、对象分代年龄</p>
+<h2 id="锁的升级"><a href="#锁的升级" class="headerlink" title="锁的升级"></a>锁的升级</h2><p>无锁 -&gt; 偏向锁 -&gt; 轻量级锁 -&gt; 重量级锁</p>
+<p>偏向锁和轻量级锁属于乐观锁，使用CAS来操作对象头的数据；重量级锁属于悲观锁</p>
 <ol>
-<li><p><strong>ƫ�����ʺ�ֻ��һ���̶߳��η��ʸö���������</strong></p>
+<li><p><strong>偏向锁适合只有一个线程多次访问该对象的情况</strong></p>
 </li>
-<li><p><strong>���������ʺ϶����߳����������ٽ���������</strong></p>
+<li><p><strong>轻量级锁适合多个线程轮流进入临界区的情况</strong></p>
 </li>
-<li><p><strong>���������ʺ϶����߳�ͬʱ��ͼ�����ٽ���������</strong></p>
-</li>
-</ol>
-<p>ƫ�������������������ܽ���������ͻ��������</p>
-<h2 id="ƫ����"><a href="#ƫ����" class="headerlink" title="ƫ����"></a>ƫ����</h2><p>ΪʲôҪ����ƫ�����أ�<strong>���������������󲻽������ڶ��߳̾���������������ͬһ�̶߳��λ��ã�Ϊ�����̻߳������Ĵ��۸��Ͷ�������ƫ����</strong>��</p>
-<p>ƫ������˼�ǣ���������ƫ����ĳ���߳�</p>
-<p>����ʵ�ֹ������£�</p>
-<h3 id="��ȡƫ����"><a href="#��ȡƫ����" class="headerlink" title="��ȡƫ����"></a>��ȡƫ����</h3><ol>
-<li><p>�߳�Ҫ��ȡĳ����������ʱ������Mark Word��ƫ�����ı�ʶ�Ƿ����ó�1������־λ�Ƿ�Ϊ01��ȷ��Ϊ<strong>��ƫ��״̬</strong>��</p>
-</li>
-<li><p>����Ϊ��ƫ��״̬���������߳�ID�Ƿ�ָ����ǰ�̣߳������ǣ����벽��5���������벽��3��</p>
-</li>
-<li><p>�����߳�ID��δָ����ǰ�̣߳���ͨ��CAS���������������������ɹ�������Mark Word���߳�ID����Ϊ��ǰ�߳�ID��Ȼ��ִ��5����������ʧ�ܣ�ִ��4��</p>
-</li>
-<li><p>����CAS��ȡƫ����ʧ�ܣ�����ʾ�о�����������ȫ�ְ�ȫ�㣨safepoint��ʱ<strong>����ƫ�������̱߳�����</strong>��<strong>ƫ��������Ϊ��������</strong>��Ȼ���������ڰ�ȫ�����̼߳�������ִ��ͬ�����롣������ƫ������ʱ���ᵼ��stop the word��</p>
-</li>
-<li><p>ִ��ͬ�����롣</p>
+<li><p><strong>重量级锁适合多个线程同时试图进入临界区的情况</strong></p>
 </li>
 </ol>
-<h3 id="�ͷ�ƫ����"><a href="#�ͷ�ƫ����" class="headerlink" title="�ͷ�ƫ����"></a>�ͷ�ƫ����</h3><p>ƫ�����ĳ������������Ĳ��������ᵽ��ƫ����ֻ�����������̳߳��Ծ���ƫ����ʱ������ƫ�������̲߳Ż��ͷ������̲߳�������ȥ�ͷ�ƫ������ƫ�����ĳ�������Ҫ�ȴ�ȫ�ְ�ȫ�㣨������ʱ������û���ֽ�������ִ�У�������������ͣӵ��ƫ�������̣߳��ж��������Ƿ����ڱ�����״̬������ƫ�������ָ���δ��������־λΪ��01������������������־λΪ��00������״̬��</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">����ƫ������-XX:+UseBiasedLocking -XX:BiasedLockingStartupDelay=0</div><div class="line">�ر�ƫ������-XX:-UseBiasedLocking</div></pre></td></tr></table></figure>
-<h3 id="��������-1"><a href="#��������-1" class="headerlink" title="��������"></a>��������</h3><p>������������ƫ�����������ģ�<strong>��һ���߳̽���ͬ�����������£����߳�ռ��ƫ�����������ڶ����̼߳��������õ�ʱ��</strong>��ƫ�����ͻ�����Ϊ���������� </p>
-<h3 id="���������l�������"><a href="#���������l�������" class="headerlink" title="���������ļ�������"></a>���������ļ�������</h3><ol>
-<li><p>�ڴ�������ͬ������ʱ��������ͬ��������״̬Ϊ����״̬������־λΪ��01��״̬���Ƿ�Ϊƫ����Ϊ��0���������������Ƚ��ڵ�ǰ�̵߳�ջ֡�н���һ����Ϊ����¼��Lock Record���Ŀռ䣬���ڴ洢������Ŀǰ��Mark Word�Ŀ������ٷ���֮Ϊ Displaced Mark Word��</p>
+<p>偏向锁和轻量级锁并不能解决并发冲突的情况。</p>
+<h2 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h2><p>为什么要引入偏向锁呢？<strong>大多数情况，对象不仅不存在多线程竞争，而且总是由同一线程多次获得，为了让线程获得锁的代价更低而引入了偏向锁</strong>。</p>
+<p>偏向的意思是：这个对象偏向于某个线程</p>
+<p>它的实现过程如下：</p>
+<h3 id="获取偏向锁"><a href="#获取偏向锁" class="headerlink" title="获取偏向锁"></a>获取偏向锁</h3><ol>
+<li><p>线程要获取某个对象的锁时，访问Mark Word中偏向锁的标识是否设置成1，锁标志位是否为01，确认为<strong>可偏向状态</strong>。</p>
 </li>
-<li><p>��������ͷ�е�Mark Word���Ƶ�����¼��</p>
+<li><p>如果为可偏向状态，则测试线程ID是否指向当前线程，如果是，进入步骤5，否则进入步骤3。</p>
 </li>
-<li><p>�����ɹ�������������ʹ��CAS�������Խ�������Mark Word����Ϊָ��Lock Record��ָ�룬����Lock record����ownerָ��ָ��object mark word���������³ɹ�����ִ�в���4������ִ�в���5��</p>
+<li><p>如果线程ID并未指向当前线程，则通过CAS操作竞争锁。如果竞争成功，则将Mark Word中线程ID设置为当前线程ID，然后执行5；如果竞争失败，执行4。</p>
 </li>
-<li><p>�����������¶����ɹ��ˣ���ô�����߳̾�ӵ���˸ö������������Ҷ���Mark Word������־λ����Ϊ��00��������ʾ�˶�����������������״̬�� </p>
+<li><p>如果CAS获取偏向锁失败，则表示有竞争。当到达全局安全点（safepoint）时<strong>获得偏向锁的线程被挂起</strong>，<strong>偏向锁升级为轻量级锁</strong>，然后被阻塞在安全点的线程继续往下执行同步代码。（撤销偏向锁的时候会导致stop the word）</p>
 </li>
-<li><p>�����������²���ʧ���ˣ����������Ȼ�����������Mark Word�Ƿ�ָ����ǰ�̵߳�ջ֡�������Ǿ�˵����ǰ�߳��Ѿ�ӵ�������������������ǾͿ���ֱ�ӽ���ͬ��������ִ�С�����˵�������߳̾�������<strong>����������Ҫ����Ϊ��������</strong>������־��״ֵ̬��Ϊ��10����Mark Word�д洢�ľ���ָ����������������������ָ�룬�����ȴ������߳�ҲҪ��������״̬�� ����ǰ�̱߳㳢��ʹ����������ȡ������������Ϊ�˲����߳�������������ѭ��ȥ��ȡ���Ĺ��̡�</p>
+<li><p>执行同步代码。</p>
 </li>
 </ol>
-<p>�����������ͷ�</p>
-<p>���������л������������Ƿ������������ͷ������ڼ䣬֮ǰ�ڻ�ȡ����ʱ����������������ͷ��markword�����ͷ�����ʱ�������������������������ڼ��������߳������Ի�ȡ���ˣ����Ҹ��̶߳�markword�����޸ģ����߱ȶԷ��ֲ�һ�£����л�����������</p>
-<p>�ȴ����������̲߳�������������һֱ�����ȴ�������������˵�޸�markword��</p>
-<h2 id="����ʱ����"><a href="#����ʱ����" class="headerlink" title="����ʱ����"></a>����ʱ����</h2><h3 id="ƫ������������������"><a href="#ƫ������������������" class="headerlink" title="ƫ������������������"></a>ƫ������������������</h3><p>���߳�1ռ��ĳ������ƫ����ʱ���߳�2���Ի�ȡ�������ָö�����ƫ��������ʱ�ж�ռ�ø�ƫ�������߳��Ƿ����ڣ����������ڣ���ȡ������mark word����Ϊ�߳�2��������ϵͳ�ݶ��߳�1����������������״̬�����߳�1ջ�з���Lock Record�ռ䣬����Mark Word�����ö���ͷ�е�owner����ʽ������Ϊ���������������߳�1�������У��߳�2�����ȴ���</p>
-<h3 id="������������Ϊ��������"><a href="#������������Ϊ��������" class="headerlink" title="������������Ϊ��������"></a>������������Ϊ��������</h3><p>���߳�1ռ��ĳ��������������ʱ���߳�3���Թ�ȥ��</p>
+<h3 id="释放偏向锁"><a href="#释放偏向锁" class="headerlink" title="释放偏向锁"></a>释放偏向锁</h3><p>偏向锁的撤销在上述第四步骤中有提到。偏向锁只有遇到其他线程尝试竞争偏向锁时，持有偏向锁的线程才会释放锁，线程不会主动去释放偏向锁。偏向锁的撤销，需要等待全局安全点（在这个时间点上没有字节码正在执行），它会首先暂停拥有偏向锁的线程，判断锁对象是否处于被锁定状态，撤销偏向锁后恢复到未锁定（标志位为“01”）或轻量级锁（标志位为“00”）的状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">开启偏向锁：-XX:+UseBiasedLocking -XX:BiasedLockingStartupDelay=0</div><div class="line">关闭偏向锁：-XX:-UseBiasedLocking</div></pre></td></tr></table></figure>
+<h3 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h3><p>轻量级锁是由偏向所升级来的，<strong>在一个线程进入同步块的情况下（该线程占有偏向锁），当第二个线程加入锁争用的时候</strong>，偏向锁就会升级为轻量级锁； </p>
+<h3 id="轻量级锁的加锁过程"><a href="#轻量级锁的加锁过程" class="headerlink" title="轻量级锁的加锁过程"></a>轻量级锁的加锁过程</h3><ol>
+<li><p>在代码进入同步块的时候，如果同步对象锁状态为无锁状态（锁标志位为“01”状态，是否为偏向锁为“0”），虚拟机首先将在当前线程的栈帧中建立一个名为锁记录（Lock Record）的空间，用于存储锁对象目前的Mark Word的拷贝，官方称之为 Displaced Mark Word。</p>
+</li>
+<li><p>拷贝对象头中的Mark Word复制到锁记录中</p>
+</li>
+<li><p>拷贝成功后，虚拟机将使用CAS操作尝试将对象的Mark Word更新为指向Lock Record的指针，并将Lock record里的owner指针指向object mark word。如果更新成功，则执行步骤4，否则执行步骤5。</p>
+</li>
+<li><p>如果这个更新动作成功了，那么这个线程就拥有了该对象的锁，并且对象Mark Word的锁标志位设置为“00”，即表示此对象处于轻量级锁定状态。 </p>
+</li>
+<li><p>如果这个更新操作失败了，虚拟机首先会检查对象的Mark Word是否指向当前线程的栈帧，如果是就说明当前线程已经拥有了这个对象的锁，那就可以直接进入同步块继续执行。否则说明多个线程竞争锁，<strong>轻量级锁就要膨胀为重量级锁</strong>，锁标志的状态值变为“10”，Mark Word中存储的就是指向重量级锁（互斥量）的指针，后面等待锁的线程也要进入阻塞状态。 而当前线程便尝试使用自旋来获取锁，自旋就是为了不让线程阻塞，而采用循环去获取锁的过程。</p>
+</li>
+</ol>
+<p>轻量级锁的释放</p>
+<p>由轻量锁切换到重量锁，是发生在轻量锁释放锁的期间，之前在获取锁的时候它拷贝了锁对象头的markword，在释放锁的时候如果它发现在它持有锁的期间有其他线程来尝试获取锁了，并且该线程对markword做了修改，两者比对发现不一致，则切换到重量锁。</p>
+<p>等待轻量锁的线程不会阻塞，它会一直自旋等待锁，并如上所说修改markword。</p>
+<h2 id="锁何时升级"><a href="#锁何时升级" class="headerlink" title="锁何时升级"></a>锁何时升级</h2><h3 id="偏向锁升级成轻量级锁"><a href="#偏向锁升级成轻量级锁" class="headerlink" title="偏向锁升级成轻量级锁"></a>偏向锁升级成轻量级锁</h3><p>当线程1占有某对象的偏向锁时，线程2尝试获取锁，发现该对象是偏向锁，此时判断占用该偏向锁的线程是否存在，如果不存在，则取代它，mark word设置为线程2，否则，系统暂定线程1，设置轻量级锁的状态，在线程1栈中分配Lock Record空间，拷贝Mark Word，设置对象头中的owner，正式升级锁为轻量级锁，打开线程1继续运行，线程2自旋等待。</p>
+<h3 id="轻量级锁升级为重量级锁"><a href="#轻量级锁升级为重量级锁" class="headerlink" title="轻量级锁升级为重量级锁"></a>轻量级锁升级为重量级锁</h3><p>当线程1占有某对象的轻量级锁时，线程3尝试过去锁</p>
 
       
     </div>
@@ -659,7 +659,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#����λ��"><span class="nav-number">1.</span> <span class="nav-text">����λ��</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#��������"><span class="nav-number">2.</span> <span class="nav-text">��������</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ƫ����"><span class="nav-number">3.</span> <span class="nav-text">ƫ����</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#��ȡƫ����"><span class="nav-number">3.1.</span> <span class="nav-text">��ȡƫ����</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#�ͷ�ƫ����"><span class="nav-number">3.2.</span> <span class="nav-text">�ͷ�ƫ����</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#��������-1"><span class="nav-number">3.3.</span> <span class="nav-text">��������</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#���������l�������"><span class="nav-number">3.4.</span> <span class="nav-text">���������ļ�������</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#����ʱ����"><span class="nav-number">4.</span> <span class="nav-text">����ʱ����</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ƫ������������������"><span class="nav-number">4.1.</span> <span class="nav-text">ƫ������������������</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#������������Ϊ��������"><span class="nav-number">4.2.</span> <span class="nav-text">������������Ϊ��������</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#锁的位置"><span class="nav-number">1.</span> <span class="nav-text">锁的位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#锁的升级"><span class="nav-number">2.</span> <span class="nav-text">锁的升级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#偏向锁"><span class="nav-number">3.</span> <span class="nav-text">偏向锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取偏向锁"><span class="nav-number">3.1.</span> <span class="nav-text">获取偏向锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#释放偏向锁"><span class="nav-number">3.2.</span> <span class="nav-text">释放偏向锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#轻量级锁"><span class="nav-number">3.3.</span> <span class="nav-text">轻量级锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#轻量级锁的加锁过程"><span class="nav-number">3.4.</span> <span class="nav-text">轻量级锁的加锁过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#锁何时升级"><span class="nav-number">4.</span> <span class="nav-text">锁何时升级</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#偏向锁升级成轻量级锁"><span class="nav-number">4.1.</span> <span class="nav-text">偏向锁升级成轻量级锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#轻量级锁升级为重量级锁"><span class="nav-number">4.2.</span> <span class="nav-text">轻量级锁升级为重量级锁</span></a></li></ol></li></ol></div>
             
 
           </div>
