@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="�����ط�Ϊ7�����裬�ֱ��ǣ����أ���֤��׼������������ʼ����ʹ�ã�ж�ء����ؽ׶���jvm��class�ֽ����ļ�����װ�ص��ڴ浱�У�ִ����һ������������������ ϵͳ��������������  BootStrap ClassLoader, ����������������������Java�ĺ������⣬��">
+<meta name="description" content="类加载分为7个步骤，分别是：加载，验证，准备，解析，初始化，使用，卸载。加载阶段是jvm将class字节码文件将类装载到内存当中，执行这一操作的是类加载器。 系统由三种类加载器  BootStrap ClassLoader, 启动类加载器，负责加载Java的核心类库，如/lib/rt.jar，lib/resources.jar等，它由C++编写  Extension ClassLoader, 扩展">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java �ƻ�˫��ί�ɻ���">
+<meta property="og:title" content="Java 破坏双亲委派机制">
 <meta property="og:url" content="http://yoursite.com/2017/10/03/Java 破坏双亲委派机制/index.html">
 <meta property="og:site_name" content="Hello, World">
-<meta property="og:description" content="�����ط�Ϊ7�����裬�ֱ��ǣ����أ���֤��׼������������ʼ����ʹ�ã�ж�ء����ؽ׶���jvm��class�ֽ����ļ�����װ�ص��ڴ浱�У�ִ����һ������������������ ϵͳ��������������  BootStrap ClassLoader, ����������������������Java�ĺ������⣬��">
-<meta property="og:updated_time" content="2017-10-02T21:38:23.353Z">
+<meta property="og:description" content="类加载分为7个步骤，分别是：加载，验证，准备，解析，初始化，使用，卸载。加载阶段是jvm将class字节码文件将类装载到内存当中，执行这一操作的是类加载器。 系统由三种类加载器  BootStrap ClassLoader, 启动类加载器，负责加载Java的核心类库，如/lib/rt.jar，lib/resources.jar等，它由C++编写  Extension ClassLoader, 扩展">
+<meta property="og:updated_time" content="2017-10-03T21:34:08.292Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java �ƻ�˫��ί�ɻ���">
-<meta name="twitter:description" content="�����ط�Ϊ7�����裬�ֱ��ǣ����أ���֤��׼������������ʼ����ʹ�ã�ж�ء����ؽ׶���jvm��class�ֽ����ļ�����װ�ص��ڴ浱�У�ִ����һ������������������ ϵͳ��������������  BootStrap ClassLoader, ����������������������Java�ĺ������⣬��">
+<meta name="twitter:title" content="Java 破坏双亲委派机制">
+<meta name="twitter:description" content="类加载分为7个步骤，分别是：加载，验证，准备，解析，初始化，使用，卸载。加载阶段是jvm将class字节码文件将类装载到内存当中，执行这一操作的是类加载器。 系统由三种类加载器  BootStrap ClassLoader, 启动类加载器，负责加载Java的核心类库，如/lib/rt.jar，lib/resources.jar等，它由C++编写  Extension ClassLoader, 扩展">
 
 
 
@@ -137,7 +137,7 @@
 
 
 
-  <title>Java �ƻ�˫��ί�ɻ��� | Hello, World</title>
+  <title>Java 破坏双亲委派机制 | Hello, World</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -304,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java �ƻ�˫��ί�ɻ���</h1>
+          <h1 class="post-title" itemprop="name headline">Java 破坏双亲委派机制</h1>
         
 
         <div class="post-meta">
@@ -367,7 +367,7 @@
 
           
           
-             <span id="/2017/10/03/Java 破坏双亲委派机制/" class="leancloud_visitors" data-flag-title="Java �ƻ�˫��ί�ɻ���">
+             <span id="/2017/10/03/Java 破坏双亲委派机制/" class="leancloud_visitors" data-flag-title="Java 破坏双亲委派机制">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -395,30 +395,30 @@
       
 
       
-        <p>�����ط�Ϊ7�����裬�ֱ��ǣ����أ���֤��׼������������ʼ����ʹ�ã�ж�ء����ؽ׶���jvm��class�ֽ����ļ�����װ�ص��ڴ浱�У�ִ����һ������������������</p>
-<p>ϵͳ��������������</p>
+        <p>类加载分为7个步骤，分别是：加载，验证，准备，解析，初始化，使用，卸载。加载阶段是jvm将class字节码文件将类装载到内存当中，执行这一操作的是类加载器。</p>
+<p>系统由三种类加载器</p>
 <ol>
-<li><p>BootStrap ClassLoader, ����������������������Java�ĺ������⣬��/lib/rt.jar��lib/resources.jar�ȣ�����C++��д</p>
+<li><p>BootStrap ClassLoader, 启动类加载器，负责加载Java的核心类库，如/lib/rt.jar，lib/resources.jar等，它由C++编写</p>
 </li>
-<li><p>Extension ClassLoader, ��չ������������������Java����չ���⣬Ĭ�ϼ���JAVA_HOME/jre/lib/ext/Ŀ�µ�����jar��</p>
+<li><p>Extension ClassLoader, 扩展类加载器，负责加载Java的扩展类库，默认加载JAVA_HOME/jre/lib/ext/目下的所有jar。</p>
 </li>
-<li><p>App ClassLoader, ϵͳ������������������Ӧ�ó���classpathĿ¼�µ�����jar��class�ļ���</p>
+<li><p>App ClassLoader, 系统类加载器，负责加载应用程序classpath目录下的所有jar和class文件。</p>
 </li>
-<li><p>�Զ�������������һ���̳�3��ʵ���Զ�������������</p>
+<li><p>自定义类加载器，一般继承3，实现自定义的类加载器</p>
 </li>
 </ol>
-<p>һ���ģ�Java����˫��ί�ɻ��ƽ��������أ�������ί�ɸ������������м��أ����������ܹ����أ����Լ����ü��أ����������Լ����ء������ĺô����ǣ�����ͬһ���࣬�������࣬������ͬһ�������������м��ء����ж��������Ƿ���ͬʱ�����˱Ƚ����ǵ�ȫ�޶��������ǱȽ����ǵ�������������ͬ��������������ͬһ���ֽ��룬��ϵͳ��Ҳ�ᱻ��Ϊ��ͬ���ࡣ</p>
-<p>�������ģ�Ҫ���۵ľ����ƻ�˫��ί�ɻ��ơ����������ں������У���Ҫ����һ���û��Լ���д���࣬��ô�����ں������������������������صģ�����˫��ί�ɻ��ƣ����޷�ί���Լ��ĺ���-ϵͳ�����������м��أ��Ǹ����ν����أ�</p>
-<p>��ʵ�ϣ�������������������</p>
-<p><strong>JNDI</strong>������JNDI��Ŀ�ľ��Ƕ���Դ���м��й����Ͳ��ң�����Ҫ���ö�������ʵ�ֲ�������Ӧ�ó�����classpath�µ�JNDI�ӿ��ṩ��(SPI, Service Provider Interface)�Ĵ��롣 </p>
-<p>���ˣ�Ϊ���ƻ�����˫��ί�ɻ��ƣ�����������Ҳ�ܹ�ʹ��ϵͳ���������������м��أ�Java������<strong>�߳������ļ�����</strong>���ں���������������ʱ�����Զ�ȡ��ǰ�̵߳��߳������ļ�������ʹ�øü���������ʵ����SPI�ӿڵ��ࡣ</p>
-<p>Java�������漰SPI�ļ��ض��������϶��������ַ�ʽ������JNDI,JDBC,JCE,JAXB��JBI��</p>
-<h2 id="JDBC"><a href="#JDBC" class="headerlink" title="JDBC"></a>JDBC</h2><p>JDBC��һ�����͵��ƻ���˫��ί�ɻ��Ƶİ���</p>
+<p>一般的，Java采用双亲委派机制进行类加载，即首先委派父类加载器进行加载，如果父类能够加载，则自己不用加载，否则尝试自己加载。这样的好处就是，对于同一个类，如核心类，都是由同一个类加载器进行加载。在判断两个类是否相同时，除了比较它们的全限定名，还是比较他们的类加载器，不同的类加载器加载同一份字节码，在系统中也会被视为不同的类。</p>
+<p>而，本文，要讨论的就是破坏双亲委派机制。试想如果在核心类中，想要加载一个用户自己编写的类，那么，由于核心类是由启动类加载器加载的，根据双亲委派机制，它无法委派自己的孩子-系统类加载器进行加载，那该如何解决呢？</p>
+<p>事实上，这种情况经常发生。</p>
+<p><strong>JNDI</strong>服务：JNDI的目的就是对资源进行集中管理和查找，它需要调用独立厂商实现部部署在应用程序的classpath下的JNDI接口提供者(SPI, Service Provider Interface)的代码。 </p>
+<p>因此，为了破坏这种双亲委派机制，在启动类里也能够使用系统类加载器对类进行加载，Java设计了<strong>线程上下文加载器</strong>。在核心类进行类加载时，可以读取当前线程的线程上下文加载器，使用该加载器加载实现了SPI接口的类。</p>
+<p>Java中所有涉及SPI的加载动作基本上都采用这种方式，例如JNDI,JDBC,JCE,JAXB和JBI等</p>
+<h2 id="JDBC"><a href="#JDBC" class="headerlink" title="JDBC"></a>JDBC</h2><p>JDBC是一个典型的破坏了双亲委派机制的案例</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public class JdbcUtils &#123;</div><div class="line"></div><div class="line">    static &#123;</div><div class="line">        try &#123;</div><div class="line">            // (1)</div><div class="line">            Class.forName(&quot;com.mysql.jdbc.Driver&quot;).newInstance();</div><div class="line">        &#125; catch (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public static Connection getConnection(String url) throws SQLException &#123;</div><div class="line">        // (2) </div><div class="line">        return DriverManager.getConnection(url);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>DriverManager</code>��Java�ĺ����࣬</p>
+<p><code>DriverManager</code>是Java的核心类，</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public static Conection getConnection(String url) throws SQLException&#123;</div><div class="line">	java.util.Properties info = new java.util.Properties();</div><div class="line">	return (getConnection(url, info, Reflection.getCallerClass()));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>��<code>getConnection</code>������õ��˵����߶������࣬������JdbcUtils�����˿�����rt���Ĵ�����ʹ��JdbcUtils��ClassLoader���������ء�����Դ����ʵ��û��ô����ע�⵽�����Լ�д��������<code>Class.forName(&quot;com.mysql.jdbc.Driver&quot;).newInstance();</code>���仰�����������Ѿ�������һ��Driver��MYSQL��Driver������DriverManager�У�����������Driver��ʹ��<code>Class clazz = Class.forName(Driver.getClass().getName,true,classLoader)</code>,ʹ�ô�������classLoader��ȫ�������� ȫ�޶����������¼��أ��ڱȽ�clazz��Driver.getClass()�Ƿ����ȡ�</p>
-<h2 id="tomcat"><a href="#tomcat" class="headerlink" title="tomcat"></a>tomcat</h2><p>WebappClassLoader�ڲ���д��loadClass��findClass������ʵ�����ƹ���˫��ί�ɡ�ֱ�Ӽ���webӦ���ڲ�����Դ����Ȼ����ͨ����Context.xml�ļ��м���<loader delegate="true">������ͳ�ġ�˫��ί�ɡ����ػ���</loader></p>
+<p>在<code>getConnection</code>函数里，得到了调用者对象的类，这里是JdbcUtils，因此可以在rt类的代码里使用JdbcUtils的ClassLoader进行类加载。但是源码其实并没这么做，注意到我们自己写的类中有<code>Class.forName(&quot;com.mysql.jdbc.Driver&quot;).newInstance();</code>这句话了吗？这里已经加载了一个Driver，MYSQL的Driver，而在DriverManager中，会遍历所有Driver，使用<code>Class clazz = Class.forName(Driver.getClass().getName,true,classLoader)</code>,使用传进来的classLoader对全有驱动的 全限定名进行重新加载，在比较clazz和Driver.getClass()是否相等。</p>
+<h2 id="tomcat"><a href="#tomcat" class="headerlink" title="tomcat"></a>tomcat</h2><p>WebappClassLoader内部重写了loadClass和findClass方法，实现了绕过“双亲委派”直接加载web应用内部的资源，当然可以通过在Context.xml文件中加上<loader delegate="true">开启正统的“双亲委派”加载机制</loader></p>
 
       
     </div>
@@ -470,6 +470,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/04/Java 面试复习要点/" rel="prev" title="JVM ���Ը�ϰҪ��">
+                JVM ���Ը�ϰҪ�� <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -543,7 +547,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">78</span>
+                <span class="site-state-item-count">79</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
