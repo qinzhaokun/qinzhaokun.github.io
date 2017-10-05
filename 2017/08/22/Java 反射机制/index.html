@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/08/22/Java 反射机制/index.html">
 <meta property="og:site_name" content="Hello, World">
 <meta property="og:description" content="反射在Java中充满了魔力，它像一个JVM给程序员开的一个后门，让程序员在程序运行时能够对程序有更强的控制力。用一句话来概括Java的反射，那就是可以在运行期间获任意一个类的字节码，其中包括接口，变量和方法等信息；同时可以通过反射创建对象，调用对象的方法，访问/操作对象的属性。 获取类信息对于一个对象，我们可以访问设置其属性，调用其方法，但有的时候，我们更想知道该对象类的信息，由其是在程序运行的时">
-<meta property="og:updated_time" content="2017-09-02T06:43:55.029Z">
+<meta property="og:updated_time" content="2017-10-04T01:41:36.438Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java 反射机制">
 <meta name="twitter:description" content="反射在Java中充满了魔力，它像一个JVM给程序员开的一个后门，让程序员在程序运行时能够对程序有更强的控制力。用一句话来概括Java的反射，那就是可以在运行期间获任意一个类的字节码，其中包括接口，变量和方法等信息；同时可以通过反射创建对象，调用对象的方法，访问/操作对象的属性。 获取类信息对于一个对象，我们可以访问设置其属性，调用其方法，但有的时候，我们更想知道该对象类的信息，由其是在程序运行的时">
@@ -441,6 +441,12 @@
 <h4 id="获取类的成员变量"><a href="#获取类的成员变量" class="headerlink" title="获取类的成员变量"></a>获取类的成员变量</h4><p><code>Field[] fields = aClass.getFields()</code>可以得到类的公有成员变量；而访问私有变量，可以通过<code>getDeclaredField()或getDeclaredField(String name)</code>来获取。</p>
 <p>得到了成员变量后，我们如何访问呢？使用<code>field.get(Object)</code>方法；如果修改呢？使用<code>fields.set(Object, value)</code>。公有变量可以直接进行访问了，但是如果访问私有变量，回进行作用域检查，直接访问运行时会抛出异常：<code>java.lang.IllegalAccessException:</code>，要加上如下语句：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">field.setAccessible(true);//为 true 则表示反射的对象在使用时取消 Java 语言访问检查</div></pre></td></tr></table></figure></p>
 <p>主要上面我们发现读/写一个field，都要传出该拥有变量的对象，对于普通成员函数，这是合理的，但如果想读写静态变量呢？只需要要传入对应的Class即可。具体一个简单的示例如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">class A &#123;</div><div class="line">	private int c = 10;</div><div class="line">	public static int d = 14;</div><div class="line">	</div><div class="line">	A(int c)&#123;</div><div class="line">		this.c = c;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	private void f()&#123;</div><div class="line">		c = 20;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class Test &#123;</div><div class="line"></div><div class="line">	public static void main(String[] args) throws InterruptedException &#123;</div><div class="line">		try &#123;</div><div class="line">		A a = new A(12);</div><div class="line">		</div><div class="line">		Class t = a.getClass();</div><div class="line">		</div><div class="line">		Field field = t.getDeclaredField(&quot;c&quot;);</div><div class="line">		</div><div class="line">		Field field1 = t.getField(&quot;d&quot;);</div><div class="line">		</div><div class="line">		field.setAccessible(true);</div><div class="line">		field.set(a, 22);</div><div class="line">		field1.set(t, 24);</div><div class="line">		</div><div class="line">		System.out.println(field.get(a) + &quot; &quot; + field1.get(t));</div><div class="line">			</div><div class="line">			</div><div class="line">		&#125; catch (NoSuchFieldException e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125; catch (IllegalArgumentException e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125; catch (IllegalAccessException e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125; </div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="如何提高反射的性能-面试"><a href="#如何提高反射的性能-面试" class="headerlink" title="如何提高反射的性能(面试)"></a>如何提高反射的性能(面试)</h2><ul>
+<li><p>避免使用<code>getMethods</code>，尽量使用<code>getMethod(methodName)</code></p>
+</li>
+<li><p>缓存<code>Class</code>对象，因为Class.forName比较耗时</p>
+</li>
+</ul>
 
       
     </div>
@@ -483,8 +489,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/21/Java 阻塞队列/" rel="next" title="Java 阻塞队列">
-                <i class="fa fa-chevron-left"></i> Java 阻塞队列
+              <a href="/2017/08/21/Java 动态代理/" rel="next" title="Java 动态代理">
+                <i class="fa fa-chevron-left"></i> Java 动态代理
               </a>
             
           </div>
@@ -569,7 +575,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">80</span>
+                <span class="site-state-item-count">82</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -637,7 +643,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#获取类信息"><span class="nav-number">1.</span> <span class="nav-text">获取类信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Class对象"><span class="nav-number">1.1.</span> <span class="nav-text">Class对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#获取类的基本信息"><span class="nav-number">1.1.1.</span> <span class="nav-text">获取类的基本信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取类的构造函数"><span class="nav-number">1.1.2.</span> <span class="nav-text">获取类的构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取类的方法"><span class="nav-number">1.1.3.</span> <span class="nav-text">获取类的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取类的成员变量"><span class="nav-number">1.1.4.</span> <span class="nav-text">获取类的成员变量</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#获取类信息"><span class="nav-number">1.</span> <span class="nav-text">获取类信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Class对象"><span class="nav-number">1.1.</span> <span class="nav-text">Class对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#获取类的基本信息"><span class="nav-number">1.1.1.</span> <span class="nav-text">获取类的基本信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取类的构造函数"><span class="nav-number">1.1.2.</span> <span class="nav-text">获取类的构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取类的方法"><span class="nav-number">1.1.3.</span> <span class="nav-text">获取类的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取类的成员变量"><span class="nav-number">1.1.4.</span> <span class="nav-text">获取类的成员变量</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何提高反射的性能-面试"><span class="nav-number">2.</span> <span class="nav-text">如何提高反射的性能(面试)</span></a></li></ol></div>
             
 
           </div>

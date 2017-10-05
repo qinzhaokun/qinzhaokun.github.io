@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/10/04/Java 面试复习要点/index.html">
 <meta property="og:site_name" content="Hello, World">
 <meta property="og:description" content="Java基础知识线程 线程安全(synchronized, volatile, 可重入锁)  线程的状态  多线程的实现方式(Thread, Runable, Callable, Future, FutureTask)  同步工具类(CountDownLatch, CyclicBarrier, Semaphore, BlockingQueue)  乐观锁和悲观锁(偏向锁, 轻量级锁, 重量级锁,">
-<meta property="og:updated_time" content="2017-10-04T01:16:07.523Z">
+<meta property="og:updated_time" content="2017-10-04T06:32:35.034Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM 面试复习要点">
 <meta name="twitter:description" content="Java基础知识线程 线程安全(synchronized, volatile, 可重入锁)  线程的状态  多线程的实现方式(Thread, Runable, Callable, Future, FutureTask)  同步工具类(CountDownLatch, CyclicBarrier, Semaphore, BlockingQueue)  乐观锁和悲观锁(偏向锁, 轻量级锁, 重量级锁,">
@@ -445,7 +445,40 @@
 <li><p><a href="(https://qinzhaokun.github.io/2017/09/11/Hibernate%20%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">一级缓存和二级缓存</a>)</p>
 </li>
 </ul>
-<h3 id="分布式事务的一致性和JTA"><a href="#分布式事务的一致性和JTA" class="headerlink" title="分布式事务的一致性和JTA"></a>分布式事务的一致性和JTA</h3><h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><h3 id="TCP-三次握手-四次分手"><a href="#TCP-三次握手-四次分手" class="headerlink" title="TCP 三次握手/四次分手"></a><a href="https://qinzhaokun.github.io/2017/09/03/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%92%8C%E5%9B%9B%E6%AC%A1%E5%88%86%E6%89%8B/" target="_blank" rel="external">TCP 三次握手/四次分手</a></h3><h3 id="HTTP状态码"><a href="#HTTP状态码" class="headerlink" title="HTTP状态码"></a><a href="https://qinzhaokun.github.io/2017/09/26/HTTP%20%E7%8A%B6%E6%80%81%E7%A0%81/" target="_blank" rel="external">HTTP状态码</a></h3><h3 id="Session和Cookie"><a href="#Session和Cookie" class="headerlink" title="Session和Cookie"></a>Session和Cookie</h3>
+<h3 id="分布式事务的一致性和JTA"><a href="#分布式事务的一致性和JTA" class="headerlink" title="分布式事务的一致性和JTA"></a>分布式事务的一致性和JTA</h3><ul>
+<li><p>XA协议，事务管理器，资源管理器</p>
+</li>
+<li><p>两阶段提交，三阶段提交协议， TCC</p>
+</li>
+<li><p>Spring下配置JTA</p>
+</li>
+</ul>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><h3 id="TCP-三次握手-四次分手"><a href="#TCP-三次握手-四次分手" class="headerlink" title="TCP 三次握手/四次分手"></a><a href="https://qinzhaokun.github.io/2017/09/03/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%92%8C%E5%9B%9B%E6%AC%A1%E5%88%86%E6%89%8B/" target="_blank" rel="external">TCP 三次握手/四次分手</a></h3><ul>
+<li><p>三次：防止已失效的报文到达服务器端，浪费资源</p>
+</li>
+<li><p>四次：等待2MSL时间，确保自己发送的ACK已收到，确认对方已经关闭，自己再关闭</p>
+</li>
+</ul>
+<h3 id="HTTP状态码"><a href="#HTTP状态码" class="headerlink" title="HTTP状态码"></a><a href="https://qinzhaokun.github.io/2017/09/26/HTTP%20%E7%8A%B6%E6%80%81%E7%A0%81/" target="_blank" rel="external">HTTP状态码</a></h3><ul>
+<li><p>2XX:操作成功</p>
+</li>
+<li><p>3XX：重定向，301永久转移，302临时转移</p>
+</li>
+<li><p>4XX：客户端错误， 403禁止访问，404页面找不到</p>
+</li>
+<li><p>5XX：服务器端错误</p>
+</li>
+</ul>
+<h3 id="Session和Cookie"><a href="#Session和Cookie" class="headerlink" title="Session和Cookie"></a>Session和Cookie</h3><ol>
+<li>session在服务器端，cookie在客户端（浏览器）;</li>
+<li>Session的运行依赖session id, 而 session  id是存在cookie中的，也就是说，如果浏览器禁止了cookie，同时session也会失效（但是可以通过其它方式实现，比如在url中传递session id）;</li>
+<li>Session可以放在文件、数据库或内存中都可以;</li>
+<li>用户验证一般会用session;</li>
+<li>Cookie不是很安全，别人可以分析存在本地的cookie并进行cookie欺骗，考虑到安全应当使用session;</li>
+<li>Session会在一定时间内保存在服务器上，当访问增多，会比较占用你服务器的性能，考虑到减轻服务器性能方面，应当使用cookie;</li>
+<li>单个cookie保存的数据不能超过4k，很多浏览器都限制一个站点最多保存20个cookie。</li>
+</ol>
+
       
     </div>
 
@@ -487,8 +520,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/04/Java JTA/" rel="next" title="JVM JTA">
-                <i class="fa fa-chevron-left"></i> JVM JTA
+              <a href="/2017/10/03/Java 破坏双亲委派机制/" rel="next" title="Java 破坏双亲委派机制">
+                <i class="fa fa-chevron-left"></i> Java 破坏双亲委派机制
               </a>
             
           </div>
@@ -496,6 +529,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/04/Java JTA/" rel="prev" title="JVM JTA">
+                JVM JTA <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -569,7 +606,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">80</span>
+                <span class="site-state-item-count">82</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
