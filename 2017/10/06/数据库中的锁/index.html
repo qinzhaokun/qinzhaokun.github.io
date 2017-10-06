@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="���ݿ�," />
+  <meta name="keywords" content="数据库," />
 
 
 
@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="���ݿ����������ƣ���һЩ����繲�������������������������������ֹ����ȡ� ������һ�����������˹�����֮�󣬾Ϳ��Զ�������Χ�ڵ����ݽ��ж���������������ͬʱҲ�ܹ�����������Χ�ڵĹ�����MYSQL�й����������������л���Ԫ�飨���У� ������һ��">
-<meta name="keywords" content="���ݿ�">
+<meta name="description" content="数据库中有锁机制，有一些概念，如共享锁，排它锁，意向锁，悲观锁，乐观锁等。 共享锁一个事务获得了共享锁之后，就可以对锁定范围内的数据进行读操作。其他事务同时也能够获得锁定范围内的共享锁MYSQL中共享锁的锁粒度是行或者元组（多行） 排它锁一个事务获得排他锁之后，就可以对锁定范围内的数据执行insert/delete/update操作。其他事务不能获得锁定范围内的任何锁(共享和排它都不能获得)锁粒度">
+<meta name="keywords" content="数据库">
 <meta property="og:type" content="article">
-<meta property="og:title" content="���ݿ��е���">
+<meta property="og:title" content="数据库中的锁">
 <meta property="og:url" content="http://yoursite.com/2017/10/06/数据库中的锁/index.html">
 <meta property="og:site_name" content="Hello, World">
-<meta property="og:description" content="���ݿ����������ƣ���һЩ����繲�������������������������������ֹ����ȡ� ������һ�����������˹�����֮�󣬾Ϳ��Զ�������Χ�ڵ����ݽ��ж���������������ͬʱҲ�ܹ�����������Χ�ڵĹ�����MYSQL�й����������������л���Ԫ�飨���У� ������һ��">
-<meta property="og:updated_time" content="2017-10-06T02:13:34.281Z">
+<meta property="og:description" content="数据库中有锁机制，有一些概念，如共享锁，排它锁，意向锁，悲观锁，乐观锁等。 共享锁一个事务获得了共享锁之后，就可以对锁定范围内的数据进行读操作。其他事务同时也能够获得锁定范围内的共享锁MYSQL中共享锁的锁粒度是行或者元组（多行） 排它锁一个事务获得排他锁之后，就可以对锁定范围内的数据执行insert/delete/update操作。其他事务不能获得锁定范围内的任何锁(共享和排它都不能获得)锁粒度">
+<meta property="og:updated_time" content="2017-10-06T20:19:05.199Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="���ݿ��е���">
-<meta name="twitter:description" content="���ݿ����������ƣ���һЩ����繲�������������������������������ֹ����ȡ� ������һ�����������˹�����֮�󣬾Ϳ��Զ�������Χ�ڵ����ݽ��ж���������������ͬʱҲ�ܹ�����������Χ�ڵĹ�����MYSQL�й����������������л���Ԫ�飨���У� ������һ��">
+<meta name="twitter:title" content="数据库中的锁">
+<meta name="twitter:description" content="数据库中有锁机制，有一些概念，如共享锁，排它锁，意向锁，悲观锁，乐观锁等。 共享锁一个事务获得了共享锁之后，就可以对锁定范围内的数据进行读操作。其他事务同时也能够获得锁定范围内的共享锁MYSQL中共享锁的锁粒度是行或者元组（多行） 排它锁一个事务获得排他锁之后，就可以对锁定范围内的数据执行insert/delete/update操作。其他事务不能获得锁定范围内的任何锁(共享和排它都不能获得)锁粒度">
 
 
 
@@ -137,7 +137,7 @@
 
 
 
-  <title>���ݿ��е��� | Hello, World</title>
+  <title>数据库中的锁 | Hello, World</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -304,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">���ݿ��е���</h1>
+          <h1 class="post-title" itemprop="name headline">数据库中的锁</h1>
         
 
         <div class="post-meta">
@@ -339,8 +339,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/���ݿ�/" itemprop="url" rel="index">
-                    <span itemprop="name">���ݿ�</span>
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
                   </a>
                 </span>
 
@@ -367,7 +367,7 @@
 
           
           
-             <span id="/2017/10/06/数据库中的锁/" class="leancloud_visitors" data-flag-title="���ݿ��е���">
+             <span id="/2017/10/06/数据库中的锁/" class="leancloud_visitors" data-flag-title="数据库中的锁">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -395,32 +395,32 @@
       
 
       
-        <p>���ݿ����������ƣ���һЩ����繲�������������������������������ֹ����ȡ�</p>
-<h2 id="������"><a href="#������" class="headerlink" title="������"></a>������</h2><p>һ�����������˹�����֮�󣬾Ϳ��Զ�������Χ�ڵ����ݽ��ж���������������ͬʱҲ�ܹ�����������Χ�ڵĹ�����<br>MYSQL�й����������������л���Ԫ�飨���У�</p>
-<h2 id="������-1"><a href="#������-1" class="headerlink" title="������"></a>������</h2><p>һ����������������֮�󣬾Ϳ��Զ�������Χ�ڵ�����ִ��insert/delete/update�����������������ܻ���������Χ�ڵ��κ���(���������������ܻ���)<br>�����Ⱥ͹�����һ����</p>
-<h2 id="������-2"><a href="#������-2" class="headerlink" title="������"></a>������</h2><p>��������һ�ֱ��������������������ű�����Ϊ����<strong>��������IS��</strong>��<strong>������������IX��</strong>��</p>
-<p>��ô�������ǴӺζ������أ�<br>��Ϊ�������������������ݣ����Ա���������Ҳ�����ɳ�ͻ��</p>
-<p><strong>Ϊ�˷����ؼ������������м���֮���ĳ�ͻ������������������</strong></p>
-<p>����һ������1�Ա���ĳһ�м��˹���������������ȡ��һ�е����ݣ��ڴ�ͬʱ������2��Ҫ�޸ı��ṹ���������������������ı�������ô����2�鿴����û�б���ס������Ҫ�鿴ÿһ���Ƿ���������Ч�ʺܵ��¡�����2�����������������ȴ���</p>
-<p>�������������������������ڵ������£�����1��������������**�������������ɹ���������һ�е�������</p>
-<h2 id="������-3"><a href="#������-3" class="headerlink" title="������"></a>������</h2><p>��������ֹһ��������Ӱ�������û��ķ�ʽ���޸����ݡ�����һ������ִ�еĲ�����ĳ������Ӧ����������ֻ�е��������������ͷţ������������ܹ�ִ����������ͻ�Ĳ�����<br>���۲���������Ҫ�����������ü��ҵĻ������Լ�����������ͻʱʹ�����������ݵĳɱ�Ҫ���ڻع������ĳɱ��Ļ�����</p>
-<p>�������̣�</p>
+        <p>数据库中有锁机制，有一些概念，如共享锁，排它锁，意向锁，悲观锁，乐观锁等。</p>
+<h2 id="共享锁"><a href="#共享锁" class="headerlink" title="共享锁"></a>共享锁</h2><p>一个事务获得了共享锁之后，就可以对锁定范围内的数据进行读操作。其他事务同时也能够获得锁定范围内的共享锁<br>MYSQL中共享锁的锁粒度是行或者元组（多行）</p>
+<h2 id="排它锁"><a href="#排它锁" class="headerlink" title="排它锁"></a>排它锁</h2><p>一个事务获得排他锁之后，就可以对锁定范围内的数据执行insert/delete/update操作。其他事务不能获得锁定范围内的任何锁(共享和排它都不能获得)<br>锁粒度和共享锁一样。</p>
+<h2 id="意向锁"><a href="#意向锁" class="headerlink" title="意向锁"></a>意向锁</h2><p>意向锁是一种表级锁，锁的粒度是整张表。分为意向<strong>共享锁（IS）</strong>和<strong>意向排他锁（IX）</strong>。</p>
+<p>那么意向锁是从何而来的呢？<br>因为表锁覆盖了行锁的数据，所以表锁和行锁也会产成冲突。</p>
+<p><strong>为了方便地检测表级锁和行级锁之间的冲突，于是引入了意向锁</strong></p>
+<p>例如一个事务1对表的某一行加了共享行锁，用来读取这一行的数据；于此同时，事务2想要修改表结构，想给整个表加上排它的表锁，那么事务2查看表锁没有被锁住，还需要查看每一行是否有行锁，效率很低下。事务2发现有行锁，阻塞等待。</p>
+<p>加入意向锁后，在意向锁存在的情况下，事务1必须先申请表的**意向共享锁，成功后再申请一行的行锁。</p>
+<h2 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h2><p>它可以阻止一个事务以影响其他用户的方式来修改数据。如果一个事务执行的操作对某行数据应用了锁，那只有当这个事务把锁释放，其他事务才能够执行与该锁冲突的操作。<br>悲观并发控制主要用于数据争用激烈的环境，以及发生并发冲突时使用锁保护数据的成本要低于回滚事务的成本的环境中</p>
+<p>加锁流程：</p>
 <ol>
-<li><p>�ڶ�������¼�����޸�ǰ���ȳ���Ϊ�ü�¼������������exclusive locking����</p>
+<li><p>在对任意记录进行修改前，先尝试为该记录加上排他锁（exclusive locking）。</p>
 </li>
-<li><p>��������ʧ�ܣ�˵���ü�¼���ڱ��޸ģ���ô��ǰ��ѯ����Ҫ�ȴ������׳��쳣��������Ӧ��ʽ�ɿ����߸���ʵ����Ҫ������</p>
+<li><p>如果加锁失败，说明该记录正在被修改，那么当前查询可能要等待或者抛出异常。具体响应方式由开发者根据实际需要决定。</p>
 </li>
-<li><p>�����ɹ���������ô�Ϳ��ԶԼ�¼���޸ģ��������ɺ��ͻ������ˡ�</p>
+<li><p>如果成功加锁，那么就可以对记录做修改，事务完成后就会解锁了。</p>
 </li>
-<li><p>���������������Ըü�¼���޸Ļ����������Ĳ����������ȴ����ǽ�����ֱ���׳��쳣��</p>
+<li><p>其间如果有其他对该记录做修改或加排他锁的操作，都会等待我们解锁或直接抛出异常。</p>
 </li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//0.��ʼ����</div><div class="line">begin;/begin work;/start transaction; (����ѡһ�Ϳ���)</div><div class="line">//1.��ѯ����Ʒ��Ϣ</div><div class="line">select status from t_goods where id=1 for update;</div><div class="line">//2.������Ʒ��Ϣ���ɶ���</div><div class="line">insert into t_orders (id,goods_id) values (null,1);</div><div class="line">//3.�޸���ƷstatusΪ2</div><div class="line">update t_goods set status=2;</div><div class="line">//4.�ύ����</div><div class="line">commit;/commit work;</div></pre></td></tr></table></figure>
-<p><code>select��for update</code>�ķ�ʽ��������ͨ�������������ķ�ʽʵ���˱�����.ע�⣬InnoDB�У�����������Ҫ���������У�����������</p>
-<p>���۲�������ʵ�����ǡ���ȡ���ٷ��ʡ��ı��ز��ԣ�Ϊ���ݴ����İ�ȫ�ṩ�˱�֤��������Ч�ʷ��棬���������Ļ��ƻ������ݿ����������Ŀ������������Ӳ��������Ļ��᣻���⣬��ֻ�����������������ڲ���������ͻ��Ҳû��Ҫʹ������������ֻ������ϵͳ���أ����лή���˲����ԣ�һ����������������ĳ�����ݣ����������ͱ����ȴ��������������ſ��Դ���������</p>
-<h2 id="�ֹ���"><a href="#�ֹ���" class="headerlink" title="�ֹ���"></a>�ֹ���</h2><p>���������û������������ڴ���ʱ�����˴˻���Ӱ�죬�������ܹ��ڲ��������������´�������Ӱ�����ǲ������ݡ����ύ���ݸ���֮ǰ��ÿ���������ȼ����ڸ�������ȡ���ݺ�����û�������������޸��˸����ݡ��������������и��µĻ��������ύ�����������лع���</p>
-<p>һ����ʵ���ֹ����ķ�ʽ����<strong>��¼���ݰ汾</strong>��ʵ�����ݰ汾�����ַ�ʽ����һ����ʹ��<strong>�汾��</strong>���ڶ�����ʹ��<strong>ʱ����</strong>��</p>
-<p>�ֹ۲���������������֮�������ݾ���(data race)�ĸ����ǱȽ�С�ģ����˾�����ֱ������ȥ��ֱ���ύ��ʱ����ȥ���������Բ��������κ�����������������ֱ�Ӽ�����ô���������п��ܻ���������Ԥ�ڵĽ����������������񶼶�ȡ�����ݿ���ĳһ�У������޸��Ժ�д�����ݿ⣬��ʱ�����������⡣</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//0.开始事务</div><div class="line">begin;/begin work;/start transaction; (三者选一就可以)</div><div class="line">//1.查询出商品信息</div><div class="line">select status from t_goods where id=1 for update;</div><div class="line">//2.根据商品信息生成订单</div><div class="line">insert into t_orders (id,goods_id) values (null,1);</div><div class="line">//3.修改商品status为2</div><div class="line">update t_goods set status=2;</div><div class="line">//4.提交事务</div><div class="line">commit;/commit work;</div></pre></td></tr></table></figure>
+<p><code>select…for update</code>的方式，这样就通过开启排他锁的方式实现了悲观锁.注意，InnoDB中，加行锁必须要有索引才行，否则锁表。</p>
+<p>悲观并发控制实际上是“先取锁再访问”的保守策略，为数据处理的安全提供了保证。但是在效率方面，处理加锁的机制会让数据库产生额外的开销，还有增加产生死锁的机会；另外，在只读型事务处理中由于不会产生冲突，也没必要使用锁，这样做只能增加系统负载；还有会降低了并行性，一个事务如果锁定了某行数据，其他事务就必须等待该事务处理完才可以处理那行数</p>
+<h2 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h2><p>它假设多用户并发的事务在处理时不会彼此互相影响，各事务能够在不产生锁的情况下处理各自影响的那部分数据。在提交数据更新之前，每个事务会先检查在该事务读取数据后，有没有其他事务又修改了该数据。如果其他事务有更新的话，正在提交的事务会进行回滚。</p>
+<p>一般的实现乐观锁的方式就是<strong>记录数据版本</strong>。实现数据版本有两种方式，第一种是使用<strong>版本号</strong>，第二种是使用<strong>时间戳</strong>。</p>
+<p>乐观并发控制相信事务之间的数据竞争(data race)的概率是比较小的，因此尽可能直接做下去，直到提交的时候才去锁定，所以不会产生任何锁和死锁。但如果直接简单这么做，还是有可能会遇到不可预期的结果，例如两个事务都读取了数据库的某一行，经过修改以后写回数据库，这时就遇到了问题。</p>
 
       
     </div>
@@ -450,7 +450,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/���ݿ�/" rel="tag"># ���ݿ�</a>
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
           
         </div>
       
@@ -560,7 +560,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -571,7 +571,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -617,7 +617,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#������"><span class="nav-number">1.</span> <span class="nav-text">������</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#������-1"><span class="nav-number">2.</span> <span class="nav-text">������</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#������-2"><span class="nav-number">3.</span> <span class="nav-text">������</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#������-3"><span class="nav-number">4.</span> <span class="nav-text">������</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#�ֹ���"><span class="nav-number">5.</span> <span class="nav-text">�ֹ���</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#共享锁"><span class="nav-number">1.</span> <span class="nav-text">共享锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排它锁"><span class="nav-number">2.</span> <span class="nav-text">排它锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#意向锁"><span class="nav-number">3.</span> <span class="nav-text">意向锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#悲观锁"><span class="nav-number">4.</span> <span class="nav-text">悲观锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#乐观锁"><span class="nav-number">5.</span> <span class="nav-text">乐观锁</span></a></li></ol></div>
             
 
           </div>
