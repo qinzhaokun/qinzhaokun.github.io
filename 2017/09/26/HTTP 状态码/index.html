@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="1开头1xx(临时响应)表示临时响应并需要请求者继续执行操作的状态代码 100 (继续) 请求者应当继续提出请求。 服务器返回此代码表示已收到请求的第一部分，正在等待其余部分。 101 (切换协议) 请求者已要求服务器切换协议，服务器已确认并准备切换。 2开头2xx (成功)表示成功处理了请求的状态代码。代码 说明 200 (成功) 服务器已成功处理了请求。 通常，这表示服务器提供了请求的网页。">
+<meta name="description" content="HTTP报文是面向文本的，报文中的每一个字段都是一些ASCII码串，各个字段的长度是不确定的。HTTP有两类报文：请求报文和响应报文 HTTP请求报文一个HTTP请求报文由请求行（request line）、请求头部（header）、空行和请求数据4个部分组成 例如：GET /search?hl=zh-CN&amp;amp;source=hp&amp;amp;q=domety&amp;amp;aq=f&amp;amp;oq= H">
 <meta name="keywords" content="HTTP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HTTP 状态码">
+<meta property="og:title" content="HTTP 报文和状态码">
 <meta property="og:url" content="http://yoursite.com/2017/09/26/HTTP 状态码/index.html">
 <meta property="og:site_name" content="Hello, World">
-<meta property="og:description" content="1开头1xx(临时响应)表示临时响应并需要请求者继续执行操作的状态代码 100 (继续) 请求者应当继续提出请求。 服务器返回此代码表示已收到请求的第一部分，正在等待其余部分。 101 (切换协议) 请求者已要求服务器切换协议，服务器已确认并准备切换。 2开头2xx (成功)表示成功处理了请求的状态代码。代码 说明 200 (成功) 服务器已成功处理了请求。 通常，这表示服务器提供了请求的网页。">
-<meta property="og:updated_time" content="2017-10-02T00:33:09.757Z">
+<meta property="og:description" content="HTTP报文是面向文本的，报文中的每一个字段都是一些ASCII码串，各个字段的长度是不确定的。HTTP有两类报文：请求报文和响应报文 HTTP请求报文一个HTTP请求报文由请求行（request line）、请求头部（header）、空行和请求数据4个部分组成 例如：GET /search?hl=zh-CN&amp;amp;source=hp&amp;amp;q=domety&amp;amp;aq=f&amp;amp;oq= H">
+<meta property="og:updated_time" content="2017-10-08T07:31:22.790Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HTTP 状态码">
-<meta name="twitter:description" content="1开头1xx(临时响应)表示临时响应并需要请求者继续执行操作的状态代码 100 (继续) 请求者应当继续提出请求。 服务器返回此代码表示已收到请求的第一部分，正在等待其余部分。 101 (切换协议) 请求者已要求服务器切换协议，服务器已确认并准备切换。 2开头2xx (成功)表示成功处理了请求的状态代码。代码 说明 200 (成功) 服务器已成功处理了请求。 通常，这表示服务器提供了请求的网页。">
+<meta name="twitter:title" content="HTTP 报文和状态码">
+<meta name="twitter:description" content="HTTP报文是面向文本的，报文中的每一个字段都是一些ASCII码串，各个字段的长度是不确定的。HTTP有两类报文：请求报文和响应报文 HTTP请求报文一个HTTP请求报文由请求行（request line）、请求头部（header）、空行和请求数据4个部分组成 例如：GET /search?hl=zh-CN&amp;amp;source=hp&amp;amp;q=domety&amp;amp;aq=f&amp;amp;oq= H">
 
 
 
@@ -137,7 +137,7 @@
 
 
 
-  <title>HTTP 状态码 | Hello, World</title>
+  <title>HTTP 报文和状态码 | Hello, World</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -304,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">HTTP 状态码</h1>
+          <h1 class="post-title" itemprop="name headline">HTTP 报文和状态码</h1>
         
 
         <div class="post-meta">
@@ -367,7 +367,7 @@
 
           
           
-             <span id="/2017/09/26/HTTP 状态码/" class="leancloud_visitors" data-flag-title="HTTP 状态码">
+             <span id="/2017/09/26/HTTP 状态码/" class="leancloud_visitors" data-flag-title="HTTP 报文和状态码">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -395,10 +395,29 @@
       
 
       
-        <h2 id="1开头"><a href="#1开头" class="headerlink" title="1开头"></a>1开头</h2><p><strong>1xx(临时响应)表示临时响应并需要请求者继续执行操作的状态代码</strong></p>
+        <p>HTTP报文是面向文本的，报文中的每一个字段都是一些ASCII码串，各个字段的长度是不确定的。HTTP有两类报文：<strong>请求报文</strong>和<strong>响应报文</strong></p>
+<h2 id="HTTP请求报文"><a href="#HTTP请求报文" class="headerlink" title="HTTP请求报文"></a>HTTP请求报文</h2><p>一个HTTP请求报文由<strong>请求行</strong>（request line）、<strong>请求头部</strong>（header）、<strong>空行</strong>和<strong>请求数据</strong>4个部分组成</p>
+<p>例如：<br><code>GET /search?hl=zh-CN&amp;source=hp&amp;q=domety&amp;aq=f&amp;oq= HTTP/1.1</code></p>
+<h3 id="请求行"><a href="#请求行" class="headerlink" title="请求行"></a>请求行</h3><p>请求行由<strong>请求方法</strong>字段、<strong>URL字段</strong>和<strong>HTTP协议</strong>版本字段3个字段组成，它们用空格分隔。</p>
+<p>HTTP协议的请求方法有<em>GET、POST、HEAD、PUT、DELETE、OPTIONS、TRACE、CONNECT</em>。</p>
+<p>HEAD就像GET，只不过服务端接受到HEAD请求后只返回响应头，而不会发送响应内容。当我们只需要查看某个页面的状态的时候，使用HEAD是非常高效的，因为在传输的过程中省去了页面内容。</p>
+<h3 id="请求头部"><a href="#请求头部" class="headerlink" title="请求头部"></a>请求头部</h3><p>请求头部由关键字/值对组成，每行一对，关键字和值用英文冒号“:”分隔。请求头部通知服务器有关于客户端请求的信息，典型的请求头有：</p>
+<ul>
+<li><p>User-Agent：产生请求的浏览器类型。</p>
+</li>
+<li><p>Accept：客户端可识别的内容类型列表。</p>
+</li>
+<li><p>Host：请求的主机名，允许多个域名同处一个IP地址，即虚拟主机。</p>
+</li>
+</ul>
+<h3 id="空行"><a href="#空行" class="headerlink" title="空行"></a>空行</h3><p>最后一个请求头之后是一个空行，发送回车符和换行符，通知服务器以下不再有请求头。</p>
+<h3 id="请求数据"><a href="#请求数据" class="headerlink" title="请求数据"></a>请求数据</h3><p>请求数据不在GET方法中使用，而是在POST方法中使用。POST方法适用于需要客户填写表单的场合。与请求数据相关的最常使用的请求头是Content-Type和Content-Length</p>
+<h2 id="HTTP响应报文"><a href="#HTTP响应报文" class="headerlink" title="HTTP响应报文"></a>HTTP响应报文</h2><p>HTTP响应也由四个部分组成，分别是：<strong>状态行</strong>、<strong>消息报头</strong>、<strong>空行</strong>，<strong>响应正文</strong>。</p>
+<p>HTTP响应的格式与请求的格式十分类似</p>
+<h3 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h3><h4 id="1开头"><a href="#1开头" class="headerlink" title="1开头"></a>1开头</h4><p><strong>1xx(临时响应)表示临时响应并需要请求者继续执行操作的状态代码</strong></p>
 <p>100 (继续) 请求者应当继续提出请求。 服务器返回此代码表示已收到请求的第一部分，正在等待其余部分。</p>
 <p>101 (切换协议) 请求者已要求服务器切换协议，服务器已确认并准备切换。</p>
-<h2 id="2开头"><a href="#2开头" class="headerlink" title="2开头"></a>2开头</h2><p><strong>2xx (成功)表示成功处理了请求的状态代码</strong>。代码 说明</p>
+<h4 id="2开头"><a href="#2开头" class="headerlink" title="2开头"></a>2开头</h4><p><strong>2xx (成功)表示成功处理了请求的状态代码</strong>。代码 说明</p>
 <p>200 (成功) 服务器已成功处理了请求。 通常，这表示服务器提供了请求的网页。</p>
 <p>201 (已创建) 请求成功并且服务器创建了新的资源。</p>
 <p>202 (已接受) 服务器已接受请求，但尚未处理。</p>
@@ -406,7 +425,7 @@
 <p>204 (无内容) 服务器成功处理了请求，但没有返回任何内容。</p>
 <p>205 (重置内容) 服务器成功处理了请求，但没有返回任何内容。</p>
 <p>206 (部分内容) 服务器成功处理了部分 GET 请求。</p>
-<h2 id="3开头"><a href="#3开头" class="headerlink" title="3开头"></a>3开头</h2><p><strong>3xx (重定向) 表示要完成请求，需要进一步操作。 通常，这些状态代码用来重定向</strong>。代码 说明</p>
+<h4 id="3开头"><a href="#3开头" class="headerlink" title="3开头"></a>3开头</h4><p><strong>3xx (重定向) 表示要完成请求，需要进一步操作。 通常，这些状态代码用来重定向</strong>。代码 说明</p>
 <p>300 (多种选择) 针对请求，服务器可执行多种操作。 服务器可根据请求者 (user agent) 选择一项操作，或提供操作列表供请求者选择。</p>
 <p>301 (永久移动) 请求的网页已永久移动到新位置。 服务器返回此响应(对 GET 或 HEAD 请求的响应)时，会自动将请求者转到新位置。</p>
 <p>302 (临时移动) 服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求。</p>
@@ -414,7 +433,7 @@
 <p>304 (未修改) 自从上次请求后，请求的网页未修改过。 服务器返回此响应时，不会返回网页内容。</p>
 <p>305 (使用代理) 请求者只能使用代理访问请求的网页。 如果服务器返回此响应，还表示请求者应使用代理。</p>
 <p>307 (临时重定向) 服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求。</p>
-<h2 id="4开头"><a href="#4开头" class="headerlink" title="4开头"></a>4开头</h2><p><strong>4xx(客户端请求错误) 这些状态代码表示请求可能出错，妨碍了服务器的处理</strong>。代码 说明</p>
+<h4 id="4开头"><a href="#4开头" class="headerlink" title="4开头"></a>4开头</h4><p><strong>4xx(客户端请求错误) 这些状态代码表示请求可能出错，妨碍了服务器的处理</strong>。代码 说明</p>
 <p>400 (错误请求) 服务器不理解请求的语法。</p>
 <p>401 (未授权) 请求要求身份验证。 对于需要登录的网页，服务器可能返回此响应。</p>
 <p>403 (禁止) 服务器拒绝请求。</p>
@@ -432,7 +451,7 @@
 <p>415 (不支持的媒体类型) 请求的格式不受请求页面的支持。</p>
 <p>416 (请求范围不符合要求) 如果页面无法提供请求的范围，则服务器会返回此状态代码。</p>
 <p>417 (未满足期望值) 服务器未满足”期望”请求标头字段的要求。</p>
-<h2 id="5开头"><a href="#5开头" class="headerlink" title="5开头"></a>5开头</h2><p><strong>5xx(服务器错误)这些状态代码表示服务器在尝试处理请求时发生内部错误</strong>。 这些错误可能是服务器本身的错误，而不是请求出错。代码 说明</p>
+<h4 id="5开头"><a href="#5开头" class="headerlink" title="5开头"></a>5开头</h4><p><strong>5xx(服务器错误)这些状态代码表示服务器在尝试处理请求时发生内部错误</strong>。 这些错误可能是服务器本身的错误，而不是请求出错。代码 说明</p>
 <p>500 (服务器内部错误) 服务器遇到错误，无法完成请求。</p>
 <p>501 (尚未实施) 服务器不具备完成请求的功能。 例如，服务器无法识别请求方法时可能会返回此代码。</p>
 <p>502 (错误网关) 服务器作为网关或代理，从上游服务器收到无效响应。</p>
@@ -491,8 +510,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/09/27/Java 异常/" rel="prev" title="Java 异常">
-                Java 异常 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/26/Java Map/" rel="prev" title="Java Map">
+                Java Map <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -635,7 +654,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1开头"><span class="nav-number">1.</span> <span class="nav-text">1开头</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2开头"><span class="nav-number">2.</span> <span class="nav-text">2开头</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3开头"><span class="nav-number">3.</span> <span class="nav-text">3开头</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4开头"><span class="nav-number">4.</span> <span class="nav-text">4开头</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5开头"><span class="nav-number">5.</span> <span class="nav-text">5开头</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP请求报文"><span class="nav-number">1.</span> <span class="nav-text">HTTP请求报文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#请求行"><span class="nav-number">1.1.</span> <span class="nav-text">请求行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求头部"><span class="nav-number">1.2.</span> <span class="nav-text">请求头部</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#空行"><span class="nav-number">1.3.</span> <span class="nav-text">空行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求数据"><span class="nav-number">1.4.</span> <span class="nav-text">请求数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP响应报文"><span class="nav-number">2.</span> <span class="nav-text">HTTP响应报文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#状态码"><span class="nav-number">2.1.</span> <span class="nav-text">状态码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1开头"><span class="nav-number">2.1.1.</span> <span class="nav-text">1开头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2开头"><span class="nav-number">2.1.2.</span> <span class="nav-text">2开头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3开头"><span class="nav-number">2.1.3.</span> <span class="nav-text">3开头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4开头"><span class="nav-number">2.1.4.</span> <span class="nav-text">4开头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5开头"><span class="nav-number">2.1.5.</span> <span class="nav-text">5开头</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
